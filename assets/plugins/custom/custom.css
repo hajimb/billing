@@ -1,0 +1,306 @@
+.sidebar-dark-primary{
+    background-color: #8f9295 !important;
+}
+
+.hotel-table{
+    /* padding: 10px; */
+
+    border: 1px black dashed !important;
+    height: 120px;
+    /* background: grey !important; */
+    margin-top: 20px;
+    border-radius: 10px;
+    /* width: 100px; */
+}
+.hotel-kot{
+    /* padding: 10px; */
+    min-height: 220px;
+    /* background: grey !important; */
+    /* margin-top: 20px; */
+    border-radius: 10px;
+    /* width: 100px; */
+}
+.hotel-tab-kot{
+    border-radius: 10px;
+    width: 80%;
+    border: 1px black dashed !important;
+}
+.hotel-table:hover{
+    cursor: pointer;
+}
+.hotel-tab{
+    border-radius: 10px;
+    width: 80%;
+}
+.action-box {   
+    background: white; 
+    color: black;
+    padding: 10px;
+    margin-top: 10% !important;
+    /* margin-bottom: 0px !important; */
+}
+.action-btn {
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid black;
+    color: #6c757d;
+    font-size: 12px;
+    height: 40px;
+    margin: 0px;
+    min-width: 40px;
+    /* padding:10px; */
+    padding: 10px 5px;
+    position: relative;
+    top:35%;
+    text-align: center;
+}
+.paid-tab{
+    background: #ECA3A3 ;
+}
+.legend{
+    padding: 10px;
+    /* float: right;     */
+    /* display: flexbox; */
+}
+.white-dot{
+    color: #ffffff;
+    border-radius: 20px;
+    border: 1px black solid;
+}
+.gray-dot{
+    color:#d6d8db;
+}
+.blue-dot{
+    color: #b8daff;
+}
+.green-dot{
+    color: #34c759;
+}
+.yellow-dot{
+    color: #ffeeba;
+}
+.red-dot{
+    color: #f5c6cb;
+}
+.orange-dot{
+    color: #e89463;
+}
+.skyblue-dot{
+    color: #00e7ff;
+}
+
+
+
+.legend-span{
+    padding-left: 5px;
+}
+.fudx-logo-sidebar{
+    opacity: 1 !important;
+    margin-left: 0 !important;
+    max-height:45px !important;
+    /*padding-left: 10px;*/
+    
+}
+.menu-categories{
+    display:inline;
+    overflow-y: scroll;
+}
+.menu-categories .btn{
+margin-top: 0px;
+border-radius: 0px;
+width: 100%;
+/* height: 100px; */
+border: 1px black solid;
+}
+
+.veglogo{
+ color: green;
+ padding: .2rem .3rem;
+ position: absolute;
+ /* You may need to change top and right. They depend on padding/widht of .badge */
+ top: 0px;
+ right: 6px;
+ /* background: green; */
+ /* border-radius: 50%; */
+}
+.nonveglogo{
+    color: red;
+    padding: .2rem .3rem;
+    position: absolute;
+    /* You may need to change top and right. They depend on padding/widht of .badge */
+    top: 0px;
+    right: 6%;
+    /* background: green; */
+    /* border-radius: 50%; */
+}
+.items-btn{
+-webkit-box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.75);
+box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.75);
+padding: 12px;
+}
+.items-btn:hover{
+cursor: pointer;
+background: blanchedalmond;
+}
+.order-type .btn:active{
+ background: #E61E25 !important;
+}
+.order-type .btn:hover{
+    background: #E61E25 !important;
+}
+.no-items{
+    /* margin-left: 25%; */
+    opacity: 0.4;
+    text-align: center;
+}
+
+.value-button {
+    display: inline-block;
+    border: 1px solid #ddd;
+    margin: 0px;
+    width: 40px;
+    /* height: 20px; */
+    text-align: center;
+    vertical-align: middle;
+    padding: 11px 0;
+    /* background: #eee; */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .value-button:hover {
+    cursor: pointer;
+  }
+  
+  form #decrease {
+    /* margin-right: -4px; */
+    border-radius: 8px ;
+  }
+  
+  form #increase {
+    /* margin-left: -4px; */
+    border-radius:  8px ;
+  }
+  
+  form #input-wrap {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  input#number {
+    text-align: center;
+    border: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin: 0px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+  .search-card .card-footer span{
+    float: right;
+    /* margin-left: 5px; */
+  }
+  .reset-bill-card .card-footer span{
+    float: right;
+    /* margin-left: 5px; */
+  }
+  .table thead{
+      background: #dc3545;
+      color: white;
+  }
+  .action{
+      color: #dc3545;
+  }
+  .action:hover{
+      text-decoration: none;
+  }
+  
+  .header-icons{
+      font-size: 22px;
+  }
+  .header-icons:hover{
+    color: #dc3545;
+  }
+  .config-tab{
+    background: white;
+    -webkit-box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.75);
+  }
+  .config-tab i{
+      color: grey;
+      padding-bottom: 10px;
+  }
+  .config-tab h5{
+      font-size: 18px;
+  }
+  .config-tab:hover{
+    cursor: pointer;
+    -webkit-box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.5);
+    box-shadow: 2px 3px 7px 0px rgba(0,0,0,0.5);
+      
+  }
+
+  .config-tab:hover i{
+    color: #dc3545;
+}
+.config-tab a{
+    color: gray;
+    padding: 10px;
+}
+.reset-bill-card{
+    width: 70%;
+    margin: auto;
+}
+
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+  }
+  .modal-header{
+      display: block;
+  }
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type='range'] {
+      overflow: hidden;
+      width: 150px;
+      -webkit-appearance: none;
+      background-color: lightgray;
+    }
+    
+    input[type='range']::-webkit-slider-runnable-track {
+      height: 10px;
+      -webkit-appearance: none;
+      color: #dc3545;
+      margin-top: -1px;
+    }
+    
+    input[type='range']::-webkit-slider-thumb {
+      width: 10px;
+      -webkit-appearance: none;
+      height: 10px;
+      cursor: ew-resize;
+      background: #434343;
+      box-shadow: -80px 0 0 80px #dc3545;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        color: #fff;
+        background-color:#dc3545;
+    }
+    .nav-pills .nav-link:not(.active):hover {
+        color: #dc3545;
+    }
+}
