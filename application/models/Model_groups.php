@@ -17,25 +17,20 @@ class Model_groups extends CI_Model
 		}
 		$query = $this->db->query($sql, array($groupId));
 		return $query->result_array();
-
-		// $query = $this->db->query($sql, array(1));
-		// return $query->result_array();
-	}
-
-	public function create($data = '')
-	{
-		$create = $this->db->insert('groups', $data);
-		return ($create == true) ? true : false;
 	}
 
 	public function save($data, $id)
 	{
-		// print_r($data);
+		$where = array('group_name'=> $data['group_name'], 'is_deleted'=> 0);
+        if(is_exists($where, 'groups', $id) > 0 ){
+            $result = array('msg' => 'Group Name already Exist','status' => false);
+            return $result;
+        }
 		if($id == 0){
-            // $data["created_date"] = date('Y-m-d H:i:s');
+			$data["created_date"] = date('Y-m-d H:i:s');
             $this->db->insert('groups', $data);
         }else{
-            // $data["modified_date"] = date('Y-m-d H:i:s');
+			$data["modified_date"] = date('Y-m-d H:i:s');
             $this->db->where('id', $id);
             $this->db->update('groups', $data);
         }
@@ -52,8 +47,27 @@ class Model_groups extends CI_Model
 	{
 		$this->db->where('id', $id);
 		$delete = $this->db->delete('groups');
-		return ($delete == true) ? true : false;
+		$error = $this->db->error();
+        if ($error['code'] == 0) {
+            $result = array('msg' => 'Group Successfully Delete','status' => true);
+        } else {
+            $result = array('msg' => 'Error While Deleting Group','status' => false);
+        }
+        return $result;
 	}
+
+	public function getModules(){
+		$this->db->select('*');
+		$this->db->from('master_modules');
+		$this->db->where('to_show',1);
+		$this->db->where('is_deleted',0);
+		$this->db->order_by('name', 'ASC');
+		$query      = $this->db->get();
+		$result = $query->result_array();
+		return $result;
+	}
+
+	// need to check if used
 
 	public function existInUserGroup($id)
 	{
@@ -72,14 +86,5 @@ class Model_groups extends CI_Model
 
 		return $result;
 
-	}
-	public function getModules(){
-		$this->db->select('*');
-		$this->db->from('master_modules');
-		$this->db->where('is_deleted',0);
-		$this->db->order_by('name', 'ASC');
-		$query      = $this->db->get();
-		$result = $query->result_array();
-		return $result;
 	}
 }

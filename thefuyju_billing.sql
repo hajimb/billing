@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.7
+-- version 4.9.5deb2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jan 05, 2022 at 11:10 PM
--- Server version: 5.7.36
--- PHP Version: 7.3.33
+-- Host: localhost
+-- Generation Time: Jan 11, 2022 at 10:41 AM
+-- Server version: 10.3.32-MariaDB-0ubuntu0.20.04.1
+-- PHP Version: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `thefuyju_billing`
+-- Database: `billing`
 --
 
 -- --------------------------------------------------------
@@ -41,10 +41,10 @@ CREATE TABLE `admin_users` (
   `status` enum('yes','no') NOT NULL DEFAULT 'no',
   `created_date` datetime NOT NULL,
   `modified_date` datetime NOT NULL,
-  `role` text COMMENT 'this field is used for admin sidebar access',
+  `role` text DEFAULT NULL COMMENT 'this field is used for admin sidebar access',
   `groups` text NOT NULL,
-  `r_password` text COMMENT 'Password in readable form',
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `r_password` text DEFAULT NULL COMMENT 'Password in readable form',
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -52,7 +52,7 @@ CREATE TABLE `admin_users` (
 --
 
 INSERT INTO `admin_users` (`id`, `username`, `firstname`, `lastname`, `email`, `password`, `framework_id`, `restaurant_id`, `status`, `created_date`, `modified_date`, `role`, `groups`, `r_password`, `is_deleted`) VALUES
-(1, 'admin', 'admin', '', '', '0c0d1e46e5c0a1056d2fa630ade23acc', 0, 1, 'yes', '2015-02-24 11:44:22', '2017-07-10 12:39:28', 'admin', '1', '$QGP9AB!rVKj8hn', 1),
+(1, 'admin', 'admin', '', '', '0c0d1e46e5c0a1056d2fa630ade23acc', 0, 1, 'yes', '2015-02-24 11:44:22', '2017-07-10 12:39:28', 'admin', '1', '$QGP9AB!rVKj8hn', 0),
 (2, 'user', 'admin2', 'add', 'a@a.com', 'a1d7d7e0c7e645825f0ac3d1b04957fc', 0, 2, 'no', '2021-02-18 11:44:22', '2021-02-18 12:39:28', 'user', '2', 'vqW!c9VO$hdVwS', 1),
 (3, 'BimalP', 'bimal', 'pancholi', 'bjpancholi@gmail.com', '25d55ad283aa400af464c76d713c07ad', 0, 1, 'yes', '2021-08-26 14:09:32', '2021-12-01 03:15:50', 'admin', '2', '12345678', 1),
 (4, 'krunal', 'krunal', 'patel', 'admin@321', '965b21f9b0929eb034918f57a06065a8', 0, 1, 'yes', '2021-10-24 12:09:28', '2021-12-01 03:15:54', NULL, '2', 'admin@321', 1),
@@ -111,7 +111,7 @@ CREATE TABLE `bill_head` (
   `is_deleted` tinyint(4) NOT NULL,
   `bill_type` varchar(55) NOT NULL,
   `payment_type` varchar(50) NOT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT '1'
+  `is_active` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -119,8 +119,8 @@ CREATE TABLE `bill_head` (
 --
 
 INSERT INTO `bill_head` (`Id`, `restaurant_id`, `table_id`, `name`, `mobile`, `items`, `bill_amt`, `discount_id`, `discount_amt`, `tax_id`, `tax_amt`, `total`, `status`, `invoice_no`, `created_date`, `modified_date`, `created_by`, `modify_by`, `is_deleted`, `bill_type`, `payment_type`, `is_active`) VALUES
-(1, 5, 1, '', '', 3, 680, 0, 0, 0, 444, 3219, 'InCooking', 2112311, '2021-12-31 11:46:10', '2021-12-31 11:46:10', 12, 12, 0, 'dinein', 'Cash', 1),
-(2, 0, 2, '', '', 2, 310, 0, 0, 0, 49.6, 359.6, 'KitchenReject', 2201042, '2022-01-04 10:03:54', '2022-01-04 10:03:54', 19, 19, 0, 'dinein', 'Cash', 1);
+(1, 5, 1, '', '', 2, 310, 0, 0, 0, 49.6, 359.6, 'BillPaid', 2201071, '2022-01-07 12:10:47', '2022-01-07 12:10:47', 12, 12, 0, 'dinein', 'Cash', 1),
+(2, 5, 1, '', '', 2, 310, 0, 0, 0, 40, 290, 'BillPaid', 2201072, '2022-01-07 12:39:30', '2022-01-07 12:39:30', 12, 12, 0, 'dinein', 'Cash', 1);
 
 -- --------------------------------------------------------
 
@@ -133,7 +133,7 @@ CREATE TABLE `bill_item` (
   `Id` int(11) NOT NULL,
   `bill_id` int(11) NOT NULL,
   `kot_id` int(11) NOT NULL,
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -141,16 +141,10 @@ CREATE TABLE `bill_item` (
 --
 
 INSERT INTO `bill_item` (`Id`, `bill_id`, `kot_id`, `created_date`) VALUES
-(1, 1, 1, '2021-12-31 04:46:10'),
-(2, 2, 2, '2022-01-04 03:03:54'),
-(3, 1, 3, '2022-01-04 03:14:02'),
-(4, 1, 4, '2022-01-04 03:49:08'),
-(5, 1, 5, '2022-01-04 03:49:18'),
-(6, 1, 6, '2022-01-04 03:49:28'),
-(7, 1, 7, '2022-01-04 04:24:25'),
-(8, 2, 8, '2022-01-04 06:43:01'),
-(9, 1, 9, '2022-01-05 04:25:35'),
-(10, 1, 10, '2022-01-05 04:26:39');
+(1, 1, 1, '2022-01-07 12:10:47'),
+(2, 1, 2, '2022-01-07 12:24:16'),
+(3, 2, 3, '2022-01-07 12:39:30'),
+(4, 2, 4, '2022-01-07 12:49:23');
 
 -- --------------------------------------------------------
 
@@ -166,7 +160,7 @@ CREATE TABLE `bill_item1` (
   `qty` int(11) NOT NULL,
   `amount` float NOT NULL,
   `price` float NOT NULL,
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -180,7 +174,7 @@ CREATE TABLE `category` (
   `category_id` int(100) NOT NULL,
   `category` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_date` datetime NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -216,7 +210,7 @@ CREATE TABLE `customer` (
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_date` datetime NOT NULL,
   `modified_date` datetime NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -245,7 +239,7 @@ CREATE TABLE `discount` (
   `created_date` datetime NOT NULL,
   `created_by` int(255) NOT NULL,
   `modify_by` int(255) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -255,7 +249,7 @@ CREATE TABLE `discount` (
 INSERT INTO `discount` (`discount_id`, `discount_name`, `discount`, `modified_date`, `created_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
 (1, 'Customer 1 ', 10, '0000-00-00 00:00:00', '2021-10-24 15:14:47', 0, 0, 0),
 (2, 'Welocme 20', 20, '0000-00-00 00:00:00', '2021-12-08 07:37:00', 0, 0, 0),
-(3, '26 Jan', 26, '0000-00-00 00:00:00', '2022-01-04 10:13:40', 0, 0, 0);
+(3, '26 Jan', 25, '0000-00-00 00:00:00', '2022-01-04 10:13:40', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -273,7 +267,7 @@ CREATE TABLE `expense` (
   `created_by` int(255) NOT NULL,
   `modified_date` datetime NOT NULL,
   `modify_by` int(255) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -306,12 +300,12 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `group_name`, `permission`) VALUES
-(1, 'MasterAdmin', 'a:3:{i:0;s:11:\"Restaurants\";i:1;s:5:\"Users\";i:2;s:11:\"UsersGroups\";}'),
-(2, 'Admin', 'a:18:{i:0;s:11:\"Restaurants\";i:1;s:6:\"Orders\";i:2;s:3:\"KOT\";i:3;s:9:\"Customers\";i:4;s:8:\"CashFlow\";i:5;s:7:\"Expense\";i:6;s:10:\"Withdrawal\";i:7;s:9:\"Inventory\";i:8;s:5:\"Table\";i:9;s:4:\"Item\";i:10;s:12:\"ItemCategory\";i:11;s:10:\"DuePayment\";i:12;s:5:\"Users\";i:13;s:11:\"UsersGroups\";i:14;s:6:\"DayEnd\";i:15;s:13:\"DayEndHistory\";i:16;s:3:\"Tax\";i:17;s:8:\"Discount\";}'),
-(3, 'Kitchen', 'a:1:{i:0;s:3:\"KOT\";}'),
-(4, 'Waiter', 'a:1:{i:0;s:5:\"Table\";}'),
-(5, 'Manager', 'a:18:{i:0;s:11:\"Restaurants\";i:1;s:6:\"Orders\";i:2;s:3:\"KOT\";i:3;s:9:\"Customers\";i:4;s:8:\"CashFlow\";i:5;s:7:\"Expense\";i:6;s:10:\"Withdrawal\";i:7;s:9:\"Inventory\";i:8;s:5:\"Table\";i:9;s:4:\"Item\";i:10;s:12:\"ItemCategory\";i:11;s:10:\"DuePayment\";i:12;s:5:\"Users\";i:13;s:11:\"UsersGroups\";i:14;s:6:\"DayEnd\";i:15;s:13:\"DayEndHistory\";i:16;s:3:\"Tax\";i:17;s:8:\"Discount\";}'),
-(6, 'Owner', 'a:18:{i:0;s:11:\"Restaurants\";i:1;s:6:\"Orders\";i:2;s:3:\"KOT\";i:3;s:9:\"Customers\";i:4;s:8:\"CashFlow\";i:5;s:7:\"Expense\";i:6;s:10:\"Withdrawal\";i:7;s:9:\"Inventory\";i:8;s:5:\"Table\";i:9;s:4:\"Item\";i:10;s:12:\"ItemCategory\";i:11;s:10:\"DuePayment\";i:12;s:5:\"Users\";i:13;s:11:\"UsersGroups\";i:14;s:6:\"DayEnd\";i:15;s:13:\"DayEndHistory\";i:16;s:3:\"Tax\";i:17;s:8:\"Discount\";}');
+(1, 'MasterAdmin', 'a:3:{i:0;s:10:\"restaurant\";i:1;s:4:\"user\";i:2;s:6:\"groups\";}'),
+(2, 'Admin', 'a:25:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:10:\"restaurant\";i:17;s:4:\"role\";i:18;s:11:\"stockreport\";i:19;s:5:\"table\";i:20;s:3:\"tax\";i:21;s:6:\"groups\";i:22;s:4:\"user\";i:23;s:14:\"wastagelisting\";i:24;s:10:\"withdrawal\";}'),
+(3, 'Kitchen', 'a:1:{i:0;s:3:\"kot\";}'),
+(4, 'Waiter', 'a:1:{i:0;s:5:\"table\";}'),
+(5, 'Manager', 'a:25:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:10:\"restaurant\";i:17;s:4:\"role\";i:18;s:11:\"stockreport\";i:19;s:5:\"table\";i:20;s:3:\"tax\";i:21;s:6:\"groups\";i:22;s:4:\"user\";i:23;s:14:\"wastagelisting\";i:24;s:10:\"withdrawal\";}'),
+(6, 'Owner', 'a:25:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:10:\"restaurant\";i:17;s:4:\"role\";i:18;s:11:\"stockreport\";i:19;s:5:\"table\";i:20;s:3:\"tax\";i:21;s:6:\"groups\";i:22;s:4:\"user\";i:23;s:14:\"wastagelisting\";i:24;s:10:\"withdrawal\";}');
 
 -- --------------------------------------------------------
 
@@ -327,13 +321,13 @@ CREATE TABLE `items` (
   `item_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `short_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` float(8,2) NOT NULL,
-  `favorite` tinyint(1) NOT NULL DEFAULT '0',
-  `stock_status` tinyint(1) NOT NULL DEFAULT '1',
+  `favorite` tinyint(1) NOT NULL DEFAULT 0,
+  `stock_status` tinyint(1) NOT NULL DEFAULT 1,
   `created_date` datetime NOT NULL,
   `modify_date` datetime NOT NULL,
   `created_by` int(100) NOT NULL,
   `modify_by` int(100) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -392,7 +386,7 @@ CREATE TABLE `kot_head` (
   `is_deleted` tinyint(4) NOT NULL,
   `bill_type` varchar(55) NOT NULL,
   `payment_type` varchar(50) NOT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT '1'
+  `is_active` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -400,16 +394,10 @@ CREATE TABLE `kot_head` (
 --
 
 INSERT INTO `kot_head` (`Id`, `bill_id`, `kot`, `restaurant_id`, `table_id`, `name`, `mobile`, `items`, `bill_amt`, `discount_id`, `discount_amt`, `tax_id`, `tax_amt`, `total`, `status`, `invoice_no`, `created_date`, `modified_date`, `created_by`, `modify_by`, `is_deleted`, `bill_type`, `payment_type`, `is_active`) VALUES
-(1, 1, 1, 5, 1, '', '', 3, 680, 0, 0, 0, 0, 680, '', 2112311, '2021-12-31 11:46:10', '2021-12-31 11:46:10', 12, 12, 0, 'dinein', 'Cash', 1),
-(2, 2, 1, 0, 2, '', '', 2, 310, 0, 0, 0, 0, 310, '', 2201042, '2022-01-04 10:03:54', '2022-01-04 10:03:54', 19, 19, 0, 'dinein', 'Cash', 1),
-(3, 1, 2, 0, 1, '', '', 1, 550, 0, 0, 0, 0, 550, '', 2201043, '2022-01-04 10:14:02', '2022-01-04 10:14:02', 21, 21, 0, 'dinein', 'Cash', 1),
-(4, 1, 3, 0, 1, '', '', 4, 515, 0, 0, 0, 0, 515, '', 2201043, '2022-01-04 10:49:08', '2022-01-04 10:49:08', 19, 19, 0, 'dinein', 'Cash', 1),
-(5, 1, 4, 0, 1, '', '', 4, 515, 0, 0, 0, 0, 515, '', 2201043, '2022-01-04 10:49:18', '2022-01-04 10:49:18', 19, 19, 0, 'dinein', 'Cash', 1),
-(6, 1, 5, 0, 1, '', '', 4, 515, 0, 0, 0, 0, 515, '', 2201043, '2022-01-04 10:49:28', '2022-01-04 10:49:28', 19, 19, 0, 'dinein', 'Cash', 1),
-(7, 1, 6, 0, 1, '', '', 3, 970, 0, 0, 0, 0, 970, 'KitchenReject', 2201043, '2022-01-04 11:24:25', '2022-01-04 11:24:25', 19, 19, 0, 'dinein', '', 1),
-(8, 2, 7, 0, 2, '', '', 3, 680, 0, 0, 0, 0, 680, 'KitchenReject', 2201043, '2022-01-04 13:43:01', '2022-01-04 13:43:01', 29, 29, 0, 'dinein', '', 1),
-(9, 1, 1, 0, 1, '', '', 4, 1660, 0, 0, 0, 0, 1660, 'InCooking', 2201053, '2022-01-05 11:25:35', '2022-01-05 11:25:35', 19, 19, 0, 'dinein', '', 1),
-(10, 1, 2, 0, 1, '', '', 4, 1660, 0, 0, 0, 0, 1660, 'InCooking', 2201053, '2022-01-05 11:26:39', '2022-01-05 11:26:39', 19, 19, 0, 'dinein', '', 1);
+(1, 1, 1, 5, 1, '', '', 2, 310, 0, 0, 0, 0, 310, 'BillPaid', 2201071, '2022-01-07 12:10:47', '2022-01-07 12:10:47', 12, 12, 0, 'dinein', 'Cash', 1),
+(2, 1, 2, 5, 1, '', '', 0, 0, 0, 0, 0, 0, 0, 'BillPaid', 2201072, '2022-01-07 12:24:16', '2022-01-07 12:24:16', 12, 12, 0, 'dinein', 'Cash', 1),
+(3, 2, 3, 5, 1, '', '', 2, 310, 0, 0, 0, 0, 310, 'BillPaid', 2201072, '2022-01-07 12:39:30', '2022-01-07 12:39:30', 12, 12, 0, 'dinein', 'Cash', 1),
+(4, 2, 4, 5, 1, '', '', 2, 250, 0, 0, 0, 0, 250, 'BillPaid', 2201073, '2022-01-07 12:49:23', '2022-01-07 12:49:23', 12, 12, 0, 'dinein', 'Cash', 1);
 
 -- --------------------------------------------------------
 
@@ -425,7 +413,7 @@ CREATE TABLE `kot_item` (
   `qty` int(11) NOT NULL,
   `amount` float NOT NULL,
   `price` float NOT NULL,
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -433,38 +421,12 @@ CREATE TABLE `kot_item` (
 --
 
 INSERT INTO `kot_item` (`Id`, `kot_id`, `item_id`, `qty`, `amount`, `price`, `created_date`) VALUES
-(1, 1, 10, 1, 220, 220, '2021-12-31 04:46:10'),
-(2, 1, 11, 1, 230, 230, '2021-12-31 04:46:10'),
-(3, 1, 12, 1, 230, 230, '2021-12-31 04:46:10'),
-(4, 2, 4, 1, 160, 160, '2022-01-04 03:03:54'),
-(5, 2, 5, 1, 150, 150, '2022-01-04 03:03:54'),
-(6, 3, 16, 5, 110, 550, '2022-01-04 03:14:02'),
-(7, 4, 6, 1, 40, 40, '2022-01-04 03:49:08'),
-(8, 4, 7, 1, 50, 50, '2022-01-04 03:49:08'),
-(9, 4, 1, 1, 75, 75, '2022-01-04 03:49:08'),
-(10, 4, 3, 1, 350, 350, '2022-01-04 03:49:08'),
-(11, 5, 6, 1, 40, 40, '2022-01-04 03:49:18'),
-(12, 5, 7, 1, 50, 50, '2022-01-04 03:49:18'),
-(13, 5, 1, 1, 75, 75, '2022-01-04 03:49:18'),
-(14, 5, 3, 1, 350, 350, '2022-01-04 03:49:18'),
-(15, 6, 6, 1, 40, 40, '2022-01-04 03:49:28'),
-(16, 6, 7, 1, 50, 50, '2022-01-04 03:49:28'),
-(17, 6, 1, 1, 75, 75, '2022-01-04 03:49:28'),
-(18, 6, 3, 1, 350, 350, '2022-01-04 03:49:28'),
-(19, 7, 17, 3, 110, 330, '2022-01-04 04:24:25'),
-(20, 7, 11, 2, 230, 460, '2022-01-04 04:24:25'),
-(21, 7, 14, 3, 60, 180, '2022-01-04 04:24:25'),
-(22, 8, 10, 1, 220, 220, '2022-01-04 06:43:01'),
-(23, 8, 11, 1, 230, 230, '2022-01-04 06:43:01'),
-(24, 8, 12, 1, 230, 230, '2022-01-04 06:43:01'),
-(25, 9, 12, 2, 230, 460, '2022-01-05 04:25:35'),
-(26, 9, 3, 2, 350, 700, '2022-01-05 04:25:35'),
-(27, 9, 9, 4, 75, 300, '2022-01-05 04:25:35'),
-(28, 9, 7, 4, 50, 200, '2022-01-05 04:25:35'),
-(29, 10, 12, 2, 230, 460, '2022-01-05 04:26:39'),
-(30, 10, 3, 2, 350, 700, '2022-01-05 04:26:39'),
-(31, 10, 9, 4, 75, 300, '2022-01-05 04:26:39'),
-(32, 10, 7, 4, 50, 200, '2022-01-05 04:26:39');
+(1, 1, 4, 1, 160, 160, '2022-01-07 12:10:47'),
+(2, 1, 5, 1, 150, 150, '2022-01-07 12:10:47'),
+(3, 3, 5, 1, 150, 150, '2022-01-07 12:39:30'),
+(4, 3, 4, 1, 160, 160, '2022-01-07 12:39:30'),
+(5, 4, 4, 1, 160, 160, '2022-01-07 12:49:23'),
+(6, 4, 13, 1, 90, 90, '2022-01-07 12:49:23');
 
 -- --------------------------------------------------------
 
@@ -932,7 +894,62 @@ INSERT INTO `log` (`log_id`, `log_msg`, `createddate`, `controller`) VALUES
 (445, 'Punjab grill waiter sign-out successfully.', '2022-01-05 11:27:20', 'Logout'),
 (446, 'Punjab grill kitchen sign-in successfully.', '2022-01-05 11:27:44', 'Login'),
 (447, 'Punjab grill kitchen sign-out successfully.', '2022-01-05 11:28:10', 'Logout'),
-(448, 'Punjab grill manager sign-in successfully.', '2022-01-05 11:28:16', 'Login');
+(448, 'Punjab grill manager sign-in successfully.', '2022-01-05 11:28:16', 'Login'),
+(449, 'Havemore waiter sign-in successfully.', '2022-01-07 12:02:23', 'Login'),
+(450, 'Havemore kitchen sign-in successfully.', '2022-01-07 12:11:25', 'Login'),
+(451, 'Havemore manager sign-in successfully.', '2022-01-08 16:59:38', 'Login'),
+(452, 'Havemore manager sign-in successfully.', '2022-01-09 10:00:03', 'Login'),
+(453, 'Havemore waiter sign-in successfully.', '2022-01-10 13:06:32', 'Login'),
+(454, 'Havemore Waiter sign-out successfully.', '2022-01-10 14:39:31', 'Logout'),
+(455, 'Admin sign-in successfully.', '2022-01-10 14:40:01', 'Login'),
+(456, 'Admin sign-in successfully.', '2022-01-10 14:40:06', 'Login'),
+(457, 'Admin sign-in successfully.', '2022-01-10 14:40:39', 'Login'),
+(458, 'Admin sign-in successfully.', '2022-01-10 14:41:17', 'Login');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `master_modules`
+--
+
+DROP TABLE IF EXISTS `master_modules`;
+CREATE TABLE `master_modules` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `classname` varchar(100) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `master_modules`
+--
+
+INSERT INTO `master_modules` (`id`, `name`, `classname`, `is_deleted`) VALUES
+(1, 'Cash Flow', 'cashflow', 0),
+(2, 'Item Category', 'category', 0),
+(3, 'Current Stock', 'currentstock', 0),
+(4, 'Customers', 'customer', 0),
+(5, 'Day End', 'dayend', 0),
+(6, 'Day End History', 'dayendhistory', 0),
+(7, 'Discount', 'discount', 0),
+(8, 'Due Payment', 'duepayment', 0),
+(9, 'Expense', 'expense', 0),
+(10, 'User Groups', 'groups', 0),
+(11, 'Inventory', 'inventory', 0),
+(12, 'Items', 'item', 0),
+(13, 'Kot', 'kot', 0),
+(14, 'Orders', 'order', 0),
+(15, 'Purchase', 'purchase', 0),
+(16, 'Raw Material', 'rawmaterial', 0),
+(17, 'Receipt', 'receipt', 0),
+(18, 'Restaurants', 'restaurant', 0),
+(19, 'Role', 'role', 0),
+(20, 'Stock Report', 'stockreport', 0),
+(21, 'Table', 'table', 0),
+(22, 'Tax', 'tax', 0),
+(23, 'Users', 'user', 0),
+(24, 'Wastage Listing', 'wastagelisting', 0),
+(25, 'Withdrawal', 'withdrawal', 0);
 
 -- --------------------------------------------------------
 
@@ -945,7 +962,7 @@ CREATE TABLE `order_status_log` (
   `Id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `status` varchar(50) NOT NULL,
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `create_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -953,36 +970,25 @@ CREATE TABLE `order_status_log` (
 --
 
 INSERT INTO `order_status_log` (`Id`, `order_id`, `status`, `create_date`) VALUES
-(1, 1, 'OrderTaken', '2021-12-31 04:46:10'),
-(2, 1, 'InCooking', '2021-12-31 04:46:57'),
-(3, 1, 'OrderReady', '2021-12-31 04:46:59'),
-(4, 1, 'PickedUpByWaiter', '2021-12-31 04:47:00'),
-(5, 1, 'BillRaised', '2021-12-31 04:47:10'),
-(6, 2, 'OrderTaken', '2022-01-04 03:03:54'),
-(7, 2, 'InCooking', '2022-01-04 03:05:02'),
-(8, 2, 'OrderReady', '2022-01-04 03:05:52'),
-(9, 2, 'PickedUpByWaiter', '2022-01-04 03:07:01'),
-(10, 2, 'OrderOnTable', '2022-01-04 03:07:41'),
-(11, 2, 'BillRaised', '2022-01-04 03:09:16'),
-(12, 2, 'BillPaid', '2022-01-04 03:09:40'),
-(13, 1, 'BillPaid', '2022-01-04 03:10:15'),
-(14, 1, 'InCooking', '2022-01-04 03:14:40'),
-(15, 1, 'OrderReady', '2022-01-04 03:14:46'),
-(16, 1, 'PickedUpByWaiter', '2022-01-04 03:14:54'),
-(17, 1, 'BillRaised', '2022-01-04 03:15:50'),
-(18, 1, 'BillPaid', '2022-01-04 03:17:24'),
-(19, 1, 'KitchenReject', '2022-01-04 03:50:08'),
-(20, 1, 'KitchenReject', '2022-01-04 03:50:10'),
-(21, 1, 'InCooking', '2022-01-04 03:50:44'),
-(22, 1, 'OrderReady', '2022-01-04 03:51:32'),
-(23, 1, 'PickedUpByWaiter', '2022-01-04 03:52:07'),
-(24, 1, 'OrderOnTable', '2022-01-04 03:52:38'),
-(25, 1, 'BillRaised', '2022-01-04 03:55:56'),
-(26, 1, 'BillPaid', '2022-01-04 03:57:35'),
-(27, 1, 'KitchenReject', '2022-01-04 06:32:06'),
-(28, 2, 'KitchenReject', '2022-01-04 06:44:06'),
-(29, 1, 'InCooking', '2022-01-05 04:32:54'),
-(30, 1, 'InCooking', '2022-01-05 04:33:02');
+(1, 1, 'OrderTaken', '2022-01-07 12:10:47'),
+(2, 1, 'InCooking', '2022-01-07 12:11:29'),
+(3, 1, 'OrderReady', '2022-01-07 12:11:30'),
+(4, 1, 'PickedUpByWaiter', '2022-01-07 12:11:31'),
+(5, 1, 'OrderOnTable', '2022-01-07 12:11:36'),
+(6, 1, 'BillRaised', '2022-01-07 12:13:12'),
+(7, 1, 'BillPaid', '2022-01-07 12:13:15'),
+(8, 1, 'KitchenReject', '2022-01-07 12:34:27'),
+(9, 1, 'BillPaid', '2022-01-07 12:34:38'),
+(10, 2, 'OrderTaken', '2022-01-07 12:39:30'),
+(11, 2, 'KitchenReject', '2022-01-07 12:39:53'),
+(12, 2, 'InCooking', '2022-01-07 12:49:38'),
+(13, 2, 'OrderReady', '2022-01-07 12:49:40'),
+(14, 2, 'PickedUpByWaiter', '2022-01-07 12:50:11'),
+(15, 2, 'OrderOnTable', '2022-01-07 12:50:14'),
+(16, 2, 'BillRaised', '2022-01-07 12:50:20'),
+(17, 2, 'BillRaised', '2022-01-07 12:53:15'),
+(18, 2, 'BillRaised', '2022-01-08 17:00:53'),
+(19, 2, 'BillPaid', '2022-01-08 17:00:55');
 
 -- --------------------------------------------------------
 
@@ -995,7 +1001,7 @@ CREATE TABLE `rawmaterial` (
   `rawmaterial_id` int(255) NOT NULL,
   `rawmaterial` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_date` datetime NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1023,7 +1029,7 @@ CREATE TABLE `restaurant` (
   `restaurant_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contact_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_date` datetime NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1080,9 +1086,9 @@ INSERT INTO `setting` (`id`, `storename`, `storeurl`, `apiusername`, `apipath`, 
 
 DROP TABLE IF EXISTS `status_master`;
 CREATE TABLE `status_master` (
-  `status_id` int(11) NOT NULL,
+  `status_id` tinyint(4) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT '0'
+  `is_active` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1112,7 +1118,7 @@ DROP TABLE IF EXISTS `stock`;
 CREATE TABLE `stock` (
   `stock_id` int(255) NOT NULL,
   `restaurant_id` int(255) NOT NULL,
-  `cat_id` int(255) NOT NULL DEFAULT '0',
+  `cat_id` int(255) NOT NULL DEFAULT 0,
   `rawmaterial_id` int(255) NOT NULL,
   `stock` int(255) NOT NULL,
   `unit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1126,7 +1132,7 @@ CREATE TABLE `stock` (
   `created_date` datetime NOT NULL,
   `created_by` int(255) NOT NULL,
   `modify_by` int(255) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1158,13 +1164,13 @@ CREATE TABLE `tables` (
   `restaurant_id` int(255) NOT NULL,
   `tablename` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `capacity` int(255) NOT NULL,
-  `status` int(20) NOT NULL DEFAULT '0',
+  `status` int(20) NOT NULL DEFAULT 0,
   `ord_status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_date` datetime NOT NULL,
   `modified_date` datetime NOT NULL,
   `created_by` int(255) NOT NULL,
   `modify_by` int(255) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1172,8 +1178,8 @@ CREATE TABLE `tables` (
 --
 
 INSERT INTO `tables` (`table_id`, `restaurant_id`, `tablename`, `capacity`, `status`, `ord_status`, `created_date`, `modified_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
-(1, 1, 'Table No.1', 5, 0, 'InCooking', '2021-08-28 15:40:54', '2021-08-28 15:40:54', 0, 0, 0),
-(2, 1, 'Table No.2', 6, 0, 'KitchenReject', '2021-08-28 16:14:43', '2021-08-28 16:14:43', 0, 0, 0),
+(1, 1, 'Table No.1', 5, 0, '', '2021-08-28 15:40:54', '2021-08-28 15:40:54', 0, 0, 0),
+(2, 1, 'Table No.2', 6, 0, '', '2021-08-28 16:14:43', '2021-08-28 16:14:43', 0, 0, 0),
 (3, 1, 'Table No.3', 5, 0, '', '2021-08-31 16:36:23', '2021-08-31 16:36:23', 0, 0, 0),
 (4, 1, 'Table No.4', 4, 0, '', '2021-08-31 16:37:22', '2021-08-31 16:37:22', 0, 0, 0),
 (5, 1, 'Table No.5', 6, 0, '', '2021-08-31 16:39:20', '2021-08-31 16:39:20', 0, 0, 0),
@@ -1196,12 +1202,12 @@ CREATE TABLE `tax` (
   `vat` int(255) DEFAULT NULL,
   `sgst` int(255) DEFAULT NULL,
   `cgst` int(255) DEFAULT NULL,
-  `is_default` int(20) NOT NULL DEFAULT '0',
+  `is_default` int(20) NOT NULL DEFAULT 0,
   `modified_date` datetime NOT NULL,
   `created_date` datetime NOT NULL,
   `created_by` int(255) NOT NULL,
   `modify_by` int(255) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1277,7 +1283,7 @@ CREATE TABLE `wastage` (
   `modified_date` datetime NOT NULL,
   `created_by` int(255) NOT NULL,
   `modify_by` int(255) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1305,7 +1311,7 @@ CREATE TABLE `withdrawal` (
   `created_by` int(255) NOT NULL,
   `modified_date` datetime NOT NULL,
   `modify_by` int(255) NOT NULL,
-  `is_deleted` int(20) NOT NULL DEFAULT '0'
+  `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1393,6 +1399,18 @@ ALTER TABLE `log`
   ADD PRIMARY KEY (`log_id`);
 
 --
+-- Indexes for table `master_modules`
+--
+ALTER TABLE `master_modules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `order_status_log`
+--
+ALTER TABLE `order_status_log`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indexes for table `rawmaterial`
 --
 ALTER TABLE `rawmaterial`
@@ -1409,6 +1427,12 @@ ALTER TABLE `restaurant`
 --
 ALTER TABLE `setting`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `status_master`
+--
+ALTER TABLE `status_master`
+  ADD PRIMARY KEY (`status_id`);
 
 --
 -- Indexes for table `stock`
@@ -1447,25 +1471,9 @@ ALTER TABLE `withdrawal`
   ADD PRIMARY KEY (`withdrawal_id`);
 
 --
--- Indexes for table `withdrawal`
---
-ALTER TABLE `order_status_log`
-  ADD PRIMARY KEY (`id`);
---
--- Indexes for table `withdrawal`
---
-ALTER TABLE `status_master`
-  ADD PRIMARY KEY (`status_id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `admin_users`
---
-ALTER TABLE `status_master`
-  MODIFY `status_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `admin_users`
 --
@@ -1482,7 +1490,7 @@ ALTER TABLE `bill_head`
 -- AUTO_INCREMENT for table `bill_item`
 --
 ALTER TABLE `bill_item`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -1524,25 +1532,31 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `kot_head`
 --
 ALTER TABLE `kot_head`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `kot_item`
 --
 ALTER TABLE `kot_item`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `order_status_log`
---
-ALTER TABLE `order_status_log`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=449;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=459;
+
+--
+-- AUTO_INCREMENT for table `master_modules`
+--
+ALTER TABLE `master_modules`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `order_status_log`
+--
+ALTER TABLE `order_status_log`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `rawmaterial`
@@ -1561,6 +1575,12 @@ ALTER TABLE `restaurant`
 --
 ALTER TABLE `setting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `status_master`
+--
+ALTER TABLE `status_master`
+  MODIFY `status_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `stock`

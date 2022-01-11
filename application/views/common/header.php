@@ -5,7 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta content="<?= base_url();?>" name="base_url" />
   <title>FUDX</title>
-
+  
+  <!-- custom css -->  
+  <link href='<?= base_url();?>assets/css/toastr.min.css' rel="stylesheet">
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css' rel="stylesheet">
+  <link href='<?php echo base_url(); ?>assets/css/dataTables.bootstrap4.min.css' rel="stylesheet">
+  <link href='<?php echo base_url(); ?>assets/css/bootstrap-datepicker.css' rel="stylesheet">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/custom/custom.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css?ver=<?= time();?>">
+  <link rel="icon" href="<?php echo base_url(); ?>assets/img/favicon.ico" type="image/x-icon"/>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -26,15 +34,11 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/summernote/summernote-bs4.min.css">
-  <!-- custom css -->  
-  <link href='<?= base_url();?>assets/css/toastr.min.css' rel="stylesheet">
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css' rel="stylesheet">
-  <link href='<?php echo base_url(); ?>assets/css/dataTables.bootstrap4.min.css' rel="stylesheet">
-  <link href='<?php echo base_url(); ?>assets/css/bootstrap-datepicker.css' rel="stylesheet">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/custom/custom.css">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css?ver=<?= time();?>">
-  <link rel="icon" href="<?php echo base_url(); ?>assets/img/favicon.ico" type="image/x-icon"/>
-
+  <?php
+    if (isset($css)) {
+        load_css($css);
+    }
+  ?>
   <script>
     function goBack() {
       window.history.back();

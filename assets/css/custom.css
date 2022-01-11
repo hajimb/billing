@@ -1,3 +1,9 @@
 .swal2-title{font-size: 16px!important;}
 .swal2-html-container{font-size: 14px!important;}
 .swal2-popup{width: 30%!important;}
+.view-data {
+        background-color: #ececec;
+        padding: 5px;
+        margin-bottom: 5px;
+        border: 1px solid #cecece;
+    }

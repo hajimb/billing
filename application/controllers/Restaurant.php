@@ -2,97 +2,57 @@
 class Restaurant extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-        echo 'in constructor:['. $this->config->item('test').']';
-        // exit;
-		//  $session_data = $this->session->userdata('user_session');
-        // $this->data['session_data']     = @$this->session->userdata('user_session');
-        // $this->data['user_permission']  = @$this->session->userdata('user_permission');
-        // if (!isset($this->data['session_data']) || empty($this->data['session_data'])) {
-        //     redirect('login');
-        // }else{
-        //     if(!in_array('Restaurants', $this->data['user_permission'])){
-        //         redirect('dashboard');
-        //     }
-        // }
+        
+        $this->data['session_data'] = @$this->session->userdata('user_session');
+        $this->data['user_permission'] = @$this->session->userdata('user_permission');
         $this->load->model('Restaurantmodel');
     }
 
 	public function index() {
-        // echo 'in index:['. $this->config->item('test').']';
-        // exit;
-        $this->data['title'] = 'Restaurant List'; 
         $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
-		$this->load->view('common/header',$this->data);
+		$this->data['js']     = array(
+			"assets/plugins/datatables/jquery.dataTables.min.js",
+			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
+			"assets/plugins/datatables-responsive/js/dataTables.responsive.min.js",
+			"assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js",
+		);
+		$this->data['css']     = array(
+			"assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
+			"assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
+			"assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
+		);
+		$this->data["pagename"]  = "restaurant-list";
+		$this->data['page_title'] = "Manage Restaurant";
+		$this->data['breadcrumb'][0] = "Restaurants";
+        $this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
-		$this->load->view('restaurant/restaurant');
+        $this->load->view('common/breadcrumb',$this->data);
+        $this->load->view('restaurant/index');
 		$this->load->view('common/footer');
 	}
 
-    public function add_restaurant() {
-        $this->data['title'] = 'Add New Restaurant'; 
-		$this->load->view('common/header',$this->data);
-        $this->load->view('common/sidebar',$this->data);
-		$this->load->view('restaurant/add');
-		$this->load->view('common/footer');
-	}
-
-    public function add()
-	{		
-		$this->data["page_head"]  = "Add Restaurant";
-		$this->data["page_title"] = "Add Restaurant";
-		$this->data["page_view"]  = "Add Restaurant";
-        $restaurantData['restaurant_name'] = $this->input->post("name");        
-        $restaurantData['contact_no'] = $this->input->post("mobile");
-        $restaurantData['restaurant_address'] = $this->input->post("address");
-		$datareq = $this->Restaurantmodel->addRestaurantRequest($restaurantData);
-        if($datareq == 1){
-            $return['status'] = 1;
-            $return['msg'] = 'Restaurant added successfully';
-        }else{
-            $return['status'] = 0;
-            $return['msg'] = 'error in storing data';
-        }
-        echo json_encode($return);
-        redirect('restaurant');
-	}
-
-    public function edit($id)
+    public function edit()
 	{	
-		$this->data['title'] = 'Edit Restaurant'; 
-		$this->data["page_head"]  = "Edit Restaurant";
-		$this->data["page_title"] = "Edit Restaurant";
-		$this->data["page_view"]  = "Edit Restaurant";
-		$this->data["formdata"]   = $this->Restaurantmodel->getrestaurant($id);		
+        $todo = "Edit";
+        $id = $this->input->post('main_id');
+        $this->create($id, $todo);
+	}
+
+    public function create($id = 0,$todo = "Add"){
+
+		$this->data['title']        = $todo." Restaurant"; 
+        $this->data['pagename']     = 'restaurant-edit'; 
+		$this->data['page_title']   = "Manage Restaurant";
+		$this->data['breadcrumb'][0] = "Restaurant";
+		$this->data['breadcrumb'][1] = $todo;
+        $this->data["main_id"]      = $id;
+		$this->data["todo"]         = $todo;
+		$this->data["userdata"]     = $this->Restaurantmodel->getrestaurant($id);	
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
+        $this->load->view('common/breadcrumb',$this->data);		
 		$this->load->view("restaurant/edit",$this->data);
 		$this->load->view('common/footer');
-	}
-
-    public function update($id='')
-	{
-		$data = array(
-            'restaurant_name' => $this->input->post("name"),
-            'restaurant_id' => $this->input->post("id"),
-            'contact_no' => $this->input->post("mobile"),
-            'restaurant_address' => $this->input->post("address")            
-        );
-            $datareq = $this->Restaurantmodel->updaterecord($data);
-            if($datareq == 1){
-                $return['status'] = 1;
-                $return['msg'] = 'Restaurant edit successfully';
-            }else{
-                $return['status'] = 0;
-                $return['msg'] = 'error in storing data';
-            }  
-        redirect('restaurant');
-		
-	}
-
-    public function restaur_delete($id)
-    {        
-        $this->Restaurantmodel->delete_restaurant($id);
-        redirect('restaurant');
     }
-    
+
 }

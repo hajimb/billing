@@ -1,93 +1,71 @@
-
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Manage
-        <small>Groups</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo base_url('groups/') ?>">Groups</a></li>
-        <li class="active">Edit</li>
-      </ol>
-    </section>
-
     <!-- Main content -->
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-md-12 col-xs-12">
-          <?php if($this->session->flashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <?php echo $this->session->flashdata('success'); ?>
+          <div class="card card-warning">
+            <div class="card-header">
+              <h3 class="card-title"><?= $todo;?> Group</h3>
             </div>
-          <?php elseif($this->session->flashdata('error')): ?>
-            <div class="alert alert-error alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <?php echo $this->session->flashdata('error'); ?>
-            </div>
-          <?php endif; ?>
-
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Edit Group</h3>
-            </div>
-            <form role="form" method="post"  name="GroupData" id="GroupData">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="group_name">Group Name</label>
-                  <input type="hidden" id="group_id" name="group_id" value="<?= $group_id ;?>">
-                  <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Enter group name" value="<?php echo $group_data['group_name']; ?>">
+            <!-- /.card-header -->
+            <div class="card-body">
+              <form role="form" method="post" name="mainfrm" id="mainfrm">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <!-- text input -->
+                    <div class="form-group">
+                      <label>Group Name</label>
+                      <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Enter group name" value="<?php echo $group_data['group_name']; ?>">
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="permission">Permission</label>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <h4>Permissions</h4>
+                  </div>
+                  <div class="col-sm-10">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" id="checkAll" value="option1">
+                      <label for="checkAll" class="custom-control-label">All</label>
+                    </div>
+                  </div>
+                  <?php
+                  $serialize_permission = unserialize($group_data['permission']);
+                  foreach ($modules as $module) { 
+                    $checked = "";
+                    if ($serialize_permission) {
+                        if (in_array($module['classname'], $serialize_permission)) {
+                          $checked =  "checked";
+                        }
+                      } ?>
+                    <div class="col-sm-3">
+                      <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input permission" type="checkbox" name="permission[]" <?= $checked;?> id="permission_<?= $module['classname']; ?>" value="<?= $module['classname']; ?>" >
+                        <label for="permission_<?= $module['classname']; ?>" class="custom-control-label"><?= $module['name']; ?></label>
+                      </div>
+                    </div>
 
-                  <?php $serialize_permission = unserialize($group_data['permission']); ?>
-                    <table class="table table-responsive">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                <?php
-                  foreach($modules as $module){ ?> 
-
-                    <tr>
-                        <td><?= $module['name'];?></td>
-                        <td><input type="checkbox" name="permission[]" id="permission" <?php if($serialize_permission) {
-                          if(in_array($module['classname'], $serialize_permission)) { echo "checked"; } 
-                        } ?> value="<?= $module['classname'];?>" class="minimal"></td>
-                      </tr>
-                    
                   <?php } ?>
-                    </tbody>
-                  </table>
-                  
+                </div>
+              </form>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-sm-4">
+                  <input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
+                  <button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
+                  <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
                 </div>
               </div>
-              <!-- /.box-body -->
-
-              <div class="box-footer">
-              <button class="btn btn-primary saveChange" id="update" type="submit" data-form="GroupData"><i class="fa fa-save" style="display: none"></i>Update </button>
-                <!-- <button type="button" id="update" type="submit" data-form="GroupData" class="btn btn-primary saveChange">Update Changes</button> -->
-                <a href="<?php echo base_url('groups/') ?>" class="btn btn-warning">Back</a>
-              </div>
-            </form>
+              <!-- <button type="button" id="update" type="submit" data-form="mainfrm" class="btn btn-primary saveChange">Update Changes</button> -->
+              <!-- <a href="<?php echo base_url('groups/') ?>" class="btn btn-warning">Back</a> -->
+            </div>
+            <!-- /.card-footer -->
           </div>
-          <!-- /.box -->
         </div>
         <!-- col-md-12 -->
       </div>
       <!-- /.row -->
-      
-
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->

@@ -157,7 +157,6 @@
                             }
                         }
                     }
-
                 },
                 password: { required: true }
             },

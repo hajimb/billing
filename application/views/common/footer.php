@@ -1,4 +1,6 @@
-<div class="modal fade" id="modal-default">
+  </div>
+  <!-- /.content-wrapper -->
+  <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -994,6 +996,9 @@
         </script>
 
 <?php
+ if(isset($js)){
+  load_js($js);
+}
 
 if(isset($pagename)){
     $uniqu    = uniqid();

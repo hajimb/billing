@@ -1,62 +1,50 @@
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Edit Restaurant</h1>
-          </div>  
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-            <a role="button" onclick="goBack()" class="btn btn-outline-danger"><i class="fas fa-chevron-left mr-1"></i><strong>BACK</strong></a>
-            </ol>
-          </div>        
+<!-- Main content -->
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-md-12 col-xs-12">
+      <div class="card card-warning">
+        <div class="card-header">
+          <h3 class="card-title"><?= $todo; ?> Restaurant</h3>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-      <!-- Default box -->
-      <div class="card">
-       
-        <form action="<?php echo base_url() ?>restaurant/update" enctype="multipart/form-data" method="post" name="addcustomer" id="addcustomer" class="form-horizontal">
-            <div class="card-body row">          
-              <div class="col-12">
+        <form role="form" method="post" name="mainfrm" id="mainfrm">
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="inputName">Name</label>
-                  <input type="text" id="name" name="name" value="<?php echo $formdata['data']['restaurant_name'];?>" autocomplete="off" class="form-control" required />
-                </div>                
-                <div class="form-group">
-                  <label for="inputSubject">Mobile / Phone No.</label>
-                  <input type="text" id="mobile" name="mobile" value="<?php echo $formdata['data']['contact_no'];?>" onkeypress="return isNumber(event)" autocomplete="off" class="form-control" required/>
+                  <label for="restaurant_name">Name</label>
+                  <input type="text" id="restaurant_name" name="restaurant_name" value="<?= ($userdata['restaurant_name'] ?? ''); ?>" autocomplete="off" class="form-control" required />
                 </div>
+              </div>
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="inputMessage">Address</label>
-                  <textarea id="address" name="address" autocomplete="off" class="form-control" rows="4" required><?php echo $formdata['data']['restaurant_address'];?></textarea>
+                  <label for="contact_no">Mobile / Phone No.</label>
+                  <input type="text" id="contact_no" name="contact_no" value="<?= ($userdata['contact_no'] ?? ''); ?>" onkeypress="return isNumber(event)" autocomplete="off" class="form-control" required />
                 </div>
+              </div>
+              <div class="col-sm-12">
                 <div class="form-group">
-                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <label for="restaurant_address">Address</label>
+                  <textarea id="restaurant_address" name="restaurant_address" autocomplete="off" class="form-control" rows="4" required><?= ($userdata['restaurant_address'] ?? ''); ?></textarea>
                 </div>
               </div>
             </div>
-            <input type="hidden" id="id" name="id" value="<?php echo $formdata['data']['restaurant_id']; ?>"/>
+            <!-- /.card-body -->
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-sm-4">
+                <input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
+                <button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
+                <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-footer -->
         </form>
-      </div>
-
-    </section>
-    <!-- /.content -->
+    </div>
+    <!-- col-md-12 -->
   </div>
-  <!-- /.content-wrapper -->
-  <script>
-    function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
-    }
-    return true;
-    }
-  </script>
+  <!-- /.row -->
+</section>

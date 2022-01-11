@@ -1,96 +1,99 @@
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Edit User</h1>
-          </div>  
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-            <a role="button" onclick="goBack()" class="btn btn-outline-danger"><i class="fas fa-chevron-left mr-1"></i><strong>BACK</strong></a>
-            </ol>
-          </div>        
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
     <!-- Main content -->
     <section class="content">
-
-      <!-- Default box -->
-      <div class="card">
-       
-        <form action="<?php echo base_url() ?>User/update" enctype="multipart/form-data" method="post" name="adduser" id="adduser" class="form-horizontal">
-            <div class="card-body row">          
-              <div class="col-9">
-                <div class="form-group">
-                  <label for="inputName">User Name</label>
-                  <input type="taxt" id="username" name="username" value="<?php echo $formdata['data']['username'];?>" class="form-control" autocomplete="off" required/>          
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <div class="card card-warning">
+            <div class="card-header">
+              <h3 class="card-title"><?= $todo;?> User</h3>
+            </div>
+            <form role="form" method="post" name="mainfrm" id="mainfrm">
+            <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="inputName">User Name</label>
+                      <input type="taxt" id="username" name="username" value="<?= ($userdata['username'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="inputName">First Name</label>
+                      <input type="taxt" id="firstname" name="firstname" value="<?= ($userdata['firstname'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="inputName">Last Name</label>
+                     <input type="taxt" id="lastname" name="lastname" value="<?= ($userdata['lastname'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="inputName">Email</label>
+                      <input type="taxt" id="email" name="email" value="<?= ($userdata['email'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="inputName">Password</label>
+                      <input type="password" id="password" name="password" class="form-control" value = "" autocomplete="off"/>          
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="groups">Groups</label>
+                      <select class="form-control" id="groups" name="groups">
+                        <option value="">Select Groups</option>
+                        <?php foreach ($group_data as $k => $v): ?>
+                          <option <?php if(($userdata['groups'] ??'') == $v['id']) { ?> selected <?php } ?> value="<?php echo $v['id'] ?>"><?php echo $v['group_name'] ?></option>
+                        <?php endforeach ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="inputMessage">Status</label>
+                      <select class="form-control custom-select" placeholder="" name="status" required>
+                        <option value="yes" <?php if(($userdata['status'] ?? 'yes') == "yes") { ?> selected <?php } ?>>Active</option>
+                          <option value="no" <?php if(($userdata['status'] ?? 'yes') == "no") { ?> selected <?php } ?>>Non-Active</option>                                
+                      </select>
+                    </div>
+                  </div>  
+                  <div class="col-sm-3">
+                  <?php if($session_data['groups'] == 1){ ?>
+                      <div class="form-group">
+                        <label for="groups">Restaurants</label>
+                        <select class="form-control" id="restaurant_id" name="restaurant_id">
+                          <option value="">Select Restaurants</option>
+                            <?php foreach ($restaurants as $k => $v): ?>
+                            <option <?php if(($userdata['restaurant_id'] ?? '') == $v['restaurant_id']){?>selected<?php }?> value="<?php echo $v['restaurant_id'] ?>"><?php echo $v['restaurant_name'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                        </div>      
+                    <?php }else{ ?>
+                      <input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $session_data['restaurant_id'];?>">
+                    <?php } ?>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="inputName">First Name</label>
-                  <input type="taxt" id="firstname" name="firstname" value="<?php echo $formdata['data']['firstname'];?>" class="form-control" autocomplete="off" required/>          
-                </div>
-                <div class="form-group">
-                  <label for="inputName">Last Name</label>
-                  <input type="taxt" id="lastname" name="lastname" value="<?php echo $formdata['data']['lastname'];?>" class="form-control" autocomplete="off" required/>          
-                </div>
-                <div class="form-group">
-                  <label for="inputName">Email</label>
-                  <input type="taxt" id="email" name="email" value="<?php echo $formdata['data']['email'];?>" class="form-control" autocomplete="off" required/>          
-                </div>
-                <div class="form-group">
-                  <label for="inputName">Password</label>
-                  <input type="password" id="password" name="password" class="form-control" value="<?php echo $formdata['data']['r_password'];?>" autocomplete="off" required/>          
-                </div>
-                <!-- <div class="form-group">
-                  <label for="groups">Restaurants</label>
-                  <select class="form-control" id="restaurant_id" name="restaurant_id">
-                    <option value="">Select Restaurants</option>
-                    <?php foreach ($restaurants as $k => $v): ?>
-                      <option <?php if($formdata['data']['r_password'] == $v['restaurant_id']){?>selected<?php }?> value="<?php echo $v['restaurant_id'] ?>"><?php echo $v['restaurant_name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
-                </div>       -->
-                <div class="form-group">
-                  <label for="groups">Groups</label>
-                  <select class="form-control" id="groups" name="groups">
-                    <option value="">Select Groups</option>
-                    <?php foreach ($group_data as $k => $v): ?>
-                      <option <?php if($formdata['data']['groups'] == $v['id']) { ?> selected <?php } ?> value="<?php echo $v['id'] ?>"><?php echo $v['group_name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
-                </div>
-                
-                <div class="form-group">
-                  <label for="inputMessage">Status</label>
-                  <select class="form-control custom-select" placeholder="" name="status" required>
-                                <option value="yes" <?php if($formdata['data']['status'] == "yes") { ?> selected <?php } ?>>Active</option>
-                                <option value="no" <?php if($formdata['data']['status'] == "no") { ?> selected <?php } ?>>Non-Active</option>                                
-                            </select>
-                </div>               
-                <input type="hidden" id="id" name="id" value="<?php echo $formdata['data']['id']; ?>"/>
-                <div class="form-group">
-                  <input type="submit" class="btn btn-primary" value="Submit">
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
+                    <button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
+                    <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
+                  </div>
                 </div>
               </div>
-            </div>
-        </form>
+              <!-- /.card-footer -->
+            </form>
+          </div>
+        </div>
+        <!-- col-md-12 -->
       </div>
-
+      <!-- /.row -->
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <script>
-    function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
-    }
-    return true;
-    }
-  </script>
+  

@@ -1,31 +1,36 @@
 'use strict';
-$(function () {
+var modaltitle = "Groups";
 
-    // INITIALIZE DATEPICKER PLUGIN
-    $('.datepicker').datepicker({
-        clearBtn: true,
-        format: "yyyy-mm-dd"
-    });
+$(function () {
     $(document).ready(function() {
+        $('#mainTable').DataTable();
         $("#mainGroupNav").addClass('active');
         $("#manageGroupNav").addClass('active');
-        $('input[type="checkbox"].minimal').iCheck({
-          checkboxClass: 'icheckbox_minimal-blue',
-          radioClass   : 'iradio_minimal-blue'
-        });
-      });
+    });
 });
 
-$(document).on("click", ".saveChange", function(e) {
+function Edit(id){
+    $("#main_id").val(id);
+    var url = base_url+"groups/edit";
+    $("#mainfrm").attr('action', url);
+    $("#mainfrm").submit();
+}
+
+function Delete(id){
+    $("#main_id").val(id);
+    $("#myModalDelete").modal('show');
+}
+
+$(document).on("click", "#confirmdelete", function(e) {
     e.preventDefault();
     toastr.remove();
     var btnid = $(this).attr('id');
     var formId = $(this).data('form');
     var form = $("#"+formId).serialize();
-    console.log("resData " + form);
+    $(".btn").prop('disabled',true);    
     $.ajax({
         type: "POST",
-        url: base_url + "Api/groups/save",
+        url: base_url + "Api/groups/delete",
         data: form,
         dataType: "json",
         beforeSend: function() {

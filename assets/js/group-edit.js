@@ -1,5 +1,23 @@
 'use strict';
+$(function () {
+    $(document).ready(function() {
+        $("#mainGroupNav").addClass('active');
+        $("#manageGroupNav").addClass('active');
+        $('input[type="checkbox"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass   : 'iradio_minimal-blue'
+        });
+      });
+});
 
+$("#checkAll").click(function () {
+    $('.permission').prop('checked', this.checked);
+});
+$(".permission").change(function(){
+    if (! $(this).is('checked')) {
+        $('#checkAll').prop('checked', false);
+    }       
+});
 $(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
     toastr.remove();
@@ -9,7 +27,7 @@ $(document).on("click", ".saveChange", function(e) {
     console.log("resData " + form);
     $.ajax({
         type: "POST",
-        url: base_url + "Api/user/update",
+        url: base_url + "Api/groups/save",
         data: form,
         dataType: "json",
         beforeSend: function() {
@@ -31,7 +49,7 @@ $(document).on("click", ".saveChange", function(e) {
             } else {
                 toastr.success(message)
                  window.setTimeout(function() {
-                    window.location.href = base_url+'User';
+                    window.location.href = base_url+'groups';
                 }, 1500);
             }
         }, error: function(){
@@ -41,3 +59,4 @@ $(document).on("click", ".saveChange", function(e) {
         }
     });
 });
+

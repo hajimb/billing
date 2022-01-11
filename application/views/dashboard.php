@@ -26,7 +26,7 @@
                 <a href="<?php echo base_url(); ?>Restaurant">
                   <div class="inner text-center bg-lightgray">
                     <div>
-                      <i class="fas fa-food fa-2x"></i>
+                      <i class="fas fa-utensils fa-2x"></i>
                     </div>
                     <h5>Restaurants</h5>
                   </div>

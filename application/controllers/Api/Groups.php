@@ -9,7 +9,6 @@ class Groups extends REST_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('model_groups');
-        $this->load->model('Customer_model');
         $this->last_query = false;
     }
 
@@ -20,7 +19,7 @@ class Groups extends REST_Controller {
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
 
-            $group_id = $this->post('group_id');
+            $group_id = $this->post('main_id');
             $data['permission']     = serialize($this->input->post('permission'));
             $data['group_name']     = trim($this->input->post('group_name'));
             $result                 = $this->model_groups->save($data, $group_id);
@@ -44,12 +43,12 @@ class Groups extends REST_Controller {
 
     //load the role add/edit modal
     public function delete_post(){ 
-        $this->form_validation->set_rules('id', 'Customer Id', 'required|numeric|trim');
+        $this->form_validation->set_rules('main_id', 'Group ID', 'required|numeric|trim');
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-            $id     = $this->post('id');
-            $delete = $this->Customer_model->delete($id);
+            $id     = $this->post('main_id');
+            $delete = $this->model_groups->delete($id);
             $this->response([
                 'status'    => $delete['status'],
                 'validate'  => TRUE,
