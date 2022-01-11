@@ -31,13 +31,17 @@ class Usermodel extends CI_Model
 
     public function authenticate($username, $password)
     {
-		$res_arr = array();
-        $this->db->select('au.*, r.restaurant_name');
-        $this->db->from('admin_users au');
-        $this->db->join('restaurant r' , 'r.restaurant_id = au.restaurant_id');
-        $this->db->where('au.is_deleted', '0');
-        $this->db->where('r.is_deleted', '0');
-        $this->db->where('au.username', $username);
+        $res_arr = array();
+
+        // $this->db->select('au.*, r.restaurant_name');
+        // $this->db->from('admin_users au');
+        // $this->db->join('restaurant r' , 'r.restaurant_id = au.restaurant_id');
+        // $this->db->where('au.is_deleted', '0');
+        // $this->db->where('r.is_deleted', '0');
+        $this->db->select('*');
+        $this->db->from('admin_users');
+        $this->db->where('is_deleted', '0');
+        $this->db->where('username', $username);
         $query = $this->db->get();
         $row = $query->row_array();
         if(isset($row)){
@@ -66,12 +70,10 @@ class Usermodel extends CI_Model
 
     public function check_username_exist($username)
     {
-        $this->db->select('au.*, r.restaurant_name');
-        $this->db->from('admin_users au');
-        $this->db->join('restaurant r' , 'r.restaurant_id = au.restaurant_id');
-        $this->db->where('au.is_deleted', '0');
-        $this->db->where('r.is_deleted', '0');
-        $this->db->where('au.username', $username);
+        $this->db->select('*');
+        $this->db->from('admin_users');
+        $this->db->where('is_deleted', '0');
+        $this->db->where('username', $username);
         $query = $this->db->get();
         $row = $query->num_rows();
         if($row > 0){

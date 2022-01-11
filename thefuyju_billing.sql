@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2022 at 10:41 AM
+-- Generation Time: Jan 11, 2022 at 06:27 PM
 -- Server version: 10.3.32-MariaDB-0ubuntu0.20.04.1
 -- PHP Version: 7.4.26
 
@@ -52,7 +52,7 @@ CREATE TABLE `admin_users` (
 --
 
 INSERT INTO `admin_users` (`id`, `username`, `firstname`, `lastname`, `email`, `password`, `framework_id`, `restaurant_id`, `status`, `created_date`, `modified_date`, `role`, `groups`, `r_password`, `is_deleted`) VALUES
-(1, 'admin', 'admin', '', '', '0c0d1e46e5c0a1056d2fa630ade23acc', 0, 1, 'yes', '2015-02-24 11:44:22', '2017-07-10 12:39:28', 'admin', '1', '$QGP9AB!rVKj8hn', 0),
+(1, 'admin', 'admin', '', '', '0c0d1e46e5c0a1056d2fa630ade23acc', 0, 0, 'yes', '2015-02-24 11:44:22', '2017-07-10 12:39:28', 'admin', '1', '$QGP9AB!rVKj8hn', 0),
 (2, 'user', 'admin2', 'add', 'a@a.com', 'a1d7d7e0c7e645825f0ac3d1b04957fc', 0, 2, 'no', '2021-02-18 11:44:22', '2021-02-18 12:39:28', 'user', '2', 'vqW!c9VO$hdVwS', 1),
 (3, 'BimalP', 'bimal', 'pancholi', 'bjpancholi@gmail.com', '25d55ad283aa400af464c76d713c07ad', 0, 1, 'yes', '2021-08-26 14:09:32', '2021-12-01 03:15:50', 'admin', '2', '12345678', 1),
 (4, 'krunal', 'krunal', 'patel', 'admin@321', '965b21f9b0929eb034918f57a06065a8', 0, 1, 'yes', '2021-10-24 12:09:28', '2021-12-01 03:15:54', NULL, '2', 'admin@321', 1),
@@ -61,9 +61,9 @@ INSERT INTO `admin_users` (`id`, `username`, `firstname`, `lastname`, `email`, `
 (7, 'john_doe', 'John', 'Doe', 'john_doe@gmail.com', '88773a5342684a9223538352aac9add9', 0, 4, 'yes', '2021-12-03 06:38:06', '0000-00-00 00:00:00', NULL, '2', 'john_doe', 1),
 (8, 'waiter_doe', 'Waiter', 'Doe', 'waiter_doe@gmail.com', '8829ce95fedb441e405e7dd3376bcb13', 0, 4, 'yes', '2021-12-03 06:46:00', '0000-00-00 00:00:00', NULL, '4', 'waiter_doe', 1),
 (9, 'kitchen_doe', 'Kitchen', 'Doe', 'kitchen_doe@gmail.com', '33226d8fb464d106806ced81cad9501e', 0, 4, 'yes', '2021-12-03 07:11:32', '0000-00-00 00:00:00', NULL, '3', 'kitchen_doe', 1),
-(10, 'Havemore  Owner', 'Prashant', 'Shah', 'testhavemore@gmail.com', '9aaf69a67448ae57d0b9d598d299c3e7', 0, 5, 'yes', '2021-12-03 08:42:26', '0000-00-00 00:00:00', NULL, '2', 'havemore@123$', 0),
+(10, 'Havemore  Owner', 'Prashant', 'Shah', 'testhavemore@gmail.com', '9aaf69a67448ae57d0b9d598d299c3e7', 0, 5, 'yes', '2021-12-03 08:42:26', '2022-01-11 16:15:35', NULL, '2', 'havemore@123$', 0),
 (11, 'Havemore Kitchen', 'Ketan', 'Patel', 'kitchenhavemore@gmail.com', '9aaf69a67448ae57d0b9d598d299c3e7', 0, 5, 'yes', '2021-12-03 08:55:49', '0000-00-00 00:00:00', NULL, '3', 'havemore@123$', 0),
-(12, 'Havemore Waiter', 'Tambbi', 'Chootu', 'waiterhavemore@gmail.com', '9aaf69a67448ae57d0b9d598d299c3e7', 0, 5, 'yes', '2021-12-03 08:57:10', '0000-00-00 00:00:00', NULL, '4', 'havemore@123$', 0),
+(12, 'Havemore Waiter', 'Tambi', 'Chootu', 'waiterhavemore@gmail.com', '9aaf69a67448ae57d0b9d598d299c3e7', 0, 5, 'yes', '2021-12-03 08:57:10', '2022-01-11 15:16:22', NULL, '4', 'havemore@123$', 0),
 (13, 'Havemore Manager', 'Lalit', 'Shah', 'havemoremanager@gmail.com', '9aaf69a67448ae57d0b9d598d299c3e7', 0, 5, 'yes', '2021-12-03 08:57:56', '0000-00-00 00:00:00', NULL, '5', 'havemore@123$', 0),
 (14, 'Tea post', 'Tea', 'Post', 'teapost@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2021-12-15 08:59:23', '0000-00-00 00:00:00', NULL, '2', '123456', 0),
 (15, 'teapost waiter', 'manoj', 'shah', 'manoj@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2021-12-15 14:09:39', '0000-00-00 00:00:00', NULL, '4', '123456', 0),
@@ -73,14 +73,18 @@ INSERT INTO `admin_users` (`id`, `username`, `firstname`, `lastname`, `email`, `
 (19, 'Punjab grill waiter', 'Sanjeev', 'Vedak', 'punjabgrill4534@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-01 12:27:53', '0000-00-00 00:00:00', NULL, '4', '123456', 0),
 (20, 'Punjab grill kitchen', 'Samir', 'Patra', 'pn433444@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 09:08:15', '0000-00-00 00:00:00', NULL, '3', '123456', 0),
 (21, 'Punjab grill manager', 'Hitesh', 'Bhumke', 'Hjh343344@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 09:09:10', '0000-00-00 00:00:00', NULL, '5', '123456', 0),
-(22, 'Demo 1 waiter', 'Demo 1', 'Waiter', 'demo1waiter@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:18:59', '0000-00-00 00:00:00', NULL, '4', '123456', 1),
+(22, 'Demo 1 waiter', 'Demo 1', 'Waiter', 'demo1waiter@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:18:59', '0000-00-00 00:00:00', NULL, '4', '123456', 0),
 (23, 'Demo 1 Kitchen', 'Demo 1', 'Kitchen', 'demo1kitchen@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:20:07', '0000-00-00 00:00:00', NULL, '3', '123456', 0),
 (24, 'Demo 1 Manager', 'Demo 1', 'Manager', 'demo1manager@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:24:21', '0000-00-00 00:00:00', NULL, '5', '123456', 0),
 (25, 'Demo 2 Waiter', 'Demo 2', 'Waiter', 'demo2waiter@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:25:10', '0000-00-00 00:00:00', NULL, '4', '123456', 0),
 (26, 'Demo 2 Kitchen', 'Demo 2', 'Kitchen', 'demo2kitchen@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:25:50', '0000-00-00 00:00:00', NULL, '3', '123456', 0),
 (27, 'Demo 2 Manager', 'Demo 2', 'Manager', 'demo2manager@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:28:07', '0000-00-00 00:00:00', NULL, '5', '123456', 0),
 (28, 'punjab da dhaba', 'daljeet', 'singh', 'daljeetsingh@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:40:05', '0000-00-00 00:00:00', NULL, '6', '123456', 0),
-(29, 'punjab da dhaba waiter', 'manjeet', 'singh', 'manjeetsingh@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:41:47', '0000-00-00 00:00:00', NULL, '4', '123456', 0);
+(29, 'punjab da dhaba waiter', 'manjeet', 'singh', 'manjeetsingh@billing.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 0, 'yes', '2022-01-04 13:41:47', '0000-00-00 00:00:00', NULL, '4', '123456', 0),
+(30, 'Haji', 'haji', 'Haji', 'haji@badri.com', '7cec85c75537840dad40251576e5b757', 0, 5, 'yes', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, '2', '12356', 1),
+(31, 'Arshad', 'arshad', 'shaikh', 'ars@gmail.com', '25d55ad283aa400af464c76d713c07ad', 0, 5, 'yes', '2022-01-11 15:44:51', '0000-00-00 00:00:00', NULL, '2', '12345678', 1),
+(32, 'haji', 'haji', 'haji', 'haji@gmail.com', '3d1102f8d75f56bc6de99aff5cd8d6ea', 0, 5, 'yes', '2022-01-11 15:48:14', '0000-00-00 00:00:00', NULL, '2', 'haji', 1),
+(34, 'haji', 'haji', 'hajia', 'haji@gmail.com', '246d2517ce6bd77da0b62bccd15a802e', 0, 5, 'yes', '2022-01-11 15:57:38', '0000-00-00 00:00:00', NULL, '2', 'hfsjdfhsdakj', 1);
 
 -- --------------------------------------------------------
 
@@ -292,20 +296,23 @@ DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL,
   `group_name` varchar(255) NOT NULL,
-  `permission` text NOT NULL
+  `permission` text NOT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `modified_date` datetime DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `groups`
 --
 
-INSERT INTO `groups` (`id`, `group_name`, `permission`) VALUES
-(1, 'MasterAdmin', 'a:3:{i:0;s:10:\"restaurant\";i:1;s:4:\"user\";i:2;s:6:\"groups\";}'),
-(2, 'Admin', 'a:25:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:10:\"restaurant\";i:17;s:4:\"role\";i:18;s:11:\"stockreport\";i:19;s:5:\"table\";i:20;s:3:\"tax\";i:21;s:6:\"groups\";i:22;s:4:\"user\";i:23;s:14:\"wastagelisting\";i:24;s:10:\"withdrawal\";}'),
-(3, 'Kitchen', 'a:1:{i:0;s:3:\"kot\";}'),
-(4, 'Waiter', 'a:1:{i:0;s:5:\"table\";}'),
-(5, 'Manager', 'a:25:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:10:\"restaurant\";i:17;s:4:\"role\";i:18;s:11:\"stockreport\";i:19;s:5:\"table\";i:20;s:3:\"tax\";i:21;s:6:\"groups\";i:22;s:4:\"user\";i:23;s:14:\"wastagelisting\";i:24;s:10:\"withdrawal\";}'),
-(6, 'Owner', 'a:25:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:10:\"restaurant\";i:17;s:4:\"role\";i:18;s:11:\"stockreport\";i:19;s:5:\"table\";i:20;s:3:\"tax\";i:21;s:6:\"groups\";i:22;s:4:\"user\";i:23;s:14:\"wastagelisting\";i:24;s:10:\"withdrawal\";}');
+INSERT INTO `groups` (`id`, `group_name`, `permission`, `created_date`, `modified_date`, `is_deleted`) VALUES
+(1, 'MasterAdmin', 'a:3:{i:0;s:10:\"restaurant\";i:1;s:4:\"user\";i:2;s:6:\"groups\";}', NULL, NULL, 0),
+(2, 'Admin', 'a:22:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:11:\"stockreport\";i:17;s:5:\"table\";i:18;s:3:\"tax\";i:19;s:4:\"user\";i:20;s:14:\"wastagelisting\";i:21;s:10:\"withdrawal\";}', NULL, '2022-01-11 16:38:32', 0),
+(3, 'Kitchen', 'a:1:{i:0;s:3:\"kot\";}', NULL, NULL, 0),
+(4, 'Waiter', 'a:1:{i:0;s:5:\"table\";}', NULL, NULL, 0),
+(5, 'Manager', 'a:22:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:11:\"stockreport\";i:17;s:5:\"table\";i:18;s:3:\"tax\";i:19;s:4:\"user\";i:20;s:14:\"wastagelisting\";i:21;s:10:\"withdrawal\";}', NULL, '2022-01-11 16:38:25', 0),
+(6, 'Owner', 'a:22:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:11:\"stockreport\";i:17;s:5:\"table\";i:18;s:3:\"tax\";i:19;s:4:\"user\";i:20;s:14:\"wastagelisting\";i:21;s:10:\"withdrawal\";}', NULL, '2022-01-11 16:41:35', 0);
 
 -- --------------------------------------------------------
 
@@ -904,7 +911,18 @@ INSERT INTO `log` (`log_id`, `log_msg`, `createddate`, `controller`) VALUES
 (455, 'Admin sign-in successfully.', '2022-01-10 14:40:01', 'Login'),
 (456, 'Admin sign-in successfully.', '2022-01-10 14:40:06', 'Login'),
 (457, 'Admin sign-in successfully.', '2022-01-10 14:40:39', 'Login'),
-(458, 'Admin sign-in successfully.', '2022-01-10 14:41:17', 'Login');
+(458, 'Admin sign-in successfully.', '2022-01-10 14:41:17', 'Login'),
+(459, 'Admin sign-in successfully.', '2022-01-11 10:58:57', 'Login'),
+(460, 'Havemore manager sign-in successfully.', '2022-01-11 13:16:09', 'Login'),
+(461, 'Admin sign-out successfully.', '2022-01-11 13:28:04', 'Logout'),
+(462, 'Havemore manager sign-in successfully.', '2022-01-11 13:28:13', 'Login'),
+(463, 'Havemore Manager sign-out successfully.', '2022-01-11 13:34:08', 'Logout'),
+(464, 'Admin sign-in successfully.', '2022-01-11 13:34:23', 'Login'),
+(465, 'Havemore Manager sign-out successfully.', '2022-01-11 16:38:36', 'Logout'),
+(466, 'Havemore Manager sign-in successfully.', '2022-01-11 16:41:17', 'Login'),
+(467, 'Havemore Manager sign-out successfully.', '2022-01-11 16:50:51', 'Logout'),
+(468, 'Havemore Manager sign-out successfully.', '2022-01-11 16:57:31', 'Logout'),
+(469, 'Havemore Manager sign-out successfully.', '2022-01-11 17:06:41', 'Logout');
 
 -- --------------------------------------------------------
 
@@ -917,6 +935,7 @@ CREATE TABLE `master_modules` (
   `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `classname` varchar(100) DEFAULT NULL,
+  `to_show` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -924,32 +943,32 @@ CREATE TABLE `master_modules` (
 -- Dumping data for table `master_modules`
 --
 
-INSERT INTO `master_modules` (`id`, `name`, `classname`, `is_deleted`) VALUES
-(1, 'Cash Flow', 'cashflow', 0),
-(2, 'Item Category', 'category', 0),
-(3, 'Current Stock', 'currentstock', 0),
-(4, 'Customers', 'customer', 0),
-(5, 'Day End', 'dayend', 0),
-(6, 'Day End History', 'dayendhistory', 0),
-(7, 'Discount', 'discount', 0),
-(8, 'Due Payment', 'duepayment', 0),
-(9, 'Expense', 'expense', 0),
-(10, 'User Groups', 'groups', 0),
-(11, 'Inventory', 'inventory', 0),
-(12, 'Items', 'item', 0),
-(13, 'Kot', 'kot', 0),
-(14, 'Orders', 'order', 0),
-(15, 'Purchase', 'purchase', 0),
-(16, 'Raw Material', 'rawmaterial', 0),
-(17, 'Receipt', 'receipt', 0),
-(18, 'Restaurants', 'restaurant', 0),
-(19, 'Role', 'role', 0),
-(20, 'Stock Report', 'stockreport', 0),
-(21, 'Table', 'table', 0),
-(22, 'Tax', 'tax', 0),
-(23, 'Users', 'user', 0),
-(24, 'Wastage Listing', 'wastagelisting', 0),
-(25, 'Withdrawal', 'withdrawal', 0);
+INSERT INTO `master_modules` (`id`, `name`, `classname`, `to_show`, `is_deleted`) VALUES
+(1, 'Cash Flow', 'cashflow', 1, 0),
+(2, 'Item Category', 'category', 1, 0),
+(3, 'Current Stock', 'currentstock', 1, 0),
+(4, 'Customers', 'customer', 1, 0),
+(5, 'Day End', 'dayend', 1, 0),
+(6, 'Day End History', 'dayendhistory', 1, 0),
+(7, 'Discount', 'discount', 1, 0),
+(8, 'Due Payment', 'duepayment', 1, 0),
+(9, 'Expense', 'expense', 1, 0),
+(10, 'User Groups', 'groups', 10, 1),
+(11, 'Inventory', 'inventory', 1, 0),
+(12, 'Items', 'item', 1, 0),
+(13, 'Kot', 'kot', 1, 0),
+(14, 'Orders', 'order', 1, 0),
+(15, 'Purchase', 'purchase', 1, 0),
+(16, 'Raw Material', 'rawmaterial', 1, 0),
+(17, 'Receipt', 'receipt', 1, 0),
+(18, 'Restaurants', 'restaurant', 0, 0),
+(19, 'Role', 'role', 0, 0),
+(20, 'Stock Report', 'stockreport', 1, 0),
+(21, 'Table', 'table', 1, 0),
+(22, 'Tax', 'tax', 1, 0),
+(23, 'Users', 'user', 1, 0),
+(24, 'Wastage Listing', 'wastagelisting', 1, 0),
+(25, 'Withdrawal', 'withdrawal', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1028,6 +1047,7 @@ CREATE TABLE `restaurant` (
   `restaurant_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `restaurant_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contact_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modified_date` datetime DEFAULT NULL,
   `created_date` datetime NOT NULL,
   `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1036,12 +1056,12 @@ CREATE TABLE `restaurant` (
 -- Dumping data for table `restaurant`
 --
 
-INSERT INTO `restaurant` (`restaurant_id`, `restaurant_name`, `restaurant_address`, `contact_no`, `created_date`, `is_deleted`) VALUES
-(1, 'Havemore Restaurant', 'Shivam, block no 18, satellite park\r\nSadhu vaswani main road, sur.university road, rajkot', '7043052060', '2021-08-03 16:06:49', 1),
-(2, 'Mirch Masala Restaurant', 'Shubhash Bridge, Shahibaug', '9925003466', '2021-08-05 05:59:30', 1),
-(3, 'test restaurant', 'Shivam, block no 18, satellite park\r\nSadhu vaswani main road, sur.university road, rajkot', '1234567890', '2021-08-07 08:26:09', 1),
-(4, 'Tomatos', 'Testing Address', '999999999', '2021-08-16 07:53:58', 1),
-(5, 'Havemore Admin 1', 'Dadar west Mumbai', '9090909080', '2021-12-03 08:44:55', 0);
+INSERT INTO `restaurant` (`restaurant_id`, `restaurant_name`, `restaurant_address`, `contact_no`, `modified_date`, `created_date`, `is_deleted`) VALUES
+(1, 'Havemore Restaurant', 'Shivam, block no 18, satellite park\r\nSadhu vaswani main road, sur.university road, rajkot', '7043052060', NULL, '2021-08-03 16:06:49', 1),
+(2, 'Mirch Masala Restaurant', 'Shubhash Bridge, Shahibaug', '9925003466', NULL, '2021-08-05 05:59:30', 0),
+(3, 'test restaurant', 'Shivam, block no 18, satellite park\r\nSadhu vaswani main road, sur.university road, rajkot', '1234567890', NULL, '2021-08-07 08:26:09', 0),
+(4, 'Tomatos', 'Testing Address', '999999999', NULL, '2021-08-16 07:53:58', 0),
+(5, 'Havemore Admin 1', 'Dadar west Mumbai 400050', '9090909080', '2022-01-11 17:48:23', '2021-12-03 08:44:55', 0);
 
 -- --------------------------------------------------------
 
@@ -1264,7 +1284,12 @@ INSERT INTO `user_group` (`id`, `user_id`, `group_id`) VALUES
 (26, 26, 3),
 (27, 27, 5),
 (28, 28, 6),
-(29, 29, 4);
+(29, 29, 4),
+(30, 30, 2),
+(31, 31, 2),
+(32, 32, 2),
+(33, 33, 2),
+(34, 34, 2);
 
 -- --------------------------------------------------------
 
@@ -1478,7 +1503,7 @@ ALTER TABLE `withdrawal`
 -- AUTO_INCREMENT for table `admin_users`
 --
 ALTER TABLE `admin_users`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `bill_head`
@@ -1520,7 +1545,7 @@ ALTER TABLE `expense`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `items`
@@ -1544,7 +1569,7 @@ ALTER TABLE `kot_item`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=459;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=470;
 
 --
 -- AUTO_INCREMENT for table `master_modules`
@@ -1604,7 +1629,7 @@ ALTER TABLE `tax`
 -- AUTO_INCREMENT for table `user_group`
 --
 ALTER TABLE `user_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `wastage`

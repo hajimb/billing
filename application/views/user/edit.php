@@ -37,7 +37,7 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label for="inputName">Password</label>
+                      <label for="inputName">Password <span class="red-small">(only if you want to change)</span></label>
                       <input type="password" id="password" name="password" class="form-control" value = "" autocomplete="off"/>          
                     </div>
                   </div>

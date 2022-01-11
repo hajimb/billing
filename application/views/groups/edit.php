@@ -7,9 +7,9 @@
             <div class="card-header">
               <h3 class="card-title"><?= $todo;?> Group</h3>
             </div>
+            <form role="form" method="post" name="mainfrm" id="mainfrm">
             <!-- /.card-header -->
-            <div class="card-body">
-              <form role="form" method="post" name="mainfrm" id="mainfrm">
+              <div class="card-body">
                 <div class="row">
                   <div class="col-sm-3">
                     <!-- text input -->
@@ -47,21 +47,19 @@
 
                   <?php } ?>
                 </div>
-              </form>
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-              <div class="row">
-                <div class="col-sm-4">
-                  <input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
-                  <button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
-                  <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
+                    <button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
+                    <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
+                  </div>
                 </div>
               </div>
-              <!-- <button type="button" id="update" type="submit" data-form="mainfrm" class="btn btn-primary saveChange">Update Changes</button> -->
-              <!-- <a href="<?php echo base_url('groups/') ?>" class="btn btn-warning">Back</a> -->
-            </div>
-            <!-- /.card-footer -->
+              <!-- /.card-footer -->
+            </form>
           </div>
         </div>
         <!-- col-md-12 -->

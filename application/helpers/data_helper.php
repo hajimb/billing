@@ -39,15 +39,15 @@ if (!function_exists('load_js')) {
 }
 
 if (!function_exists('is_exists')) {
-    function is_exists($where, $table_name, $id = 0,$fidlname = "id")
+    function is_exists($where, $table_name, $id = 0,$fldname = "id")
     {
         $ci = &get_instance();
         $ci->load->database();
-        $ci->db->select($fidlname);
+        $ci->db->select($fldname);
         $ci->db->from($table_name);
         $ci->db->where($where);
         if ($id > 0) {
-            $ci->db->where($fidlname.' !=', $id);
+            $ci->db->where($fldname.' !=', $id);
         }
         $queryone    = $ci->db->get();
         $rows       = $queryone->num_rows();

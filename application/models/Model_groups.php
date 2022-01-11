@@ -21,6 +21,7 @@ class Model_groups extends CI_Model
 
 	public function save($data, $id)
 	{
+		
 		$where = array('group_name'=> $data['group_name'], 'is_deleted'=> 0);
         if(is_exists($where, 'groups', $id) > 0 ){
             $result = array('msg' => 'Group Name already Exist','status' => false);
