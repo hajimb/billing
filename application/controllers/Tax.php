@@ -5,118 +5,62 @@ class Tax extends CI_Controller {
 	public function __construct(){
         parent::__construct();
 
-		 $session_data = $this->session->userdata('user_session');
-         if (!isset($session_data) || empty($session_data)) {
-             redirect('login');
-         }else{
-			$this->data['session_data'] = @$this->session->userdata('user_session');
-			$this->data['user_permission'] = @$this->session->userdata('user_permission');
-
-            // $group_data = array();
-			// $user_id = $session_data['user_id'];
-			// $this->load->model('model_groups');
-			// $group_data = $this->model_groups->getUserGroupByUserId($user_id);
-			// $this->data['user_permission'] = unserialize($group_data['permission']);
-			// $this->permission = unserialize($group_data['permission']);
-        }
-
+        $this->data['session_data'] = @$this->session->userdata('user_session');
+        $this->data['user_permission'] = @$this->session->userdata('user_permission');
         $this->load->model('Taxmodel');        
     }
 
-	public function index() {
-        $this->data['title'] = 'Tax List'; 
-        $this->data['tax'] = $this->Taxmodel->getTaxdata();
+    public function index()
+	{
+        $restaurant_id = $this->data['session_data']['restaurant_id'];
+        $this->data['tax'] = $this->Taxmodel->getTaxdata($restaurant_id);
+
+        $this->data['js']     = array(
+			"assets/plugins/datatables/jquery.dataTables.min.js",
+			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
+			"assets/plugins/datatables-responsive/js/dataTables.responsive.min.js",
+			"assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js",
+		);
+		$this->data['css']     = array(
+			"assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
+			"assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
+			"assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
+		);
+		$this->data["pagename"]  = "tax-list";
+		$this->data['page_title'] = "Manage Tax";
+		$this->data['breadcrumb'][0] = "Tax";
+		// $this->data['breadcrumb'][1] = "";
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
-		$this->load->view('tax/tax');
+        $this->load->view('common/breadcrumb',$this->data);
+		$this->load->view('tax/index');
 		$this->load->view('common/footer');
-	}
+		//$this->render_template('groups/index', $this->data);
+	}	
 
-    public function add_Tax() {
-        $this->data['title'] = 'Add New Tax'; 
-		$this->load->view('common/header',$this->data);
-        $this->load->view('common/sidebar',$this->data);
-		$this->load->view('tax/add_tax');
-		$this->load->view('common/footer');
-	}
-
-    public function add()
-	{		
-		$this->data["page_head"]  = "Add Tax";
-		$this->data["page_title"] = "Add Tax";
-		$this->data["page_view"]  = "Add Tax";
-        $TaxData['tax_name'] = $this->input->post("tax_name");
-        $TaxData['vat'] = $this->input->post("vat");
-        $TaxData['sgst'] = $this->input->post("sgst");
-        $TaxData['cgst'] = $this->input->post("cgst");
-        if($this->input->post("is_default") > 0)
-        {
-            $TaxData['is_default'] = $this->input->post("is_default");  
-        }
-        else
-        {
-            $TaxData['is_default'] = 0;  
-        }
-                     
-		$datareq = $this->Taxmodel->addTaxRequest($TaxData);
-        if($datareq == 1){
-            $return['status'] = 1;
-            $return['msg'] = 'Tax added successfully';
-        }else{
-            $return['status'] = 0;
-            $return['msg'] = 'error in storing data';
-        }
-        echo json_encode($return);
-        redirect('tax');
-	}
-
-    public function edit($id)
+    public function edit()
 	{	
-		$this->data['title'] = 'Edit Tax'; 
-		$this->data["page_head"]  = "Edit Tax";
-		$this->data["page_title"] = "Edit Tax";
-		$this->data["page_view"]  = "Edit Tax";
-		$this->data["formdata"]   = $this->Taxmodel->gettax($id);		
+        $todo = "Edit";
+        $id = $this->input->post('main_id');
+        $this->create($id, $todo);
+	}
+
+    public function create($id = 0,$todo = "Add"){
+
+        $restaurant_id = $this->data['session_data']['restaurant_id'];
+		$this->data['title']        = $todo." Tax"; 
+        $this->data['pagename']     = 'tax-edit'; 
+		$this->data['page_title']   = "Manage Tax";
+		$this->data['breadcrumb'][0] = "Tax";
+		$this->data['breadcrumb'][1] = $todo;
+        $this->data["main_id"]      = $id;
+		$this->data["todo"]         = $todo;
+		$this->data["userdata"]     =$this->Taxmodel->gettax($id,$restaurant_id);		
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
-		$this->load->view("tax/edit_tax",$this->data);
+        $this->load->view('common/breadcrumb',$this->data);		
+		$this->load->view("tax/edit",$this->data);
 		$this->load->view('common/footer');
-	}
-    public function update($id='')
-	{
-        if($this->input->post("is_default") > 0)
-        {
-            $is_default = $this->input->post("is_default");  
-        }
-        else
-        {
-            $is_default = 0;  
-        }
-
-		$data = array(
-            'tax_id' => $this->input->post("id"),
-            'tax_name' => $this->input->post("tax_name"),
-            'vat' => $this->input->post("vat"),
-            'sgst' => $this->input->post("sgst"),
-            'cgst' => $this->input->post("cgst"),        
-           'is_default' => $is_default 
-        );
-            $datareq = $this->Taxmodel->updaterecord($data);
-            if($datareq == 1){
-                $return['status'] = 1;
-                $return['msg'] = 'tax edit successfully';
-            }else{
-                $return['status'] = 0;
-                $return['msg'] = 'error in storing data';
-            }  
-    redirect('tax');
-		
-	}
-
-    public function tax_delete($id)
-    {        
-        $this->Taxmodel->delete_tax($id);
-        redirect('tax');
     }
     
 }

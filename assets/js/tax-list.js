@@ -1,4 +1,4 @@
-var controller = "groups";
+var controller = "tax";
 
 $(function () {
     $(document).ready(function() {
