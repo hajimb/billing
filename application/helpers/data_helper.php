@@ -173,10 +173,7 @@ if (!function_exists('getOrders')) {
         $result = array();
         $ci = &get_instance();
         $ci->load->database();
-        $query = $this->db->query("
-        SELECT h.*, t.tablename  FROM bill_head h, tables t  where t.table_id = h.table_id and (h.status = 'Done' OR h.status = 'BillPaid' OR h.status = 'BillRaised')");
-        
-
+        $query = $ci->db->query("SELECT h.*, t.tablename  FROM bill_head h, tables t  where t.table_id = h.table_id and (h.status = 'Done' OR h.status = 'BillPaid' OR h.status = 'BillRaised')");
         $ci->db->select('*');
         $ci->db->from('groups');
 
