@@ -9,96 +9,58 @@ class Item extends CI_Controller {
         $this->restaurant_id = $this->data['session_data']['restaurant_id'];
         $this->load->model('Itemmodel');
         $this->load->model('Restaurantmodel');
-        $this->load->model('Categorymodel');        
     }
 
-	public function index() {
-        $this->data['title'] = 'Item List'; 
-        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
-        $this->data['items'] = $this->Itemmodel->getitemsdata();
+
+    public function index()
+	{
+        $this->data['data'] = getData('items', $this->restaurant_id,"item_id");
+        $this->data['js']   = array(
+			"assets/plugins/datatables/jquery.dataTables.min.js",
+			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
+			"assets/plugins/datatables-responsive/js/dataTables.responsive.min.js",
+			"assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js",
+		);
+		$this->data['css']     = array(
+			"assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
+			"assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
+			"assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
+		);
+		$this->data["pagename"]  = "item-list";
+		$this->data['page_title'] = "Item List";
+		$this->data['breadcrumb'][0] = "Item";
+		// $this->data['breadcrumb'][1] = "";
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
-		$this->load->view('Item/item');
+        $this->load->view('common/breadcrumb',$this->data);
+		$this->load->view('item/index');
 		$this->load->view('common/footer');
+		//$this->render_template('groups/index', $this->data);
 	}
 
-    public function add_item() {
-        $this->data['title'] = 'Add New Item'; 
-        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
-        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
-		$this->load->view('common/header',$this->data);
-        $this->load->view('common/sidebar',$this->data);
-		$this->load->view('Item/add_item');
-		$this->load->view('common/footer');
-	}
-
-    public function add()
-	{		
-		$this->data["page_head"]  = "Add Item";
-		$this->data["page_title"] = "Add Item";
-		$this->data["page_view"]  = "Add Item";
-        $itemData['restaurant_id'] = $this->input->post("restaurant_id");
-        $itemData['cat_id'] = $this->input->post("cat_id");
-        $itemData['item_name'] = $this->input->post("item_name");
-        $itemData['short_code'] = $this->input->post("short_code");
-        $itemData['price'] = $this->input->post("price");
-        if($this->input->post("favorite") > 0)
-        {$itemData['favorite'] = $this->input->post("favorite");}        
-        $itemData['stock_status'] = $this->input->post("stock_status");               
-        
-		$datareq = $this->Itemmodel->addItemRequest($itemData);
-        if($datareq == 1){
-            $return['status'] = 1;
-            $return['msg'] = 'Item added successfully';
-        }else{
-            $return['status'] = 0;
-            $return['msg'] = 'error in storing data';
-        }
-        echo json_encode($return);
-        redirect('item');
-	}
-
-    public function edit($id)
+    public function edit()
 	{	
-		$this->data['title'] = 'Edit Item'; 
-		$this->data["page_head"]  = "Edit Item";
-		$this->data["page_title"] = "Edit Item";
-		$this->data["page_view"]  = "Edit Item";
-        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
-        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
-		$this->data["formdata"]   = $this->Itemmodel->getitem($id);		
+        $todo = "Edit";
+        $id = $this->input->post('main_id');
+        $this->create($id, $todo);
+	}
+
+    public function create($id = 0,$todo = "Add"){
+		$this->data['title']        = $todo." item"; 
+        $this->data['pagename']     = 'item-edit'; 
+		$this->data['page_title']   = "Manage item";
+		$this->data['breadcrumb'][0] = "item";
+		$this->data['breadcrumb'][1] = $todo;
+        $this->data["main_id"]      = $id;
+		$this->data["todo"]         = $todo;
+        $this->data['restaurant']   = getRestaurant();
+        $this->data['category']     = getCategory($this->restaurant_id);
+        $this->data["data"]         = getData('items', $this->restaurant_id,"item_id", $id);	
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
-		$this->load->view("Item/edit_item",$this->data);
+        $this->load->view('common/breadcrumb',$this->data);		
+		$this->load->view("item/edit",$this->data);
 		$this->load->view('common/footer');
-	}
-    public function update($id='')
-	{
-       $data = array(
-            'item_id' => $this->input->post("id"),
-            'restaurant_id' => $this->input->post("restaurant_id"),
-            'cat_id' => $this->input->post("cat_id"),
-            'item_name' => $this->input->post("item_name"),
-            'short_code' => $this->input->post("short_code"),        
-            'price' => $this->input->post("price"),            
-            'stock_status' => $this->input->post("stock_status")
-        );
-            $datareq = $this->Itemmodel->updaterecord($data);
-            if($datareq == 1){
-                $return['status'] = 1;
-                $return['msg'] = 'item edit successfully';
-            }else{
-                $return['status'] = 0;
-                $return['msg'] = 'error in storing data';
-            }  
-        redirect('item');
-		
-	}
-
-    public function item_delete($id)
-    {        
-        $this->Itemmodel->delete_item($id);
-        redirect('item');
     }
     
 }

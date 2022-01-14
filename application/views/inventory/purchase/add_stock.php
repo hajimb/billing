@@ -33,14 +33,7 @@
                                 <?php } ?>
                             </select>
                 </div>
-                <!--<div class="form-group">
-                  <label for="inputEmail">Select Category</label>
-                  <select class="form-control custom-select" name="cat_id" required placeholder="">
-                              <?php  foreach($category as $category_s) { ?>
-                                <option value="<?php echo $category_s['category_id']?>"><?php echo $category_s['category']?></option>
-                              <?php  } ?>              
-                                </select>
-                </div>-->
+
                 <div class="form-group">
                   <label for="inputSubject">Raw Material</label>
                   <select class="form-control custom-select" name="rawmaterial_id" required placeholder="">

@@ -4,32 +4,33 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 require APPPATH . './libraries/REST_Controller.php';
 
-class Customer extends REST_Controller {
+class Item extends REST_Controller {
     private $last_query= null;
     function __construct() {
         parent::__construct();
-        $this->load->model('Customermodel');
+        $this->load->model('Itemmodel');   
         $this->last_query = false;
     }
 
     public function save_post(){
         $Return = array('status' => false,'validate' => false, 'message' => array());
-        $this->form_validation->set_rules('c_name', 'Customer Name', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
-        $this->form_validation->set_rules('mobile', 'Mobile', 'required|numeric|trim');
-        $this->form_validation->set_rules('address', 'Address', 'required|trim');
+        $this->form_validation->set_rules('cat_id', 'Select Category', 'required|numeric|trim');
+        $this->form_validation->set_rules('item_name', 'Item Name', 'required|trim');
+        $this->form_validation->set_rules('short_code', 'Short Code', 'required|trim');
+        $this->form_validation->set_rules('price', 'Price', 'required|trim');
+        $this->form_validation->set_rules('stock_status', 'Stock Status', 'required|numeric|trim');
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
             $main_id = $this->post('main_id');
-            $customer['c_name']         = trim($this->input->post('c_name'));
-            $customer['email']          = trim($this->input->post('email'));
-            $customer['mobile']         = trim($this->input->post('mobile'));
-            $customer['dob']            = convertDate($this->input->post('dob'), 'mysql');
-            $customer['doa']            = convertDate($this->input->post('doa'), 'mysql');
-            $customer['address']        = trim($this->input->post('address'));
-            $customer['restaurant_id']  = trim($this->input->post('restaurant_id'));
-            $result                     = $this->Customermodel->save($customer, $main_id);
+            $data['restaurant_id']      = $this->post("restaurant_id") ;
+            $data['cat_id']             = $this->post("cat_id") ;
+            $data['item_name']          = $this->post("item_name") ;
+            $data['short_code']         = $this->post("short_code") ;
+            $data['price']              = $this->input->post("price");
+            $data['stock_status']       = $this->input->post("stock_status");
+            $data['favorite']           = $this->input->post("favorite") ?? 0;
+            $result                     = $this->Itemmodel->save($data, $main_id);
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],
@@ -40,6 +41,7 @@ class Customer extends REST_Controller {
             foreach ($this->input->post() as $key => $value) {
                 $verror[$key] = form_error($key);
             }
+            $verror['t'] = validation_errors();
             $this->response([
                 'validate'   => FALSE,
                 'status' => FALSE,
@@ -55,7 +57,7 @@ class Customer extends REST_Controller {
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
             $id     = $this->post('main_id');
-            $delete = $this->Customermodel->delete($id);
+            $delete = $this->Itemmodel->delete($id);
             $this->response([
                 'status'    => $delete['status'],
                 'validate'  => TRUE,

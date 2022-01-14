@@ -1,44 +1,33 @@
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Edit Raw Material</h1>
-          </div>  
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-            <a role="button" onclick="goBack()" class="btn btn-outline-danger"><i class="fas fa-chevron-left mr-1"></i><strong>BACK</strong></a>
-            </ol>
-          </div>        
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-      <!-- Default box -->
-      <div class="card">
-       
-        <form action="<?php echo base_url() ?>RawMaterial/update" enctype="multipart/form-data" method="post" name="editcategory" id="editcategory" class="form-horizontal">
-            <div class="card-body row">          
-              <div class="col-12">
-                <div class="form-group">
-                  <label for="inputName">Raw Material</label>
-                  <input type="text" id="raw_material" name="raw_material" value="<?php echo $formdata['data']['rawmaterial'];?>" autocomplete="off" class="form-control" required />
-                </div>                
-                <div class="form-group">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                </div>
-              </div>
-            </div>
-            <input type="hidden" id="id" name="id" value="<?php echo $formdata['data']['rawmaterial_id']; ?>"/>
-        </form>
-      </div>
-
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+<section class="content">
+	<div class="row">
+		<div class="col-md-12 col-xs-12">
+			<div class="card card-warning">
+				<div class="card-header">
+				<h3 class="card-title"><?= $todo;?> Raw Material</h3>
+				</div>
+				<form role="form" method="post" name="mainfrm" id="mainfrm">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="form-group">
+									<label for="rawmaterial">Raw Material</label>
+									<input type="text" id="rawmaterial" name="rawmaterial" autocomplete="off" class="form-control"  value="<?= $data ['rawmaterial'] ?? '';?>">
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<div class="row">
+								<div class="col-sm-4">
+									<input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
+									<input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $session_data['restaurant_id'];?>">
+									<button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
+									<button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

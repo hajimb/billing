@@ -1,4 +1,4 @@
-var controller = "customer";
+var controller = "item";
 
 $(function () {
     $(document).ready(function() {

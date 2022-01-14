@@ -52,7 +52,7 @@
                         <div class="col-lg-2 col-md-2  col-sm-6">
                             <!-- small box -->
                             <div class="small-box config-tab ">
-                                <a href="<?php echo base_url(); ?>WastageListing">
+                                <a href="<?php echo base_url(); ?>wastagelisting">
                                     <div class="inner text-center bg-lightgray">
                                         <h5>Wastage</h5>
                                     </div>
