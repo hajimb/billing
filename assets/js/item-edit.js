@@ -1,35 +1,16 @@
-var controller = "customer";
+'use strict';
+var controller = "item";
 
-$(function () {
-    $(document).ready(function() {
-        $('#mainTable').DataTable();
-        $("#mainGroupNav").addClass('active');
-        $("#manageGroupNav").addClass('active');
-    });
-});
-
-function Edit(id){
-    $("#main_id").val(id);
-    var url = base_url+controller+"/edit";
-    $("#mainfrm").attr('action', url);
-    $("#mainfrm").submit();
-}
-
-function Delete(id){
-    $("#main_id").val(id);
-    $("#myModalDelete").modal('show');
-}
-
-$(document).on("click", "#confirmdelete", function(e) {
+$(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
     toastr.remove();
     var btnid = $(this).attr('id');
     var formId = $(this).data('form');
     var form = $("#"+formId).serialize();
-    $(".btn").prop('disabled',true);    
+    console.log("resData " + form);
     $.ajax({
         type: "POST",
-        url: base_url + "Api/"+controller+"/delete",
+        url: base_url + "Api/"+controller+"/save",
         data: form,
         dataType: "json",
         beforeSend: function() {
@@ -49,7 +30,6 @@ $(document).on("click", "#confirmdelete", function(e) {
             } else if (status === false) {
                 toastr.error(message)
             } else {
-                $("#myModalDelete").modal('hide');
                 toastr.success(message)
                  window.setTimeout(function() {
                     window.location.href = base_url+controller;

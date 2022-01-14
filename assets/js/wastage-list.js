@@ -1,4 +1,4 @@
-var controller = "customer";
+var controller = "wastagelisting";
 
 $(function () {
     $(document).ready(function() {

@@ -52,4 +52,12 @@ class Categorymodel extends CI_Model
         return $result;
     }
 
+
+    function getCategorydata()
+    {
+        $id = 0;
+        $query = $this->db->get_where($this->table, array('is_deleted' => $id));
+        $result = $query->result_array();
+        return $result;
+    }
 }

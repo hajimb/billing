@@ -1,35 +1,22 @@
+'use strict';
 var controller = "customer";
-
 $(function () {
-    $(document).ready(function() {
-        $('#mainTable').DataTable();
-        $("#mainGroupNav").addClass('active');
-        $("#manageGroupNav").addClass('active');
+    $('.datepickers').datepicker({
+        clearBtn: true,
+        format: "yyyy-mm-dd"
     });
 });
 
-function Edit(id){
-    $("#main_id").val(id);
-    var url = base_url+controller+"/edit";
-    $("#mainfrm").attr('action', url);
-    $("#mainfrm").submit();
-}
-
-function Delete(id){
-    $("#main_id").val(id);
-    $("#myModalDelete").modal('show');
-}
-
-$(document).on("click", "#confirmdelete", function(e) {
+$(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
     toastr.remove();
     var btnid = $(this).attr('id');
     var formId = $(this).data('form');
     var form = $("#"+formId).serialize();
-    $(".btn").prop('disabled',true);    
+    console.log("resData " + form);
     $.ajax({
         type: "POST",
-        url: base_url + "Api/"+controller+"/delete",
+        url: base_url + "Api/"+controller+"/save",
         data: form,
         dataType: "json",
         beforeSend: function() {
@@ -49,7 +36,6 @@ $(document).on("click", "#confirmdelete", function(e) {
             } else if (status === false) {
                 toastr.error(message)
             } else {
-                $("#myModalDelete").modal('hide');
                 toastr.success(message)
                  window.setTimeout(function() {
                     window.location.href = base_url+controller;
@@ -62,3 +48,15 @@ $(document).on("click", "#confirmdelete", function(e) {
         }
     });
 });
+
+
+function isNumber(evt) {
+    toastr.remove()
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if(charCode > 31 && (charCode < 48 || charCode > 57)) {
+        toastr.error("Only Numbers Allowed")
+        $("#mobile").val('').focus();
+        return false;
+    }
+  }

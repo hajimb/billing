@@ -78,3 +78,89 @@ if (!function_exists('getData')) {
         return $result;
     }
 }
+
+
+if (!function_exists('getRestaurant')){
+    function getRestaurant(){
+        $ci=& get_instance();
+        $ci->load->database();
+        $return = array();
+        $query = $ci->db->query("SELECT * FROM restaurant WHERE is_deleted =0");
+        $query = $query->result_array();
+        if( is_array( $query ) && count( $query ) > 0 ){
+            $return[''] = '--Select Restaurant--';
+            foreach($query as $row){
+                $return[$row['restaurant_id']] = $row['restaurant_name'].' - '.$row['restaurant_address'];
+            }
+        }
+        return $return;
+    }
+}
+
+if (!function_exists('getCategory')){
+    function getCategory($rid=''){
+        $ci=& get_instance();
+        $ci->load->database();
+        $return = array();
+        $query = $ci->db->query("SELECT * FROM category WHERE is_deleted = 0 AND restaurant_id=".$rid);
+        $query = $query->result_array();
+        if( is_array( $query ) && count( $query ) > 0 ){
+            $return[''] = '--Select category--';
+            foreach($query as $row){
+                $return[$row['category_id']] = $row['category'];
+            }
+        }
+        return $return;
+    }
+}
+
+if (!function_exists('getUnit')){
+    function getUnit(){
+        $ci=& get_instance();
+        $ci->load->database();
+        $return = array();
+        $query = $ci->db->query("SELECT * FROM master_unit");
+        $query = $query->result_array();
+        if( is_array( $query ) && count( $query ) > 0 ){
+            $return[''] = '--Select Unit--';
+            foreach($query as $row){
+                $return[$row['id']] = $row['units'];
+            }
+        }
+        return $return;
+    }
+}
+
+if (!function_exists('getRawmaterial')){
+    function getRawmaterial($restaurant_id){
+        $ci=& get_instance();
+        $ci->load->database();
+        $return = array();
+        $query = $ci->db->query("SELECT * FROM rawmaterial WHERE is_deleted = 0 AND restaurant_id=".$restaurant_id);
+        $query = $query->result_array();
+        if( is_array( $query ) && count( $query ) > 0 ){
+            $return[''] = '--Select Rawmaterial--';
+            foreach($query as $row){
+                $return[$row['rawmaterial_id']] = $row['rawmaterial'];
+            }
+        }
+        return $return;
+    }
+}
+
+if (!function_exists('convertDate')){
+    function convertDate($date, $to='mysql'){
+        
+        if($date){
+            if($to=='mysql'){
+                // $format = 'd-m-Y';
+                // $date = DateTime::createFromFormat($format, $date)->format('Y-m-d');
+                $date=$date;
+            }if($to=='user'){
+                $format = 'Y-m-d';
+                $date = DateTime::createFromFormat($format, $date)->format('d-m-Y');
+            }
+        }
+        return $date;
+    }
+}

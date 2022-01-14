@@ -1,4 +1,4 @@
-var controller = "customer";
+var controller = "rawmaterial";
 
 $(function () {
     $(document).ready(function() {
