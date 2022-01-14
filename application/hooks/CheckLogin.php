@@ -11,7 +11,7 @@ class CheckLogin
         $user_permission    = $ci->session->userdata('user_permission');
         // print_r($user_permission);
         // exit;
-        if(strtolower($class_name) != "dashboard" && strtolower($class_name) != 'login' ){
+        if(strtolower($class_name) != "dashboard" && strtolower($class_name) != 'login' && strtolower($class_name) != 'order' ){
             if (!isset($session_data) || empty($session_data)) {
                 redirect('login');
             }else{

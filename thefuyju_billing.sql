@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2022 at 06:27 PM
+-- Generation Time: Jan 14, 2022 at 12:48 PM
 -- Server version: 10.3.32-MariaDB-0ubuntu0.20.04.1
 -- PHP Version: 7.4.26
 
@@ -176,7 +176,9 @@ CREATE TABLE `bill_item1` (
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `category_id` int(100) NOT NULL,
+  `restaurant_id` int(11) DEFAULT NULL,
   `category` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modified_date` datetime NOT NULL,
   `created_date` datetime NOT NULL,
   `is_deleted` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -185,19 +187,21 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `category`, `created_date`, `is_deleted`) VALUES
-(2, 'Chinese', '2021-08-04 17:19:22', 0),
-(3, 'South Indian', '2021-08-04 17:19:28', 0),
-(4, 'Panjabi', '2021-08-04 17:19:49', 0),
-(5, 'Gujrati', '2021-08-04 17:19:57', 1),
-(7, 'Indian Subzi', '2021-08-16 07:59:13', 0),
-(8, 'Starter', '2021-12-08 06:56:42', 0),
-(9, 'Soup', '2021-12-10 07:05:26', 0),
-(10, 'Tea', '2021-12-15 15:18:49', 0),
-(11, 'Desert', '2021-12-28 12:11:56', 0),
-(12, 'lassi', '2022-01-04 10:11:32', 0),
-(13, 'lassi', '2022-01-04 10:11:36', 0),
-(14, 'Pan', '2022-01-04 11:00:28', 0);
+INSERT INTO `category` (`category_id`, `restaurant_id`, `category`, `modified_date`, `created_date`, `is_deleted`) VALUES
+(2, 5, 'Chinese', '2022-01-14 11:51:47', '2021-08-04 17:19:22', 0),
+(3, 5, 'South Indian', '0000-00-00 00:00:00', '2021-08-04 17:19:28', 0),
+(4, 5, 'Panjabi', '0000-00-00 00:00:00', '2021-08-04 17:19:49', 0),
+(5, 5, 'Gujrati', '0000-00-00 00:00:00', '2021-08-04 17:19:57', 1),
+(7, 5, 'Indian Subzi', '0000-00-00 00:00:00', '2021-08-16 07:59:13', 0),
+(8, 5, 'Starter', '0000-00-00 00:00:00', '2021-12-08 06:56:42', 0),
+(9, 5, 'Soup', '0000-00-00 00:00:00', '2021-12-10 07:05:26', 0),
+(10, 5, 'Tea', '0000-00-00 00:00:00', '2021-12-15 15:18:49', 0),
+(11, 5, 'Desert', '0000-00-00 00:00:00', '2021-12-28 12:11:56', 0),
+(12, 5, 'lassi', '0000-00-00 00:00:00', '2022-01-04 10:11:32', 0),
+(13, 5, 'lassi', '0000-00-00 00:00:00', '2022-01-04 10:11:36', 1),
+(14, 5, 'Pan', '0000-00-00 00:00:00', '2022-01-04 11:00:28', 1),
+(15, 5, 'Punjabi', '0000-00-00 00:00:00', '2022-01-14 11:46:33', 0),
+(16, 5, 'dasdasds', '0000-00-00 00:00:00', '2022-01-14 12:06:30', 0);
 
 -- --------------------------------------------------------
 
@@ -237,6 +241,7 @@ INSERT INTO `customer` (`customer_id`, `c_name`, `email`, `mobile`, `address`, `
 DROP TABLE IF EXISTS `discount`;
 CREATE TABLE `discount` (
   `discount_id` int(255) NOT NULL,
+  `restaurant_id` int(11) DEFAULT NULL,
   `discount_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `discount` int(255) NOT NULL,
   `modified_date` datetime NOT NULL,
@@ -250,10 +255,11 @@ CREATE TABLE `discount` (
 -- Dumping data for table `discount`
 --
 
-INSERT INTO `discount` (`discount_id`, `discount_name`, `discount`, `modified_date`, `created_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
-(1, 'Customer 1 ', 10, '0000-00-00 00:00:00', '2021-10-24 15:14:47', 0, 0, 0),
-(2, 'Welocme 20', 20, '0000-00-00 00:00:00', '2021-12-08 07:37:00', 0, 0, 0),
-(3, '26 Jan', 25, '0000-00-00 00:00:00', '2022-01-04 10:13:40', 0, 0, 0);
+INSERT INTO `discount` (`discount_id`, `restaurant_id`, `discount_name`, `discount`, `modified_date`, `created_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
+(1, 5, 'Special Discount', 10, '2022-01-14 11:26:05', '2021-10-24 15:14:47', 0, 0, 0),
+(2, 5, 'Welcome 2022', 22, '2022-01-14 11:26:58', '2021-12-08 07:37:00', 0, 0, 0),
+(3, 5, '26 Jan', 25, '0000-00-00 00:00:00', '2022-01-04 10:13:40', 0, 0, 1),
+(4, 5, 'Welcome 22', 25, '0000-00-00 00:00:00', '2022-01-14 11:26:31', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -309,7 +315,7 @@ CREATE TABLE `groups` (
 INSERT INTO `groups` (`id`, `group_name`, `permission`, `created_date`, `modified_date`, `is_deleted`) VALUES
 (1, 'MasterAdmin', 'a:3:{i:0;s:10:\"restaurant\";i:1;s:4:\"user\";i:2;s:6:\"groups\";}', NULL, NULL, 0),
 (2, 'Admin', 'a:22:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:11:\"stockreport\";i:17;s:5:\"table\";i:18;s:3:\"tax\";i:19;s:4:\"user\";i:20;s:14:\"wastagelisting\";i:21;s:10:\"withdrawal\";}', NULL, '2022-01-11 16:38:32', 0),
-(3, 'Kitchen', 'a:1:{i:0;s:3:\"kot\";}', NULL, NULL, 0),
+(3, 'Kitchen', 'a:1:{i:0;s:3:\"kot\";}', NULL, '2022-01-11 18:56:05', 0),
 (4, 'Waiter', 'a:1:{i:0;s:5:\"table\";}', NULL, NULL, 0),
 (5, 'Manager', 'a:22:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:11:\"stockreport\";i:17;s:5:\"table\";i:18;s:3:\"tax\";i:19;s:4:\"user\";i:20;s:14:\"wastagelisting\";i:21;s:10:\"withdrawal\";}', NULL, '2022-01-11 16:38:25', 0),
 (6, 'Owner', 'a:22:{i:0;s:8:\"cashflow\";i:1;s:12:\"currentstock\";i:2;s:8:\"customer\";i:3;s:6:\"dayend\";i:4;s:13:\"dayendhistory\";i:5;s:8:\"discount\";i:6;s:10:\"duepayment\";i:7;s:7:\"expense\";i:8;s:9:\"inventory\";i:9;s:8:\"category\";i:10;s:4:\"item\";i:11;s:3:\"kot\";i:12;s:5:\"order\";i:13;s:8:\"purchase\";i:14;s:11:\"rawmaterial\";i:15;s:7:\"receipt\";i:16;s:11:\"stockreport\";i:17;s:5:\"table\";i:18;s:3:\"tax\";i:19;s:4:\"user\";i:20;s:14:\"wastagelisting\";i:21;s:10:\"withdrawal\";}', NULL, '2022-01-11 16:41:35', 0);
@@ -922,7 +928,9 @@ INSERT INTO `log` (`log_id`, `log_msg`, `createddate`, `controller`) VALUES
 (466, 'Havemore Manager sign-in successfully.', '2022-01-11 16:41:17', 'Login'),
 (467, 'Havemore Manager sign-out successfully.', '2022-01-11 16:50:51', 'Logout'),
 (468, 'Havemore Manager sign-out successfully.', '2022-01-11 16:57:31', 'Logout'),
-(469, 'Havemore Manager sign-out successfully.', '2022-01-11 17:06:41', 'Logout');
+(469, 'Havemore Manager sign-out successfully.', '2022-01-11 17:06:41', 'Logout'),
+(470, 'Havemore Waiter sign-out successfully.', '2022-01-13 17:53:09', 'Logout'),
+(471, 'Havemore  Owner sign-out successfully.', '2022-01-14 12:32:13', 'Logout');
 
 -- --------------------------------------------------------
 
@@ -1218,10 +1226,11 @@ INSERT INTO `tables` (`table_id`, `restaurant_id`, `tablename`, `capacity`, `sta
 DROP TABLE IF EXISTS `tax`;
 CREATE TABLE `tax` (
   `tax_id` int(255) NOT NULL,
+  `restaurant_id` int(11) DEFAULT NULL,
   `tax_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `vat` int(255) DEFAULT NULL,
-  `sgst` int(255) DEFAULT NULL,
-  `cgst` int(255) DEFAULT NULL,
+  `vat` decimal(11,2) DEFAULT NULL,
+  `sgst` decimal(11,2) DEFAULT NULL,
+  `cgst` decimal(11,2) DEFAULT NULL,
   `is_default` int(20) NOT NULL DEFAULT 0,
   `modified_date` datetime NOT NULL,
   `created_date` datetime NOT NULL,
@@ -1234,9 +1243,11 @@ CREATE TABLE `tax` (
 -- Dumping data for table `tax`
 --
 
-INSERT INTO `tax` (`tax_id`, `tax_name`, `vat`, `sgst`, `cgst`, `is_default`, `modified_date`, `created_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
-(1, 'tax 1', 3, 5, 8, 1, '0000-00-00 00:00:00', '2021-10-21 15:20:01', 0, 0, 0),
-(2, 'Tax 2', 5, 7, 10, 0, '0000-00-00 00:00:00', '2021-10-24 13:38:11', 0, 0, 0);
+INSERT INTO `tax` (`tax_id`, `restaurant_id`, `tax_name`, `vat`, `sgst`, `cgst`, `is_default`, `modified_date`, `created_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
+(1, 5, 'Tax', '2.00', '5.00', '5.00', 0, '2022-01-13 18:52:04', '2022-01-13 18:50:52', 0, 0, 1),
+(2, 5, 'Service Tax', '2.00', '2.50', '2.50', 0, '2022-01-13 18:57:33', '2022-01-13 18:51:45', 0, 0, 0),
+(3, 5, 'Tax', '2.00', '2.00', '2.00', 1, '2022-01-13 19:01:29', '2022-01-13 18:53:20', 0, 0, 0),
+(4, 2, 'Tax', '2.00', '2.00', '2.00', 1, '2022-01-13 18:56:22', '2022-01-13 18:53:20', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1521,7 +1532,7 @@ ALTER TABLE `bill_item`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `category_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -1533,7 +1544,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `discount`
 --
 ALTER TABLE `discount`
-  MODIFY `discount_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `discount_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `expense`
@@ -1569,7 +1580,7 @@ ALTER TABLE `kot_item`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=470;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=472;
 
 --
 -- AUTO_INCREMENT for table `master_modules`
@@ -1623,7 +1634,7 @@ ALTER TABLE `tables`
 -- AUTO_INCREMENT for table `tax`
 --
 ALTER TABLE `tax`
-  MODIFY `tax_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `tax_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_group`

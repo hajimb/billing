@@ -6,7 +6,6 @@ class Category extends CI_Controller {
         parent::__construct();
         $this->data['session_data'] = @$this->session->userdata('user_session');
         $this->data['user_permission'] = @$this->session->userdata('user_permission');
-        $this->load->model('Categorymodel'); 
         $this->restaurant_id = $this->data['session_data']['restaurant_id'];  
     }
 
@@ -14,7 +13,6 @@ class Category extends CI_Controller {
     public function index()
 	{
         $this->data['data'] = getData('category', $this->restaurant_id,"category_id");
-
         $this->data['js']     = array(
 			"assets/plugins/datatables/jquery.dataTables.min.js",
 			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",

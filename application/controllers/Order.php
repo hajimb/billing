@@ -4,15 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Order extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-
-        $session_data = $this->session->userdata('user_session');
-        if (!isset($session_data) || empty($session_data)) {
-            redirect('login');
-        }else{
-            $this->data['session_data'] = @$this->session->userdata('user_session');
-			$this->data['user_permission'] = @$this->session->userdata('user_permission');
-        }      
-        $this->restaurant_id = $session_data['restaurant_id'];
+        $this->data['session_data'] = @$this->session->userdata('user_session');
+        $this->data['user_permission'] = @$this->session->userdata('user_permission');
+        $this->restaurant_id = $this->data['session_data']['restaurant_id'];
         $this->load->model('Ordermodel');
         $this->load->model('Categorymodel');   
         $this->load->model('Itemmodel');
@@ -25,10 +19,10 @@ class Order extends CI_Controller {
 	public function index() {
          $get_data = $this->input->get();
          $this->data['title'] = 'Nre order'; 
-         $this->data['category'] = $this->Categorymodel->getCategorydata();        
+         $this->data['category'] = getData('category', $this->restaurant_id,"category_id");        
          $this->data['table'] = $this->Tablemodel->gettablesdata($get_data);
          $this->data['item'] = $this->Itemmodel->getitemsdata();
-         $this->data['discount'] = $this->Discountmodel->getdiscountdata();
+         $this->data['discount'] = getData('discount', $this->restaurant_id,"discount_id");   
          if(isset($get_data['table_id'])){
             $this->data['order'] = $this->Ordermodel->getorderdata($get_data);
             
@@ -53,7 +47,7 @@ class Order extends CI_Controller {
     public function table($table_id) {
         echo $table_id;
         $this->data['title'] = 'Nre order'; 
-        $this->data['category'] = $this->Categorymodel->getCategorydata();        
+        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");        
         $this->data['table'] = $this->Tablemodel->gettablesdata();
         $this->data['item'] = $table_id;
         $this->data['table_id'] = $this->Itemmodel->getitemsdata();
