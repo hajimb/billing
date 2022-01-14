@@ -4,54 +4,52 @@ class Categorymodel extends CI_Model
 {
     public function __construct()
     {
-        $this->category_table = 'category';
-         $this->load->database();
+        $this->table = 'category';
     }
 
-    public function addCategoryRequest($data)
-    {
-        $data["created_date"] = date('Y-m-d H:i:s');
-        //if($this->session->userdata('user_session')){
+    public function save($data,$id)
+    {   
+        $this->db->trans_begin();
+        $where = array('category'=> $data['category'],'restaurant_id'=> $data['restaurant_id'],'is_deleted'=> 0);
+        if(is_exists($where, $this->table, $id,'category_id') > 0 ){
+            $result = array('msg' => 'Category Name already Exist','status' => false);
+            return $result;
+        }
+        if($id == 0) {
+            $data["created_date"] = date('Y-m-d H:i:s');
+            $this->db->insert($this->table,$data);
+            $id = $this->db->insert_id();
 
-        //$user_session = $this->session->userdata('user_session');
-        //$data["userid"] = $user_session['user_id'];
-        //}
-        
-        $this->db->insert($this->category_table,$data);
+        }else{
+            $data["modified_date"] = date('Y-m-d H:i:s');
+            $this->db->where('category_id', $id);
+            $this->db->update($this->table, $data);
+        }
 
-        return 1;
-
-    }  
-    
-    function getCategorydata()
-    {
-        $id = 0;
-        $query = $this->db->get_where($this->category_table, array('is_deleted' => $id));
-        $result = $query->result_array();
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $result = array('msg' => 'Error While Updating Category Details','status' => false);
+        } else {
+            $this->db->trans_commit();
+            $result = array('msg' => 'Category Details Updated successfully','status' => true);
+        }
         return $result;
     }
 
-    public function getcategory($id)
-	{
-		$query = $this->db->get_where($this->category_table,array('category_id'=>$id));
-		$result['data'] = $query->row_array();		
-		return $result;
-	}
-
-    public function updaterecord($data)
-    {   
-        $this->db->where('category_id', $data['category_id']);
-        $this->db->update($this->category_table, $data);     
-        return 1;
-    }
-    
-    function delete_category($id)
-    {
-        $data = array(
-            'is_deleted ' => 1,
-        );
+    function delete($id)
+    { 
+        $this->db->trans_begin();
+        $data = array('is_deleted ' => 1);
         $this->db->where('category_id', $id);
-        $this->db->update($this->category_table, $data);
-        return 1;
+        $this->db->update($this->table, $data);
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $result = array('msg' => 'Error While Deleting Category','status' => false);
+        } else {
+            $this->db->trans_commit();
+            $result = array('msg' => 'Category Deleted Successfully','status' => true);
+        }
+        return $result;
     }
+
 }

@@ -4,95 +4,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Category extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-
-		 $session_data = $this->session->userdata('user_session');
-         if (!isset($session_data) || empty($session_data)) {
-             redirect('login');
-             
-         }else{
-            $this->data['session_data'] = @$this->session->userdata('user_session');
-			$this->data['user_permission'] = @$this->session->userdata('user_permission');
-
-            // $group_data = array();
-			// $user_id = $session_data['user_id'];
-			// $this->load->model('model_groups');
-			// $group_data = $this->model_groups->getUserGroupByUserId($user_id);
-			// $this->data['user_permission'] = unserialize($group_data['permission']);
-			// $this->permission = unserialize($group_data['permission']);
-        }
-
-        $this->load->model('Categorymodel');        
+        $this->data['session_data'] = @$this->session->userdata('user_session');
+        $this->data['user_permission'] = @$this->session->userdata('user_permission');
+        $this->load->model('Categorymodel'); 
+        $this->restaurant_id = $this->data['session_data']['restaurant_id'];  
     }
 
-	public function index() {
-        $this->data['title'] = 'Category List'; 
-        $this->data['category'] = $this->Categorymodel->getCategorydata();
+
+    public function index()
+	{
+        $this->data['data'] = getData('category', $this->restaurant_id,"category_id");
+
+        $this->data['js']     = array(
+			"assets/plugins/datatables/jquery.dataTables.min.js",
+			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
+			"assets/plugins/datatables-responsive/js/dataTables.responsive.min.js",
+			"assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js",
+		);
+		$this->data['css']     = array(
+			"assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
+			"assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
+			"assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
+		);
+		$this->data["pagename"]  = "category-list";
+		$this->data['page_title'] = "Manage Category";
+		$this->data['breadcrumb'][0] = "Category";
+		// $this->data['breadcrumb'][1] = "";
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
-		$this->load->view('category/category');
+        $this->load->view('common/breadcrumb',$this->data);
+		$this->load->view('category/index');
 		$this->load->view('common/footer');
-	}
+		//$this->render_template('groups/index', $this->data);
+	}	
 
-    public function add_category() {
-        $this->data['title'] = 'Add New Category'; 
-		$this->load->view('common/header',$this->data);
-        $this->load->view('common/sidebar',$this->data);
-		$this->load->view('category/add_category');
-		$this->load->view('common/footer');
-	}
-
-    public function add()
-	{		
-		$this->data["page_head"]  = "Add Category";
-		$this->data["page_title"] = "Add Category";
-		$this->data["page_view"]  = "Add Category";
-        $categoryData['category'] = $this->input->post("category");        
-		$datareq = $this->Categorymodel->addCategoryRequest($categoryData);
-        if($datareq == 1){
-            $return['status'] = 1;
-            $return['msg'] = 'Category added successfully';
-        }else{
-            $return['status'] = 0;
-            $return['msg'] = 'error in storing data';
-        }
-        echo json_encode($return);
-        redirect('category');
-	}
-
-    public function edit($id)
+    public function edit()
 	{	
-		$this->data['title'] = 'Edit Category'; 
-		$this->data["page_head"]  = "Edit Category";
-		$this->data["page_title"] = "Edit Category";
-		$this->data["page_view"]  = "Edit Category";
-		$this->data["formdata"]   = $this->Categorymodel->getcategory($id);		
+        $todo = "Edit";
+        $id = $this->input->post('main_id');
+        $this->create($id, $todo);
+	}
+
+    public function create($id = 0,$todo = "Add"){
+
+		$this->data['title']        = $todo." Category"; 
+        $this->data['pagename']     = 'category-edit'; 
+		$this->data['page_title']   = "Manage Category";
+		$this->data['breadcrumb'][0] = "Category";
+		$this->data['breadcrumb'][1] = $todo;
+        $this->data["main_id"]      = $id;
+		$this->data["todo"]         = $todo;
+        $this->data["data"]         = getData('category', $this->restaurant_id,"category_id", $id);	
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
-		$this->load->view("category/edit_category",$this->data);
+        $this->load->view('common/breadcrumb',$this->data);		
+		$this->load->view("category/edit",$this->data);
 		$this->load->view('common/footer');
-	}
-    public function update($id='')
-	{
-		$data = array(
-            'category_id' => $this->input->post("id"),
-            'category' => $this->input->post("category")
-        );
-            $datareq = $this->Categorymodel->updaterecord($data);
-            if($datareq == 1){
-                $return['status'] = 1;
-                $return['msg'] = 'category edit successfully';
-            }else{
-                $return['status'] = 0;
-                $return['msg'] = 'error in storing data';
-            }  
-    redirect('category');
-		
-	}
-
-    public function cat_delete($id)
-    {        
-        $this->Categorymodel->delete_category($id);
-        redirect('category');
     }
-    
 }

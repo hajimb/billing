@@ -4,100 +4,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Discount extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-
-		 $session_data = $this->session->userdata('user_session');
-         if (!isset($session_data) || empty($session_data)) {
-             redirect('login');
-             
-         }else{
-            $this->data['session_data'] = @$this->session->userdata('user_session');
-			$this->data['user_permission'] = @$this->session->userdata('user_permission');
-
-            // $group_data = array();
-			// $user_id = $session_data['user_id'];
-			// $this->load->model('model_groups');
-			// $group_data = $this->model_groups->getUserGroupByUserId($user_id);
-			// $this->data['user_permission'] = unserialize($group_data['permission']);
-			// $this->permission = unserialize($group_data['permission']);
-        }
+        $this->data['session_data'] = @$this->session->userdata('user_session');
+        $this->data['user_permission'] = @$this->session->userdata('user_permission');
         $this->load->model('Discountmodel');        
+        $this->restaurant_id = $this->data['session_data']['restaurant_id'];
     }
 
-	public function index() {
-        $this->data['title'] = 'Discount List'; 
-        $this->data['discount'] = $this->Discountmodel->getdiscountdata();
+    public function index()
+	{
+        $this->data['discount'] = getData('discount', $this->restaurant_id,"discount_id");	
+
+        $this->data['js']     = array(
+			"assets/plugins/datatables/jquery.dataTables.min.js",
+			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
+			"assets/plugins/datatables-responsive/js/dataTables.responsive.min.js",
+			"assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js",
+		);
+		$this->data['css']     = array(
+			"assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
+			"assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
+			"assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
+		);
+		$this->data["pagename"]  = "discount-list";
+		$this->data['page_title'] = "Manage Discount";
+		$this->data['breadcrumb'][0] = "Discount";
+		// $this->data['breadcrumb'][1] = "";
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
-		$this->load->view('discount/discount');
+        $this->load->view('common/breadcrumb',$this->data);
+		$this->load->view('discount/index');
 		$this->load->view('common/footer');
-	}
+		//$this->render_template('groups/index', $this->data);
+	}	
 
-    public function add_discount() {
-        $this->data['title'] = 'Add New Discount'; 
-		$this->load->view('common/header',$this->data);
-        $this->load->view('common/sidebar',$this->data);
-		$this->load->view('discount/add_discount');
-		$this->load->view('common/footer');
-	}
-
-    public function add()
-	{		
-		$this->data["page_head"]  = "Add discount";
-		$this->data["page_title"] = "Add discount";
-		$this->data["page_view"]  = "Add discount";
-        $discountData['discount_name'] = $this->input->post("discount_name");
-        $discountData['discount'] = $this->input->post("discount");                     
-		$datareq = $this->Discountmodel->adddiscountRequest($discountData);
-        if($datareq == 1){
-            $return['status'] = 1;
-            $return['msg'] = 'discount added successfully';
-        }else{
-            $return['status'] = 0;
-            $return['msg'] = 'error in storing data';
-        }
-        echo json_encode($return);
-        redirect('discount');
-	}
-
-    public function edit($id)
+    public function edit()
 	{	
-		$this->data['title'] = 'Edit discount'; 
-		$this->data["page_head"]  = "Edit discount";
-		$this->data["page_title"] = "Edit discount";
-		$this->data["page_view"]  = "Edit discount";
-		$this->data["formdata"]   = $this->Discountmodel->getdiscount($id);		
+        $todo = "Edit";
+        $id = $this->input->post('main_id');
+        $this->create($id, $todo);
+	}
+
+    public function create($id = 0,$todo = "Add"){
+
+		$this->data['title']        = $todo." Discount"; 
+        $this->data['pagename']     = 'discount-edit'; 
+		$this->data['page_title']   = "Manage Discount";
+		$this->data['breadcrumb'][0] = "Discount";
+		$this->data['breadcrumb'][1] = $todo;
+        $this->data["main_id"]      = $id;
+		$this->data["todo"]         = $todo;
+        $this->data["userdata"]   = getData('discount', $this->restaurant_id,"discount_id", $id);
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
-		$this->load->view("discount/edit_discount",$this->data);
+        $this->load->view('common/breadcrumb',$this->data);		
+		$this->load->view("discount/edit",$this->data);
 		$this->load->view('common/footer');
-	}
-    public function update($id='')
-	{					
-            $data = array(
-                'discount_id' => $this->input->post('id'),
-                'discount_name' => $this->input->post('discount_name'),
-                'discount' => $this->input->post('discount') );
-                $datareq = $this->Discountmodel->updaterecord($data);
-                if($datareq == 1){
-                    $return['status'] = 1;
-                    $return['msg'] = 'discount edit successfully';
-                }else{
-                    $return['status'] = 0;
-                    $return['msg'] = 'error in storing data';
-                }  
-		redirect('discount');
-		
-	}
+    }
 
-    public function getdiscount(){
-        $post_data = $this->input->post();
-        $return = $this->Discountmodel->getdiscount($post_data['id']);
-        echo json_encode($return);
-    }
-    public function discount_delete($id)
-    {        
-        $this->Discountmodel->delete_discount($id);
-        redirect('discount');
-    }
-    
+
 }

@@ -4,21 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Item extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-
-        $session_data = $this->session->userdata('user_session');
-        if (!isset($session_data) || empty($session_data)) {
-            redirect('login');
-        }else{
-			$this->data['session_data'] = @$this->session->userdata('user_session');
-			$this->data['user_permission'] = @$this->session->userdata('user_permission');
-
-            // $group_data = array();
-			// $user_id = $session_data['user_id'];
-			// $this->load->model('model_groups');
-			// $group_data = $this->model_groups->getUserGroupByUserId($user_id);
-			// $this->data['user_permission'] = unserialize($group_data['permission']);
-			// $this->permission = unserialize($group_data['permission']);
-        }
+        $this->data['session_data'] = @$this->session->userdata('user_session');
+        $this->data['user_permission'] = @$this->session->userdata('user_permission');
+        $this->restaurant_id = $this->data['session_data']['restaurant_id'];
         $this->load->model('Itemmodel');
         $this->load->model('Restaurantmodel');
         $this->load->model('Categorymodel');        
@@ -26,7 +14,7 @@ class Item extends CI_Controller {
 
 	public function index() {
         $this->data['title'] = 'Item List'; 
-        $this->data['category'] = $this->Categorymodel->getCategorydata();
+        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
         $this->data['items'] = $this->Itemmodel->getitemsdata();
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
@@ -37,7 +25,7 @@ class Item extends CI_Controller {
     public function add_item() {
         $this->data['title'] = 'Add New Item'; 
         $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
-        $this->data['category'] = $this->Categorymodel->getCategorydata();
+        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
 		$this->load->view('Item/add_item');
@@ -77,7 +65,7 @@ class Item extends CI_Controller {
 		$this->data["page_title"] = "Edit Item";
 		$this->data["page_view"]  = "Edit Item";
         $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
-        $this->data['category'] = $this->Categorymodel->getCategorydata();
+        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
 		$this->data["formdata"]   = $this->Itemmodel->getitem($id);		
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		

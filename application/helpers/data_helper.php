@@ -54,3 +54,27 @@ if (!function_exists('is_exists')) {
         return $rows;
     }
 }
+if (!function_exists('getData')) {
+    function getData($table_name, $restaurant_id = 0, $fldname = "id", $id = -1)
+    {
+        $result = array();
+        $ci = &get_instance();
+        $ci->load->database();
+        $ci->db->select('*');
+        $ci->db->from($table_name);
+        $ci->db->where('is_deleted', 0);
+        if($restaurant_id > 0){
+            $ci->db->where('restaurant_id', $restaurant_id);
+        }
+        if ($id != -1) {
+            $ci->db->where($fldname, $id);
+        }
+        $queryone   = $ci->db->get();
+        if ($id > 0) {
+            $result    = $queryone->row_array();
+        }else{
+            $result    = $queryone->result_array();
+        }
+        return $result;
+    }
+}
