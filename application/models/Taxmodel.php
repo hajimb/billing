@@ -5,7 +5,6 @@ class Taxmodel extends CI_Model
     public function __construct()
     {
         $this->table = 'tax';
-        // $this->load->database();
     }
 
     public function save($data,$id)
@@ -57,20 +56,5 @@ class Taxmodel extends CI_Model
         }
         return $result;
     }
-    function getTaxdata($restaurant_id)
-    {
-        $id = 0;
-        $query = $this->db->get_where($this->table, array('is_deleted' => $id,'restaurant_id'=>$restaurant_id));
-        $result = $query->result_array();
-        return $result;
-    }
-
-    public function gettax($id,$restaurant_id)
-	{
-		$query = $this->db->get_where($this->table,array('tax_id'=>$id,'restaurant_id'=>$restaurant_id));
-		$result = $query->row_array();		
-		return $result;
-	}
-    
 
 }

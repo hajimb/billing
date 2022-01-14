@@ -18,7 +18,18 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-   
+    <div class="legend">
+      <span class="legend-span"><i class="fas fa-circle text-white"></i>  Blank Table</span>
+      <span class="legend-span"><i class="fas fa-circle text-cyan "></i>  Order Taken</span>
+      <span class="legend-span"><i class="fas fa-circle text-teal"></i>  Kitchen Accept</span>
+      <span class="legend-span"><i class="fas fa-circle text-green"></i> In Cooking</span>
+      <span class="legend-span"><i class="fas fa-circle text-orange"></i>  Order Ready</span>
+      <span class="legend-span"><i class="fas fa-circle text-indigo"></i>  Picked Up By Waiter</span>
+      <span class="legend-span"><i class="fas fa-circle text-secondary"></i>  Order On Table</span>
+      <span class="legend-span"><i class="fas fa-circle text-pink"></i>  Bill Raised</span>
+      <span class="legend-span"><i class="fas fa-circle text-danger"></i> Bill Paid</span>
+    </div>
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -60,7 +71,7 @@
                         <tbody>
                           <?php foreach($order as $order_d) { ?>
                             
-                            <tr id="ord_<?=$order_d["Id"]?>" <?php if($order_d["status"] == "Done"){ ?> class="table-danger" <?php }else if($order_d["status"] == "Cooking"){ ?> class="table-success"<?php }else if($order_d["status"] == "Ready"){ ?> class="table-warning"<?php } ?>>
+                            <tr id="ord_<?=$order_d["Id"]?>" value<?php if($order_d["status"] == "Done"){ ?> class="table-danger" <?php }else if($order_d["status"] == "Cooking"){ ?> class="table-success"<?php }else if($order_d["status"] == "Ready"){ ?> class="table-warning"<?php } ?>>
                               <th scope="row"><?=$order_d["invoice_no"]?></th>
                               <td><?=$order_d["bill_type"]?></td>
                               <td><?=$order_d["tablename"]?></td>
@@ -71,7 +82,7 @@
                               <td><?=$order_d["discount_amt"]?></td>
                               <td><?=$order_d["total"]?></td>
                               <!-- <td><?=$order_d[""]?></td> -->
-                              <?php if($order_d["status"] == 'Paid'){ ?>
+                              <?php if($order_d["status"] == 'BillPaid'){ ?>
                                 <td>
                                   <span><a href="" id="<?=$order_d["Id"]?>" class="Order_detail_1" data-toggle="modal" data-target="#modal-default-1">View</a></span> 
                                    <!-- | <span><a href="">Reprint</a></span> -->

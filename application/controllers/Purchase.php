@@ -38,7 +38,7 @@ class Purchase extends CI_Controller {
 
     public function add_stock() {
         $this->data['title'] = 'Add Stock'; 
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
         $this->data['category'] = $this->Categorymodel->getCategorydata();
         $this->data['rawmaterial'] = $this->RawMaterialmodel->getRawMaterialdata();
 		$this->load->view('common/header',$this->data);
@@ -82,7 +82,7 @@ class Purchase extends CI_Controller {
 		$this->data["page_head"]  = "Edit Stock";
 		$this->data["page_title"] = "Edit Stock";
 		$this->data["page_view"]  = "Edit Stock";
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
 		$this->data["formdata"] = $this->Stockmodel->getcurrentstock($id);
         $this->data['rawmaterial'] = $this->RawMaterialmodel->getRawMaterialdata();		
 		$this->load->view('common/header',$this->data);

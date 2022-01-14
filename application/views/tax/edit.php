@@ -14,32 +14,32 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                         <label for="inputName">Tax Name</label>
-                        <input type="taxt" id="tax_name" name="tax_name" value="<?= ($userdata['tax_name'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                        <input type="taxt" id="tax_name" name="tax_name" value="<?= ($data['tax_name'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                         <label for="inputName">VAT</label>
-                        <input type="taxt" id="vat" name="vat" value="<?= ($userdata['vat'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                        <input type="taxt" id="vat" name="vat" value="<?= ($data['vat'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                         <label for="inputName">SGST</label>
-                        <input type="taxt" id="sgst" name="sgst" value="<?= ($userdata['sgst'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                        <input type="taxt" id="sgst" name="sgst" value="<?= ($data['sgst'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                         <label for="inputName">CGST</label>
-                        <input type="taxt" id="cgst" name="cgst" value="<?= ($userdata['cgst'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                        <input type="taxt" id="cgst" name="cgst" value="<?= ($data['cgst'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="inputName">&nbsp;</label>
                             <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input permission" type="checkbox" name="is_default" <?php if(($userdata['is_default'] ?? '') == 1) {?> checked <?php } ?> id="is_default" value="1" >
+                                <input class="custom-control-input permission" type="checkbox" name="is_default" <?php if(($data['is_default'] ?? '') == 1) {?> checked <?php } ?> id="is_default" value="1" >
                                 <label for="is_default" class="custom-control-label">Default</label>
                             </div>
                         </div>

@@ -14,19 +14,19 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="restaurant_name">Name</label>
-                  <input type="text" id="restaurant_name" name="restaurant_name" value="<?= ($userdata['restaurant_name'] ?? ''); ?>" autocomplete="off" class="form-control" required />
+                  <input type="text" id="restaurant_name" name="restaurant_name" value="<?= ($data['restaurant_name'] ?? ''); ?>" autocomplete="off" class="form-control" required />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="contact_no">Mobile / Phone No.</label>
-                  <input type="text" id="contact_no" name="contact_no" value="<?= ($userdata['contact_no'] ?? ''); ?>" onkeypress="return isNumber(event)" autocomplete="off" class="form-control" required />
+                  <input type="text" id="contact_no" name="contact_no" value="<?= ($data['contact_no'] ?? ''); ?>" onkeypress="return isNumber(event)" autocomplete="off" class="form-control" required />
                 </div>
               </div>
               <div class="col-sm-12">
                 <div class="form-group">
                   <label for="restaurant_address">Address</label>
-                  <textarea id="restaurant_address" name="restaurant_address" autocomplete="off" class="form-control" rows="4" required><?= ($userdata['restaurant_address'] ?? ''); ?></textarea>
+                  <textarea id="restaurant_address" name="restaurant_address" autocomplete="off" class="form-control" rows="4" required><?= ($data['restaurant_address'] ?? ''); ?></textarea>
                 </div>
               </div>
             </div>

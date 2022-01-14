@@ -78,7 +78,7 @@ class Restaurant extends REST_Controller {
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
             $id     = $this->post('main_id');
-            $result = $this->Restaurantmodel->getrestaurant($id);
+            $result = getData('restaurant', 0, "restaurant_id",$id);
             $this->response([
                 'status'    => true,
                 'validate'  => TRUE,

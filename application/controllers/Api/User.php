@@ -16,7 +16,9 @@ class User extends REST_Controller {
     
     public function save_post(){ 
         // print_r($_POST);
+        $restaurant_id    = 0 ;
         $id = $this->post("main_id");
+        $groups = $this->post("groups");
         $data   = array('status' => false,'validate' => false, 'message' => array());
         $this->form_validation->set_rules('main_id', 'User ID', 'required|numeric|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
@@ -27,13 +29,17 @@ class User extends REST_Controller {
             $this->form_validation->set_rules('password', 'Password', 'required|trim');
             // $this->form_validation->set_rules('repassword', 'Invalid Confirm Password', 'trim|required|matches[password]');
         }
-        $this->form_validation->set_rules('status', 'status', 'required|trim');
-        $this->form_validation->set_rules('groups', 'groups', 'required|trim');
+        $this->form_validation->set_rules('status', 'Status', 'required|trim');
+        $this->form_validation->set_rules('groups', 'Groups', 'required|trim');
+        if($groups != 1){
+            $this->form_validation->set_rules('restaurant_id', 'Rrestaurant', 'required|trim');
+            $restaurant_id    = $this->post("restaurant_id") ;
+        }
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
 
-            $updatedata['restaurant_id']    = $this->post("restaurant_id") ;
+            $updatedata['restaurant_id']    = $restaurant_id ;
             $updatedata['username']         = $this->post("username") ;
             $updatedata['firstname']        = $this->post("firstname") ;
             $updatedata['lastname']         = $this->post("lastname") ;

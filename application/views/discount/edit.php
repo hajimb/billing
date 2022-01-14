@@ -14,13 +14,13 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                         <label for="discount_name">Discount Name</label>
-                        <input type="taxt" id="discount_name" name="discount_name" value="<?= ($userdata['discount_name'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                        <input type="taxt" id="discount_name" name="discount_name" value="<?= ($data['discount_name'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                         <label for="discount">Discount (%)</label>
-                        <input type="taxt" id="discount" name="discount" value="<?= ($userdata['discount'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                        <input type="taxt" id="discount" name="discount" value="<?= ($data['discount'] ?? '');?>" class="form-control" onkeypress="return isNumber(event)" autocomplete="off" required/>          
                         </div>
                     </div>
                 </div>

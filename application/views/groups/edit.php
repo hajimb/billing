@@ -15,7 +15,7 @@
                     <!-- text input -->
                     <div class="form-group">
                       <label>Group Name</label>
-                      <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Enter group name" value="<?php echo $group_data['group_name']; ?>">
+                      <input type="text" class="form-control" id="group_name" name="group_name" placeholder="Enter group name" value="<?php echo $data['group_name']; ?>">
                     </div>
                   </div>
                 </div>
@@ -30,17 +30,17 @@
                     </div>
                   </div>
                   <?php
-                  $serialize_permission = unserialize($group_data['permission']);
+                  $serialize_permission = explode(',',$data['permission']);
                   foreach ($modules as $module) { 
                     $checked = "";
                     if ($serialize_permission) {
-                        if (in_array($module['classname'], $serialize_permission)) {
+                        if (in_array($module['id'], $serialize_permission)) {
                           $checked =  "checked";
                         }
                       } ?>
                     <div class="col-sm-3">
                       <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input permission" type="checkbox" name="permission[]" <?= $checked;?> id="permission_<?= $module['classname']; ?>" value="<?= $module['classname']; ?>" >
+                        <input class="custom-control-input permission" type="checkbox" name="permission[]" <?= $checked;?> id="permission_<?= $module['classname']; ?>" value="<?= $module['id']; ?>" >
                         <label for="permission_<?= $module['classname']; ?>" class="custom-control-label"><?= $module['name']; ?></label>
                       </div>
                     </div>

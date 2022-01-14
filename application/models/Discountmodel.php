@@ -51,21 +51,4 @@ class Discountmodel extends CI_Model
         }
         return $result;
     }
-
-    function getAllData($restaurant_id)
-    {
-        $id = 0;
-        $query = $this->db->get_where($this->table, array('is_deleted' => $id,'restaurant_id'=>$restaurant_id));
-        $result = $query->result_array();
-        // print_r($result);
-        return $result;
-    }
-
-    public function getData($id,$restaurant_id)
-	{
-		$query = $this->db->get_where($this->table,array('discount_id'=>$id,'restaurant_id'=>$restaurant_id));
-		$result = $query->row_array();		
-		return $result;
-	}
-
 }

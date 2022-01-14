@@ -1,66 +1,61 @@
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Edit Expense</h1>
-          </div>  
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-            <a role="button" onclick="goBack()" class="btn btn-outline-danger"><i class="fas fa-chevron-left mr-1"></i><strong>BACK</strong></a>
-            </ol>
-          </div>        
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
     <!-- Main content -->
     <section class="content">
-
-      <!-- Default box -->
-      <div class="card">
-       
-        <form action="<?php echo base_url() ?>Expense/update" enctype="multipart/form-data" method="post" name="addstock" id="addstock" class="form-horizontal">
-            <div class="card-body row">          
-              <div class="col-9">
-                <div class="form-group">
-                  <label for="inputName">Select User</label>
-                            <select class="form-control custom-select" placeholder="Select User" name="user_id" required>
-                            <?php  foreach($user as $user_s) { ?>    
-                            <option value="<?php echo $user_s['id']?>" <?php if($formdata['data']['user_id'] == $user_s['id']) { ?> selected <?php } ?>><?php echo $user_s['username']?></option>
-                                <?php } ?>
-                            </select>
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <div class="card card-warning">
+            <div class="card-header">
+              <h3 class="card-title"><?= $todo;?> Expense</h3>
+            </div>
+            <form role="form" method="post" name="mainfrm" id="mainfrm">
+            <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                    <?php if(in_array('user', $user_permission)){ ?>
+                      <div class="form-group">
+                        <label for="groups">User</label>
+                        <select class="form-control" id="user_id" name="user_id">
+                          <option value="">Select User</option>
+                            <?php foreach ($users as $k => $v): ?>
+                            <option <?php if(($data['user_id'] ?? '') == $v['id']){?>selected<?php }?> value="<?php echo $v['id'] ?>"><?php echo $v['username'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                        </div>      
+                    <?php }else{ ?>
+                        <input type="hidden" name="user_id" id="user_id" value="<?= $session_data['user_id'];?>">
+                    <?php } ?>                  
+                    </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="expense">Expense</label>
+                      <input type="taxt" id="expense" name="expense" value="<?= ($data['expense'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="amount">Amount</label>
+                      <input type="taxt" id="amount" name="amount" value="<?= ($data['amount'] ?? '');?>" onkeypress="return isNumber(event)"  class="form-control" autocomplete="off" required/>          
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="inputSubject">Expense</label>
-                  <input type="text"" id="expense" name="expense" value="<?php echo $formdata['data']['expense'];?>" class="form-control" autocomplete="off" required/>
-                </div>
-                <div class="form-group">
-                  <label for="inputSubject">Expense Amount</label>
-                  <input type="" id="amount" name="amount" value="<?php echo $formdata['data']['amount'];?>" class="form-control" onkeypress="return isNumber(event)" autocomplete="off" required/>
-                </div>
-                <input type="hidden" id="id" name="id" value="<?php echo $formdata['data']['expense_id']; ?>"/>
-                <div class="form-group">
-                  <input type="submit" class="btn btn-primary" value="Submit">
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
+                    <input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $session_data['restaurant_id'];?>">
+                    <button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
+                    <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
+                  </div>
                 </div>
               </div>
-            </div>
-        </form>
+              <!-- /.card-footer -->
+            </form>
+          </div>
+        </div>
+        <!-- col-md-12 -->
       </div>
-
+      <!-- /.row -->
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <script>
-    function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
-    }
-    return true;
-    }
-  </script>
+  

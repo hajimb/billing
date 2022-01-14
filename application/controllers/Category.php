@@ -9,7 +9,6 @@ class Category extends CI_Controller {
         $this->restaurant_id = $this->data['session_data']['restaurant_id'];  
     }
 
-
     public function index()
 	{
         $this->data['data'] = getData('category', $this->restaurant_id,"category_id");

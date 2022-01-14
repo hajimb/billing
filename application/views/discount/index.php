@@ -18,9 +18,9 @@
               <input type="hidden" id="main_id" name="main_id" value="">
             </form>
             <tbody>
-              <?php if ($discount) : 
+              <?php if ($data) : 
                 $i = 1;?>
-                <?php foreach ($discount as $k => $v) : ?>
+                <?php foreach ($data as $k => $v) : ?>
                   <tr>
                     <td><?php echo $i++ ?></td>
                     <td><?php echo $v['discount_name']?></td>

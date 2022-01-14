@@ -7,13 +7,14 @@ class Groups extends CI_Controller
 		parent::__construct();
 		$this->data['session_data'] = @$this->session->userdata('user_session');
 		$this->data['user_permission'] = @$this->session->userdata('user_permission');
+        $this->restaurant_id = $this->data['session_data']['restaurant_id'];
 		$this->load->model('model_groups');
 	}
 
 	public function index()
 	{
-		$groups_data = $this->model_groups->getGroupData(0);
-		$this->data['groups_data'] = $groups_data;
+		
+		$this->data['data'] = getGroupData(0);
 		$this->data['js']     = array(
 			"assets/plugins/datatables/jquery.dataTables.min.js",
 			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
@@ -52,11 +53,11 @@ class Groups extends CI_Controller
 
 		$data  = array('group_name'=>'', 'permission' => '');
 		if($id > 0){
-			$group_data = $this->model_groups->getGroupData($id);
+			$group_data = getGroupData($id);
 			if(isset($group_data[0])) $data = $group_data[0];
 		}
-		$this->data['modules'] = $this->model_groups->getModules();
-		$this->data['group_data'] = $data;
+		$this->data['modules'] = getModules();
+		$this->data['data'] = $data;
 		$this->data["pagename"]  = "group-edit";
 		$this->data['page_title'] = "Manage Groups";
 		$this->data['breadcrumb'][0] = "Groups";

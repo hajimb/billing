@@ -16,8 +16,8 @@
               <input type="hidden" id="main_id" name="main_id" value="">
             </form>
             <tbody>
-              <?php if ($groups_data) : ?>
-                <?php foreach ($groups_data as $k => $v) : ?>
+              <?php if ($data) : ?>
+                <?php foreach ($data as $k => $v) : ?>
                   <tr>
                     <td nowrap><?php echo $v['group_name']; ?></td>
                     <td nowrap>

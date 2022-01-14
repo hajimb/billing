@@ -66,7 +66,7 @@
                       <div class="form-group">
                         <label for="groups">Restaurants</label>
                         <select class="form-control" id="restaurant_id" name="restaurant_id">
-                          <option value="">Select Restaurants</option>
+                          <option value="0">Select Restaurants</option>
                             <?php foreach ($restaurants as $k => $v): ?>
                             <option <?php if(($userdata['restaurant_id'] ?? '') == $v['restaurant_id']){?>selected<?php }?> value="<?php echo $v['restaurant_id'] ?>"><?php echo $v['restaurant_name'] ?></option>
                             <?php endforeach ?>

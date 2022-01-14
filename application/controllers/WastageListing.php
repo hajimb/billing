@@ -39,7 +39,7 @@ class WastageListing extends CI_Controller {
 
     public function add_Wastage() {
         $this->data['title'] = 'Add Wastage'; 
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
         $this->data['category'] = $this->Categorymodel->getCategorydata();
         $this->data['stock'] = $this->Stockmodel->getCurrentStockdata();
         $this->data['rawmaterial'] = $this->RawMaterialmodel->getRawMaterialdata();
@@ -78,7 +78,7 @@ class WastageListing extends CI_Controller {
 		$this->data["page_head"]  = "Edit Stock";
 		$this->data["page_title"] = "Edit Stock";
 		$this->data["page_view"]  = "Edit Stock";
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
         $this->data['stock'] = $this->Stockmodel->getCurrentStockdata();
         $this->data['rawmaterial'] = $this->RawMaterialmodel->getRawMaterialdata();
 		$this->data["formdata"] = $this->Wastagemodel->getWastage($id);		

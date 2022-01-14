@@ -24,7 +24,7 @@ class Item extends CI_Controller {
 
     public function add_item() {
         $this->data['title'] = 'Add New Item'; 
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
         $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
@@ -64,7 +64,7 @@ class Item extends CI_Controller {
 		$this->data["page_head"]  = "Edit Item";
 		$this->data["page_title"] = "Edit Item";
 		$this->data["page_view"]  = "Edit Item";
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
         $this->data['category'] = getData('category', $this->restaurant_id,"category_id");
 		$this->data["formdata"]   = $this->Itemmodel->getitem($id);		
 		$this->load->view('common/header',$this->data);

@@ -4,25 +4,30 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 require APPPATH . './libraries/REST_Controller.php';
 
-class Groups extends REST_Controller {
+class Expense extends REST_Controller {
     private $last_query= null;
     function __construct() {
         parent::__construct();
-        $this->load->model('model_groups');
+        $this->load->model('Expensemodel');   
         $this->last_query = false;
     }
 
     public function save_post(){
         $Return = array('status' => false,'validate' => false, 'message' => array());
-        $this->form_validation->set_rules('group_name', 'Group Name', 'required|trim');
+        $this->form_validation->set_rules('user_id', 'User Name', 'required|trim');
+        $this->form_validation->set_rules('expense', 'Expense Name', 'required|trim');
+        $this->form_validation->set_rules('amount', 'Amount', 'required|trim|numeric');
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-            $group_id = $this->post('main_id');
-            // $data['permission']     = serialize($this->input->post('permission'));
-            $data['permission']     = implode(",",$this->input->post('permission'));
-            $data['group_name']     = trim($this->input->post('group_name'));
-            $result                 = $this->model_groups->save($data, $group_id);
+
+            $main_id = $this->post('main_id');
+            
+            $data['restaurant_id']      = $this->post("restaurant_id") ;
+            $data['user_id']            = $this->post('user_id');
+            $data['expense']            = $this->input->post("expense");
+            $data['amount']             = $this->input->post("amount");
+            $result                     = $this->Expensemodel->save($data, $main_id);
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],
@@ -48,7 +53,7 @@ class Groups extends REST_Controller {
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
             $id     = $this->post('main_id');
-            $delete = $this->model_groups->delete($id);
+            $delete = $this->Expensemodel->delete($id);
             $this->response([
                 'status'    => $delete['status'],
                 'validate'  => TRUE,

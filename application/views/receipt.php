@@ -37,9 +37,9 @@
 	<div class="flex">
 		<div class="w-100 text-center">
 			<?php //if($amount_tendered > 0): ?>
-			<h2><b><?php echo $restaurant['data']['restaurant_name'] ?></b></h2>
-			<p><?php echo $restaurant['data']['restaurant_address'] ?></p>
-			<p><b>Contact No.</b><?php echo $restaurant['data']['contact_no'] ?></p>
+			<h2><b><?php echo $restaurant['restaurant_name'] ?></b></h2>
+			<p><?php echo $restaurant['restaurant_address'] ?></p>
+			<p><b>Contact No.</b><?php echo $restaurant['contact_no'] ?></p>
 			
 		<?php //endif; ?>
 		</div>

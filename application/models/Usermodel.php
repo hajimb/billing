@@ -4,7 +4,7 @@ class Usermodel extends CI_Model
 {
     public function __construct()
     {
-        $this->admin_table = 'admin_users';
+        $this->table = 'admin_users';
     }
 
     function getuserdata()
@@ -15,16 +15,16 @@ class Usermodel extends CI_Model
             if($user_session['groups'] != 1)
                 $restaurant_id = $user_session["restaurant_id"];
         }
-        $this->db->select('admin_users.*, groups.group_name, restaurant.restaurant_name');
-        $this->db->from('admin_users');
-        $this->db->join('groups', 'groups.id = admin_users.groups');
-        $this->db->join('restaurant', 'restaurant.restaurant_id = admin_users.restaurant_id');
-        $this->db->where('admin_users.is_deleted', '0');
-        $this->db->where('restaurant.is_deleted', '0');
+        $this->db->select("au.*, gp.group_name, IFNULL(res.restaurant_name,'--') as restaurant_name");
+        $this->db->from('admin_users au');
+        $this->db->join('restaurant res', 'res.restaurant_id = au.restaurant_id  AND res.is_deleted = 0','left');
+        $this->db->join('groups gp', 'gp.id = au.groups','left');
+        $this->db->where('au.is_deleted', '0');
         if($restaurant_id > 0){
-            $this->db->where(' admin_users.restaurant_id', $restaurant_id);
+            $this->db->where(' au.restaurant_id', $restaurant_id);
         }
         $query = $this->db->get();
+        // echo $this->db->last_query();
         $result = $query->result_array();
         return $result;
     }
@@ -45,14 +45,16 @@ class Usermodel extends CI_Model
         $query = $this->db->get();
         $row = $query->row_array();
         if(isset($row)){
+            
             if($row['password'] == md5($password)){
                 
             $user_session = array('user_id' => $row['id'], 'firstname' => $row['firstname'], 'lastname' => $row['lastname'], 'email' => $row['email'], 'username' => $row['username'], 'restaurant_id' => $row['restaurant_id'], 'groups' => $row['groups']);
             $this->session->set_userdata('user_session', $user_session); 
         
-            $this->load->model('model_groups');
-            $group_data = $this->model_groups->getUserGroupByUserId($row['id']);
-            $this->session->set_userdata('user_permission', unserialize($group_data['permission']));
+            $group_data = getUserGroupByUserId($row['id']);
+            // print_r($group_data); //['permission'];
+            // exit;
+            $this->session->set_userdata('user_permission', explode(',',$group_data['permission']));
 
             $res_arr['msg'] = 'You have succesfully logged in.';
             $res_arr['status'] = 1;
@@ -86,7 +88,7 @@ class Usermodel extends CI_Model
     public function getUser($id)
     {
         $result = array();
-        $query  = $this->db->get_where($this->admin_table,array('id' => $id));
+        $query  = $this->db->get_where($this->admie,array('id' => $id));
         $row = $query->num_rows();		
         if($row> 0 )
             $result = $query->row_array();		
@@ -98,13 +100,13 @@ class Usermodel extends CI_Model
     {   
         $this->db->trans_begin();
         $where = array('username'=> $data['username'],'is_deleted'=> 0);
-        if(is_exists($where, $this->admin_table, $id) > 0 ){
+        if(is_exists($where, $this->table, $id) > 0 ){
             $result = array('msg' => 'User Name already Exist','status' => false);
             return $result;
         }
         if($id == 0) {
             $data["created_date"] = date('Y-m-d H:i:s');
-            $this->db->insert($this->admin_table,$data);
+            $this->db->insert($this->table,$data);
             $user_id = $this->db->insert_id();
 
             $group_data = array(
@@ -116,7 +118,7 @@ class Usermodel extends CI_Model
         }else{
             $data["modified_date"] = date('Y-m-d H:i:s');
             $this->db->where('id', $id);
-            $this->db->update($this->admin_table, $data);
+            $this->db->update($this->table, $data);
 
             $update_user_group = array('group_id' => $data['groups']);
             $this->db->where('user_id', $id);
@@ -139,7 +141,7 @@ class Usermodel extends CI_Model
         $this->db->trans_begin();
         $data = array('is_deleted ' => 1);
         $this->db->where('id', $id);
-        $this->db->update($this->admin_table, $data);
+        $this->db->update($this->table, $data);
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
             $result = array('msg' => 'Error While Deleting User','status' => false);

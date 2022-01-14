@@ -36,7 +36,7 @@ class Table extends CI_Controller {
 
     public function add_table() {
         $this->data['title'] = 'Add New Item'; 
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
         $this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
 		$this->load->view('tables/add');
@@ -71,7 +71,7 @@ class Table extends CI_Controller {
 		$this->data["page_head"]  = "Edit Stock";
 		$this->data["page_title"] = "Edit Stock";
 		$this->data["page_view"]  = "Edit Stock";
-        $this->data['restaurant'] = $this->Restaurantmodel->getrestaurantsdata();
+        $this->data['restaurant'] = getData('restaurant', 0, "restaurant_id");
 		$this->data["formdata"] = $this->Tablemodel->gettable($id);        	
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		

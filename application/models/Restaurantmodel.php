@@ -5,24 +5,8 @@ class Restaurantmodel extends CI_Model
     public function __construct()
     {
         $this->restaurant_table = 'restaurant';
-         $this->load->database();
-    }
-
-    function getrestaurantsdata()
-    {
-        $id = 0;
-        $query = $this->db->get_where($this->restaurant_table, array('is_deleted' => $id));
-        $result = $query->result_array();
-        return $result;
     }
     
-    public function getrestaurant($id)
-	{
-		$query = $this->db->get_where($this->restaurant_table,array('restaurant_id'=>$id));
-		$result = $query->row_array();		
-		return $result;
-	}
-
     public function save($data,$id)
     {   
         $this->db->trans_begin();

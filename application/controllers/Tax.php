@@ -7,14 +7,13 @@ class Tax extends CI_Controller {
 
         $this->data['session_data'] = @$this->session->userdata('user_session');
         $this->data['user_permission'] = @$this->session->userdata('user_permission');
-        $this->load->model('Taxmodel');        
+		$this->restaurant_id = $this->data['session_data']['restaurant_id'];  
+ 
     }
 
     public function index()
 	{
-        $restaurant_id = $this->data['session_data']['restaurant_id'];
-        $this->data['tax'] = $this->Taxmodel->getTaxdata($restaurant_id);
-
+		$this->data['data'] = getData('tax', $this->restaurant_id,"tax_id");
         $this->data['js']     = array(
 			"assets/plugins/datatables/jquery.dataTables.min.js",
 			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
@@ -29,13 +28,11 @@ class Tax extends CI_Controller {
 		$this->data["pagename"]  = "tax-list";
 		$this->data['page_title'] = "Manage Tax";
 		$this->data['breadcrumb'][0] = "Tax";
-		// $this->data['breadcrumb'][1] = "";
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
         $this->load->view('common/breadcrumb',$this->data);
 		$this->load->view('tax/index');
 		$this->load->view('common/footer');
-		//$this->render_template('groups/index', $this->data);
 	}	
 
     public function edit()
@@ -47,7 +44,6 @@ class Tax extends CI_Controller {
 
     public function create($id = 0,$todo = "Add"){
 
-        $restaurant_id = $this->data['session_data']['restaurant_id'];
 		$this->data['title']        = $todo." Tax"; 
         $this->data['pagename']     = 'tax-edit'; 
 		$this->data['page_title']   = "Manage Tax";
@@ -55,7 +51,7 @@ class Tax extends CI_Controller {
 		$this->data['breadcrumb'][1] = $todo;
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
-		$this->data["userdata"]     =$this->Taxmodel->gettax($id,$restaurant_id);		
+		$this->data['data'] = getData('tax', $this->restaurant_id,"tax_id",$id);
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
         $this->load->view('common/breadcrumb',$this->data);		

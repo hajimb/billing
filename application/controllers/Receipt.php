@@ -24,7 +24,7 @@ class Receipt extends CI_Controller {
         $post_data = $this->input->get();
        // print_r($post_data);
         $this->data["bill"] = $this->Ordermodel->getordertable($post_data);
-        $this->data["restaurant"] = $this->Restaurantmodel->getrestaurant($this->restaurant_id);
+        $this->data["restaurant"] = getData('restaurant', 0, "restaurant_id",$this->restaurant_id);
         // print_r($this->data);
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);

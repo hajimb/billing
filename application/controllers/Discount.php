@@ -6,14 +6,12 @@ class Discount extends CI_Controller {
         parent::__construct();
         $this->data['session_data'] = @$this->session->userdata('user_session');
         $this->data['user_permission'] = @$this->session->userdata('user_permission');
-        $this->load->model('Discountmodel');        
         $this->restaurant_id = $this->data['session_data']['restaurant_id'];
     }
 
     public function index()
 	{
-        $this->data['discount'] = getData('discount', $this->restaurant_id,"discount_id");	
-
+        $this->data['data'] = getData('discount', $this->restaurant_id,"discount_id");	
         $this->data['js']     = array(
 			"assets/plugins/datatables/jquery.dataTables.min.js",
 			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
@@ -53,7 +51,7 @@ class Discount extends CI_Controller {
 		$this->data['breadcrumb'][1] = $todo;
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
-        $this->data["userdata"]   = getData('discount', $this->restaurant_id,"discount_id", $id);
+        $this->data["data"]   = getData('discount', $this->restaurant_id,"discount_id", $id);
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
         $this->load->view('common/breadcrumb',$this->data);		

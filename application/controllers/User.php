@@ -7,6 +7,7 @@ class User extends CI_Controller {
 
         $this->data['session_data'] = @$this->session->userdata('user_session');
         $this->data['user_permission'] = @$this->session->userdata('user_permission');
+		$this->restaurant_id = $this->data['session_data']['restaurant_id'];  
 
         $this->load->model('Restaurantmodel');
         $this->load->model('Usermodel');  
@@ -14,7 +15,6 @@ class User extends CI_Controller {
     }
 
 	public function index() {
-        //echo $this->data['user_permission'];
         $this->data['user'] = $this->Usermodel->getuserdata();
 		$this->data['js']     = array(
 			"assets/plugins/datatables/jquery.dataTables.min.js",
@@ -46,9 +46,13 @@ class User extends CI_Controller {
 
     public function create($id = 0,$todo = "Add"){
 
-        $group_data = $this->model_groups->getGroupData();
+		if($this->data['session_data']['groups'] == 1){
+			$group_data = getGroupData();
+		}else{
+			$group_data = getGroupData(0);
+		}
         $this->data['group_data'] = $group_data;
-        $restaurants = $this->Restaurantmodel->getrestaurantsdata();
+        $restaurants = getData('restaurant', 0, "restaurant_id");
         $this->data['restaurants']  = $restaurants;
 		$this->data['title']        = $todo." User"; 
         $this->data['pagename']     = 'user-edit'; 
@@ -57,7 +61,7 @@ class User extends CI_Controller {
 		$this->data['breadcrumb'][1] = $todo;
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
-		$this->data["userdata"]     = $this->Usermodel->getUser($id);		
+		$this->data["userdata"]     = getData('admin_users', 0,"id", $id);//	 $this->Usermodel->getUser($id);		 //admin_users
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
         $this->load->view('common/breadcrumb',$this->data);		

@@ -17,9 +17,9 @@
             </thead>
             <tbody>
               <?php 
-              if ($restaurant) : 
+              if ($data) : 
                 $i = 1;
-                 foreach($restaurant as $value) {?>
+                 foreach($data as $value) {?>
                     <tr>
                       <th scope="row"><?= $i++ ;?></th>                            
                       <td><?php echo $value['restaurant_name']?></td>
