@@ -3,3 +3,4 @@ user_guide/
 billing.zip
 application/config/database.php
 groups.sql
+application/logs/*
