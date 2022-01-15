@@ -22,7 +22,6 @@ class Rawmaterialmodel extends CI_Model
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }else{
-           
             $data["modify_by"]   = $this->session->userdata('user_session')['user_id'];
             $data["modified_date"] = date('Y-m-d H:i:s');
             $this->db->where('rawmaterial_id', $id);

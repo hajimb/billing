@@ -33,6 +33,7 @@ class Wastagemodel extends CI_Model
             return array();
         }
     }
+    
     public function save($data,$id)
     {   
         $this->db->trans_begin();

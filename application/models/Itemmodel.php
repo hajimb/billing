@@ -21,13 +21,14 @@ class Itemmodel extends CI_Model
             return $result;
         }
         if($id == 0) {
+            $data["created_by"]   = $this->session->userdata('user_session')['user_id'];
             $data["created_date"] = date('Y-m-d H:i:s');
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }else{
-           
-            $data["modify_date"] = date('Y-m-d H:i:s');
-            $this->db->where('item_id', $id);
+            $data["modify_by"]   = $this->session->userdata('user_session')['user_id'];
+            $data["modified_date"] = date('Y-m-d H:i:s');
+            $this->db->where('rawmaterial_id', $id);
             $this->db->update($this->table, $data);
         }
 

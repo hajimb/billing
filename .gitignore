@@ -3,6 +3,7 @@ user_guide/
 billing.zip
 application/config/database.php
 groups.sql
+<<<<<<< HEAD
 git clone https://github.com/hajimb/billing
 
 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
@@ -29,3 +30,6 @@ Inventory -> Raw Material
 Inventory -> Raw Material
 
 customer.sql
+=======
+application/logs/*
+>>>>>>> arshad
