@@ -63,3 +63,13 @@ function showConfirmMessage(id, msg) {
         }
     });
 }
+
+$(document).on("keypress", ".numberOnly", function(event) {
+    toastr.remove();
+    $(this).val($(this).val().replace(/[^\d].+/, ""));
+    if ((event.which < 48 || event.which > 57)) {
+        toastr.error("Please Enter Number Only");
+        $(this).focus();
+        event.preventDefault();
+    }
+});

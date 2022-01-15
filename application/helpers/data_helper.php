@@ -278,3 +278,21 @@ if (!function_exists('getOrders')) {
 		return $result;
     }
 }
+
+
+if (!function_exists('getPaymentType')){
+    function getPaymentType(){
+        $ci=& get_instance();
+        $ci->load->database();
+        $return = array();
+        $query = $ci->db->query("SELECT * FROM master_payment_type");
+        $query = $query->result_array();
+        if( is_array( $query ) && count( $query ) > 0 ){
+            $return[''] = '--Select Payment Type--';
+            foreach($query as $row){
+                $return[$row['id']] = $row['ptype'];
+            }
+        }
+        return $return;
+    }
+}

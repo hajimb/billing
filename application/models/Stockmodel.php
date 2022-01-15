@@ -8,18 +8,21 @@ class Stockmodel extends CI_Model
     }
 
     public function getData($id, $restaurant_id){
-        $this->db->select("s.restaurant_id, s.cat_id, s.rawmaterial_id, s.stock, s.unit,s.supplier_name, s.purchase_date, re.restaurant_name, c.category, mu.units, r.rawmaterial");
+        $this->db->select("s.stock_id, s.invoice_no, s.restaurant_id, s.cat_id, s.rawmaterial_id, s.stock, s.unit, s.supplier_name, s.purchase_date, re.restaurant_name, s.total_amount, s.paid_amount,  mu.units, r.rawmaterial, mp.ptype");
         $this->db->from($this->table.' s');
         $this->db->join('rawmaterial r','s.restaurant_id = r.restaurant_id AND r.is_deleted = 0 AND r.restaurant_id = '.$restaurant_id, 'left');
         $this->db->join('master_unit mu','s.unit = mu.id', 'left');
-        $this->db->join('restaurant re','s.restaurant_id = re.restaurant_id', 'left');
-        $this->db->join(' category c','s.restaurant_id = c.restaurant_id', 'left');
+        $this->db->join('restaurant re','s.restaurant_id = re.restaurant_id AND re.restaurant_id = '.$restaurant_id, 'left');
+        // $this->db->join('category c','s.restaurant_id = c.restaurant_id AND c.restaurant_id = '.$restaurant_id, 'left');
+        $this->db->join('master_payment_type mp','s.payment_type = mp.id', 'left');
         if($id){
             $this->db->where('s.stock_id', $id);
         }
         $this->db->where('s.restaurant_id', $restaurant_id);
         $this->db->where('s.is_deleted', 0);
+        $this->db->group_by('s.stock_id');
         $query = $this->db->get();
+        // print $this->db->last_query();
         $rows  = $query->num_rows();
         if($rows > 0){
             if($id){
@@ -40,10 +43,12 @@ class Stockmodel extends CI_Model
         if($id == 0) {
             $data["created_by"]   = $this->session->userdata('user_session')['user_id'];
             $data["created_date"] = date('Y-m-d H:i:s');
+            $data["purchase_date"] = date('Y-m-d H:i:s');
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }else{
             $data["modify_by"]   = $this->session->userdata('user_session')['user_id'];
+            $data["purchase_date"] = date('Y-m-d H:i:s');
             $data["modified_date"] = date('Y-m-d H:i:s');
             $this->db->where('stock_id', $id);
             $this->db->update($this->table, $data);

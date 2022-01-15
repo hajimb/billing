@@ -54,8 +54,11 @@ class Purchase extends CI_Controller {
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
         $this->data['restaurant']   = getRestaurant();
-        $this->data['category']     = getCategory($this->restaurant_id);
-        $this->data["data"]         = getData('stock', $this->restaurant_id,"stock_id", $id);	
+        // $this->data['category']     = getCategory($this->restaurant_id);
+        $this->data["data"]         = getData('stock', $this->restaurant_id,"stock_id", $id);
+        $this->data["units"]        = getUnit();
+        $this->data["ptype"]        = getPaymentType();
+		$this->data["rawmaterial"]  = getRawmaterial($this->restaurant_id);
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
         $this->load->view('common/breadcrumb',$this->data);		

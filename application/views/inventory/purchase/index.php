@@ -18,7 +18,7 @@
                 <th>Payment</th>
                 <th>Paid Amount ( <i class="fas fa-rupee-sign"></i> )</th>
                 <th>Invoice Date</th>
-                <th><a href="<?php echo base_url('rawmaterial/create') ?>" class="btn btn-default">Add New</a></th>
+                <th><a href="<?php echo base_url('purchase/create') ?>" class="btn btn-default">Add New</a></th>
               </tr>
             </thead>
             <form id="mainfrm" action="" method="post">
@@ -31,10 +31,18 @@
                 foreach($data as $row) { ?> 
                   <tr>
                     <th scope="row"><?php echo $i;?></th>
+                    <td><?php echo $row['invoice_no'];?></td>
                     <td><?php echo $row['rawmaterial'];?></td>
+                    <td><?php echo $row['stock'];?></td>
+                    <td><?php echo $row['units'];?></td>
+                    <td><?php echo $row['supplier_name'];?></td>
+                    <td><?php echo $row['total_amount'];?></td>
+                    <td><?php echo $row['ptype'];?></td>
+                    <td><?php echo $row['paid_amount'];?></td>
+                    <td><?php echo $row['purchase_date'];?></td>
                     <td nowrap>
-                      <button onClick="Edit(<?= $row['rawmaterial_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                      <button onClick="Delete(<?= $row['rawmaterial_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      <button onClick="Edit(<?= $row['stock_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                      <button onClick="Delete(<?= $row['stock_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                     </td>
                   </tr>
                   <?php $i++; }  ?>
