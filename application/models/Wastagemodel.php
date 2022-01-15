@@ -17,8 +17,11 @@ class Wastagemodel extends CI_Model
         }
         $this->db->where('w.restaurant_id', $restaurant_id);
         $this->db->where('w.is_deleted', 0);
+        $this->db->group_by('w.wastage_id');
         $query = $this->db->get();
         $rows  = $query->num_rows();
+        // echo $this->db->last_query();
+
         if($rows > 0){
             if($id){
                 $data= $query->row_array();
@@ -37,6 +40,7 @@ class Wastagemodel extends CI_Model
         if($id == 0) {
             $data["created_by"]   = $this->session->userdata('user_session')['user_id'];
             $data["created_date"] = date('Y-m-d H:i:s');
+            $data["modified_date"] = date('Y-m-d H:i:s');
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }else{

@@ -54,7 +54,7 @@ class Wastagelisting extends CI_Controller {
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
 		$this->data["units"]        = getUnit();
-		$this->data["rawmaterial"]        = getRawmaterial($this->restaurant_id);
+		$this->data["rawmaterial"]  = getRawmaterial($this->restaurant_id);
         $this->data["data"]         = $this->Wastagemodel->getData($id,$this->restaurant_id);
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
