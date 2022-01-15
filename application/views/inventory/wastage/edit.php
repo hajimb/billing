@@ -13,7 +13,7 @@
 									<label for="rawmaterial">Raw Material</label>
 									<?php 
 										$js = 'id="rawmaterial_id" class="form-control"';
-										echo form_dropdown('rawmaterial_id', $rawmaterial, $data['rawmaterial_id'] ?? "",$js);
+										echo form_dropdown('rawmaterial_id', $rawmaterial, ($data['rawmaterial_id'] ?? ""),$js);
 									?>
 								</div>
 							</div>

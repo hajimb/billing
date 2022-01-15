@@ -31,7 +31,7 @@
                     <div class="row p-2">
                         <div class="col-lg-2 col-md-2  col-sm-6 ">
                             <div class="small-box config-tab ">
-                                <a href="<?php echo base_url(); ?>CurrentStock">
+                                <a href="<?php echo base_url(); ?>currentstock">
                                     <div class="inner text-center bg-lightgray">
                                         <h5>Current Stock</h5>
                                     </div>
@@ -42,7 +42,7 @@
                         <div class="col-lg-2 col-md-2  col-sm-6">
                             <!-- small box -->
                             <div class="small-box config-tab ">
-                                <a href="<?php echo base_url(); ?>StockReport">
+                                <a href="<?php echo base_url(); ?>stockreport">
                                     <div class="inner text-center bg-lightgray">
                                         <h5>Stock Report</h5>
                                     </div>
@@ -96,7 +96,7 @@
                         <div class="col-lg-2 col-md-2  col-sm-6">
                             <!-- small box -->
                             <div class="small-box config-tab ">
-                                <a href="<?php echo base_url(); ?>RawMaterial">
+                                <a href="<?php echo base_url(); ?>rawmaterial">
                                     <div class="inner text-center bg-lightgray">
                                         <h5>Raw Material Management</h5>
                                     </div>
