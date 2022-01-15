@@ -26,7 +26,8 @@ class Wastagelisting extends CI_Controller {
 		);
 		$this->data["pagename"]  = "wastage-list";
 		$this->data['page_title'] = "Wastage List";
-		$this->data['breadcrumb'][0] = "Wastage";
+		$this->data['breadcrumb'][] = '<a href="'.base_url().'inventory">Inventory</a>';
+		$this->data['breadcrumb'][] = "Wastage";
         $this->data["data"]         = $this->Wastagemodel->getData(0, $this->restaurant_id);	
 		// $this->data['breadcrumb'][1] = "";
 		$this->load->view('common/header',$this->data);
@@ -47,8 +48,9 @@ class Wastagelisting extends CI_Controller {
 		$this->data['title']        = $todo." Wastage"; 
         $this->data['pagename']     = 'wastage-edit'; 
 		$this->data['page_title']   = "Manage wastage";
-		$this->data['breadcrumb'][0] = "Wastage";
-		$this->data['breadcrumb'][1] = $todo;
+		$this->data['breadcrumb'][] = '<a href="'.base_url().'inventory">Inventory</a>';
+		$this->data['breadcrumb'][] = '<a href="'.base_url().'wastagelisting">Wastage</a>';
+		$this->data['breadcrumb'][] = $todo;
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
 		$this->data["units"]        = getUnit();

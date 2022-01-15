@@ -139,7 +139,7 @@ if (!function_exists('getRawmaterial')){
         $query = $ci->db->query("SELECT * FROM rawmaterial WHERE is_deleted = 0 AND restaurant_id=".$restaurant_id);
         $query = $query->result_array();
         if( is_array( $query ) && count( $query ) > 0 ){
-            $return[''] = '--Select Rawmaterial--';
+            $return[0] = '-- Select Raw Material --';
             foreach($query as $row){
                 $return[$row['rawmaterial_id']] = $row['rawmaterial'];
             }

@@ -44,9 +44,9 @@
                 <div class="form-group">
                   <label for="inputSubject">Raw Material</label>
                   <select class="form-control custom-select" name="rawmaterial_id" required placeholder="">
-                              <?php  foreach($rawmaterial as $rawmaterial_s) { ?>
-                                <option value="<?php echo $rawmaterial_s['rawmaterial_id']?>" <?php if($formdata['data']['rawmaterial_id']== $rawmaterial_s['rawmaterial_id']) { ?>selected<?php } ?>><?php echo $rawmaterial_s['rawmaterial']?></option>
-                              <?php  } ?>              
+                  <?php  foreach($rawmaterial as $key => $rawmaterial_s) { ?>
+                    <option value="<?php echo $key; ?>" <?php if($formdata['data']['rawmaterial_id']== $rawmaterial_s) { ?>selected<?php } ?>><?php echo $rawmaterial_s;?></option>
+                  <?php  } ?>              
                   </select>
                 </div>                
                 <div class="form-group">

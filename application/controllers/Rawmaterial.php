@@ -8,7 +8,6 @@ class Rawmaterial extends CI_Controller {
         $this->data['session_data'] = @$this->session->userdata('user_session');
         $this->data['user_permission'] = @$this->session->userdata('user_permission');
         $this->restaurant_id = $this->data['session_data']['restaurant_id'];
-        $this->load->model('RawMaterialmodel');
     }
 	
     public function index()
@@ -28,8 +27,8 @@ class Rawmaterial extends CI_Controller {
 		);
 		$this->data["pagename"]  = "raw-material-list";
 		$this->data['page_title'] = "Raw Material List";
-		$this->data['breadcrumb'][0] = "Raw Material";
-		// $this->data['breadcrumb'][1] = "";
+		$this->data['breadcrumb'][] = '<a href="'.base_url().'inventory">Inventory</a>';
+		$this->data['breadcrumb'][] = "Raw Material";
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
         $this->load->view('common/breadcrumb',$this->data);
@@ -45,11 +44,12 @@ class Rawmaterial extends CI_Controller {
 	}
 
     public function create($id = 0,$todo = "Add"){
-		$this->data['title']        = $todo." item"; 
+		$this->data['title']        = $todo." Raw Material"; 
         $this->data['pagename']     = 'raw-item-edit'; 
-		$this->data['page_title']   = "Manage Rawitem";
-		$this->data['breadcrumb'][0] = "Rawitem";
-		$this->data['breadcrumb'][1] = $todo;
+		$this->data['page_title']   = "Manage Raw Material";
+		$this->data['breadcrumb'][] = '<a href="'.base_url().'inventory">Inventory</a>';
+		$this->data['breadcrumb'][] = '<a href="'.base_url().'rawmaterial">Raw Material</a>';
+		$this->data['breadcrumb'][] = $todo;
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
         $this->data["data"]         = getData('rawmaterial', $this->restaurant_id,"rawmaterial_id", $id);	
