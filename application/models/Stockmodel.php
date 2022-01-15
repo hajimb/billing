@@ -64,7 +64,7 @@ class Stockmodel extends CI_Model
         return $result;
     }
 
-    function delete($id)
+    public function delete($id)
     { 
         $this->db->trans_begin();
         $data = array('is_deleted ' => 1);
@@ -79,4 +79,13 @@ class Stockmodel extends CI_Model
         }
         return $result;
     }
+
+    public function getCurrentStockdata($restaurant_id)
+    {
+        $id = 0;
+        $query = $this->db->query("SELECT SUM( s.stock ) AS currentstock,r.rawmaterial,s.unit,s.modified_date,s.rawmaterial_id, (SELECT SUM(w.wastage) as currentwastage FROM wastage w LEFT JOIN rawmaterial r ON r.rawmaterial_id = w.rawmaterial_id WHERE w.is_deleted = 0 and w.rawmaterial_id = s.rawmaterial_id) totalwastage, (SELECT units FROM master_unit mu WHERE mu.id= s.unit) AS units FROM stock s INNER JOIN rawmaterial r ON r.rawmaterial_id = s.rawmaterial_id WHERE s.is_deleted = 0 AND s.restaurant_id ='$restaurant_id' GROUP BY s.rawmaterial_id ORDER BY currentstock ASC");
+        $result = $query->result_array();
+        return $result;
+    }
+    
 }
