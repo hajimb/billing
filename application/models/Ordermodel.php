@@ -264,7 +264,7 @@ class Ordermodel extends CI_Model
         //     }
         // }
 
-        $bill_head = $this->getBillHeadActiveTable($val['table_id']);
+        $bill_head = $this->getBillHeadActiveTable($val);
         // print_r($bill_head);
         // echo "<hr>";
         $d = array();

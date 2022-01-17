@@ -296,3 +296,44 @@ if (!function_exists('getPaymentType')){
         return $return;
     }
 }
+
+
+
+if (!function_exists('getTableData')){
+    function getTableData($restaurant_id = 0,$table_id = 0)
+    {
+        $ci=& get_instance();
+        $ci->load->database();
+        $data = array();
+        $ci->db->select('*');
+		$ci->db->from('tables');
+		$ci->db->where('is_deleted',0);
+        if($restaurant_id > 0 ) $ci->db->where('restaurant_id',$restaurant_id);
+        if($table_id > 0 ) $ci->db->where('table_id',$table_id);
+		$query  = $ci->db->get();
+		$result = $query->result_array();
+        foreach($result as $res){
+            if($res['ord_status'] != ''){
+                $ci->db->select('*');
+                $ci->db->from('bill_head');
+                $ci->db->where('table_id',$res['table_id']);
+                $ci->db->where('is_active',1);
+                $ci->db->order_by('id','DESC');
+                $ci->db->limit(1);
+                $query1  = $ci->db->get();
+                $result1 = $query1->result_array();
+                if(count($result1) > 0 ){
+                    $diff = strtotime(date('Y-m-d H:i:s')) - strtotime($result1[0]['created_date'])  ;
+                    $res['table_tot'] = $result1[0]['total'];
+                    $res['table_stime'] = $diff;
+                }else{
+                    $res['table_tot'] = '';
+                    $res['table_stime'] = 0;
+                }
+            }
+            $data[] = $res;
+        }
+        return $data;
+    }    
+}
+

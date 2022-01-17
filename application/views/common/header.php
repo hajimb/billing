@@ -11,9 +11,6 @@
   <link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css' rel="stylesheet">
   <link href='<?php echo base_url(); ?>assets/css/dataTables.bootstrap4.min.css' rel="stylesheet">
   <link href='<?php echo base_url(); ?>assets/css/bootstrap-datepicker.css' rel="stylesheet">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/custom/custom.css">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css?ver=<?= time();?>">
-  <link rel="icon" href="<?php echo base_url(); ?>assets/img/favicon.ico" type="image/x-icon"/>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -34,6 +31,9 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/custom/custom.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css?ver=<?= time();?>">
+  <link rel="icon" href="<?php echo base_url(); ?>assets/img/favicon.ico" type="image/x-icon"/>
   <?php
     if (isset($css)) {
         load_css($css);

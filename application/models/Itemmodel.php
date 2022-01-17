@@ -28,7 +28,7 @@ class Itemmodel extends CI_Model
         }else{
             $data["modify_by"]   = $this->session->userdata('user_session')['user_id'];
             $data["modified_date"] = date('Y-m-d H:i:s');
-            $this->db->where('rawmaterial_id', $id);
+            $this->db->where('item_id', $id);
             $this->db->update($this->table, $data);
         }
 
@@ -57,4 +57,20 @@ class Itemmodel extends CI_Model
         }
         return $result;
     }
+
+
+    function getitemsdata()
+    {
+        $id = 0;
+        $query = $this->db->get_where($this->table, array('is_deleted' => $id));
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public function getitem($id)
+	{
+		$query = $this->db->get_where($this->table,array('item_id'=>$id));
+		$result['data'] = $query->row_array();		
+		return $result;
+	}
 }

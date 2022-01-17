@@ -16,7 +16,7 @@ class Order extends CI_Controller {
 
     }
 
-    public function list1()
+    public function list()
     {
         // $this->data['data'] = getOrders($this->restaurant_id);
         $this->data['data'] =$this->Ordermodel->getComplateordersdata();
@@ -47,22 +47,22 @@ class Order extends CI_Controller {
          $get_data = $this->input->get();
          $this->data['title'] = 'Nre order'; 
          $this->data['category'] = getData('category', $this->restaurant_id,"category_id");        
-         $this->data['table'] = $this->Tablemodel->gettablesdata($get_data);
+         $this->data['table'] = $this->Tablemodel->gettablesdata($get_data['table_id']);
          $this->data['item'] = $this->Itemmodel->getitemsdata();
          $this->data['discount'] = getData('discount', $this->restaurant_id,"discount_id");   
          if(isset($get_data['table_id'])){
-            $this->data['order'] = $this->Ordermodel->getorderdata($get_data);
+            $this->data['order'] = $this->Ordermodel->getorderdata($get_data['table_id']);
             
          }
          $this->data['tax'] = $this->Ordermodel->getactivetax();
-         $this->data['customer'] = json_encode($this->Customermodel->getcustomerdata1());
+         $this->data['customer'] = getData('customer', $this->restaurant_id,"customer_id");
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
 		$this->load->view('order/order');
 		$this->load->view('common/footer');
 	}    
 
-    public function list() {
+    public function list1() {
         $this->data['title'] = 'Order List'; 
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);

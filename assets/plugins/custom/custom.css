@@ -192,7 +192,7 @@ background: blanchedalmond;
     padding: 0px;
   }
   
-  input#number {
+  .number {
     text-align: center;
     border: none;
     border-top: 1px solid #ddd;
@@ -304,3 +304,7 @@ background: blanchedalmond;
         color: #dc3545;
     }
 }
+
+.bg-white {
+    width: 100%;
+  }

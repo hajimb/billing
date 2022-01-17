@@ -3,33 +3,7 @@ user_guide/
 billing.zip
 application/config/database.php
 groups.sql
-<<<<<<< HEAD
-git clone https://github.com/hajimb/billing
-
-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
-
-Admin Login:
-------------
-Restaurant
-User groups
-User Profile
-
-
-Hotel Owner Login 
-------------------
-Customer
-Expense
-Withdrawal
-User Profile
-Tax
-Discount
-Category
-Item (Dishes)
-Inventory -> Raw Material
-Inventory -> Raw Material
-Inventory -> Raw Material
-
-customer.sql
-=======
 application/logs/*
->>>>>>> arshad
+master_payment_type (1).sql
+customer.sql
+extra_text.txt
