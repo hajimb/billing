@@ -132,7 +132,6 @@
                         <input type="hidden" id="ord_table_id" value="<?=$order[0]["bill_id"]?>">
                       <div class="col-lg-6 col-md-6" style="float: left">
                         <div class="form-group">
-
                           <label for="inputMessage">Order Status</label>
                           <select class="form-control custom-select" placeholder="" name="ord_status" id="ord_status" required>
                           <!-- <option value="0">Select Order Status</option> -->

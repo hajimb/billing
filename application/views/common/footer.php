@@ -672,6 +672,8 @@
     // var id = $("#ord_table_id").val();
     billdiscountupdate(bill_id);
     var type =  $(".payment_type:checked").val();
+    // alert(type);
+    // return false;
     $.ajax({
           url:'<?php echo base_url() ?>order/billpaiedupdate',
           method:'POST',
@@ -758,8 +760,8 @@
                 html += '<tr>';
                 html += '<td>'+v.item_name+'</td>';
                 html += '<td>'+v.qty+'</td>';
-                html += '<td>'+v.amount+'</td>';
-                html += '<td>'+v.price+'</td>';
+                html += '<td class="text-right">'+v.amount+'</td>';
+                html += '<td class="text-right">'+v.price+'</td>';
                 html += '</tr>';
                 tot = parseInt(tot) + parseInt(v.price);
                 }
@@ -779,10 +781,11 @@
               html += '</table>';
               html += '</div>';
               html += '<div class="card-body">';
-              html += '<div class="form-group">';
-              html += '<label for="inputMessage">Payment Type: '+item[0].payment_type+'</label>';
-             
-              html += '</div>';
+              if(item[0].payment_type != ''){
+                html += '<div class="form-group">';
+                html += '<label for="inputMessage">Payment Type: '+item[0].payment_type+'</label>';
+                html += '</div>';
+              }
               html += '</div>';
               $('#kot_item_detail_reprint').html(html)
             }
@@ -791,14 +794,14 @@
     }
     function print_kot(id){
       start_load()
-                  var nw = window.open('<?php echo base_url() ?>receipt/kotprint?id='+id,"_blank","width=900,height=600")
-                  setTimeout(function(){
-                    nw.print()
-                    setTimeout(function(){
-                      nw.close()
-                      end_load()
-                    },500)
-                  },500)
+      var nw = window.open('<?php echo base_url() ?>receipt/kotprint?id='+id,"_blank","width=900,height=600")
+      setTimeout(function(){
+        nw.print()
+        setTimeout(function(){
+          nw.close()
+          end_load()
+        },500)
+      },500)
     }
     function getorderBilltable(id){
       $.ajax({
@@ -830,8 +833,8 @@
                 html += '<tr>';
                 html += '<td>'+v.item_name+'</td>';
                 html += '<td>'+v.qty+'</td>';
-                html += '<td>'+v.amount+'</td>';
-                html += '<td>'+v.price+'</td>';
+                html += '<td class="text-right">'+v.amount+'</td>';
+                html += '<td class="text-right">'+v.price+'</td>';
                 html += '</tr>';
                 tot = parseInt(tot) + parseInt(v.price);
               });
@@ -844,10 +847,11 @@
               html += '</table>';
               html += '</div>';
               html += '<div class="card-body">';
-              html += '<div class="form-group">';
-              html += '<label for="inputMessage">Payment Type: '+item[0].payment_type+'</label>';
-             
-              html += '</div>';
+              if(item[0].payment_type != ''){
+                html += '<div class="form-group">';
+                html += '<label for="inputMessage">Payment Type: '+item[0].payment_type+'</label>';
+                html += '</div>';
+              }
               html += '</div>';
               $('#kot_item_detail_reprint').html(html)
             }

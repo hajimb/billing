@@ -49,18 +49,26 @@
                             <div class="tab-content">
                                 <form action="" id="manage-order-dineein">
                                     <input type="hidden" name="order_type" value="dinein">
+                                    <?php  if(isset($order) && count($order)>0){?>
+                                    <input type="hidden" name="ord_id" id="ord_id" value="<?=$order['Id']?>">
+                                    <?php }else{ ?>
                                     <input type="hidden" name="ord_id" id="ord_id" value="">
+                                    <?php } ?>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="inputMessage">Select Table</label>
                                                 <select class="form-control custom-select" placeholder="" name="table_id" required>
                                                     <option value="0>">Select Table</option>
-                                                    <?php foreach ($table as $table_d) { ?>
-                                                        <option <?php if (isset($table_id)) {
-                                                                    if ($table_id == $table_d['table_id']) { ?>selected<?php }
-                                                                                                                } ?> value="<?= $table_d['table_id'] ?>"><?= $table_d['tablename'] ?></option>
-                                                    <?php } ?>
+                                                    <?php 
+                                                    foreach ($table as $table_d) { 
+                                                        $selected = '';
+                                                        if (isset($table_id) && $table_id == $table_d['table_id']) {
+                                                            $selected = 'selected';
+                                                        }
+                                                        echo '<option '.$selected.' value="'.$table_d['table_id'].'">'.$table_d['tablename'].'</option>';
+                                                        } 
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>

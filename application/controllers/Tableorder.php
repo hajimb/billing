@@ -48,5 +48,30 @@ class Tableorder extends CI_Controller {
         $this->load->view('common/breadcrumb',$this->data);
         $this->load->view('tables/order-create');
         $this->load->view('common/footer');
+    }   
+    
+    public function view() {
+        $table_id = $this->input->post('main_id');
+        $this->data['table_id'] = $table_id; 
+        $this->data['title']    = 'View Order'; 
+        $this->data["pagename"]  = "order-view";
+        $this->data['page_title'] = "Table Order";
+        $this->data['breadcrumb'][] = '<a href="'.base_url().'tableorder">Order</a>';
+        $this->data['breadcrumb'][] = "View";
+        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");        
+        $this->data['table']    = getTableData($this->restaurant_id,$table_id);
+        // $this->data['item']     = getData('items', $this->restaurant_id,"item_id");
+        $this->data['discount'] = getData('discount', $this->restaurant_id,"discount_id");   
+        if(isset($table_id)){
+            $this->data['order'] = $this->Ordermodel->getorderdata($table_id);
+            
+        }
+        $this->data['tax']      = $this->Ordermodel->getactivetax();
+        // $this->data['customer'] = getData('customer', $this->restaurant_id,"customer_id");
+        $this->load->view('common/header',$this->data);
+        $this->load->view('common/sidebar',$this->data);
+        $this->load->view('common/breadcrumb',$this->data);
+        $this->load->view('tables/order-view');
+        $this->load->view('common/footer');
    }   
 }

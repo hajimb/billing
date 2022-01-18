@@ -1,4 +1,7 @@
 var controller = "tableorder";
+$(document).ready(function() {
+    calc()
+});
 
 function getitemssearch() {
     var search = $('#search_item').val();

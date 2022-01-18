@@ -8,7 +8,7 @@ class CheckLogin
         $class_name         = $ci->router->fetch_class();
 		// echo "ClassName:[$class_name]";
         $session_data       = $ci->session->userdata('user_session');
-        if(strtolower($class_name) != "dashboard" && strtolower($class_name) != 'login' && strtolower($class_name) != 'order' && strtolower($class_name) != 'tableorder' ){
+        if(strtolower($class_name) != "dashboard" && strtolower($class_name) != 'login' && strtolower($class_name) != 'order' && strtolower($class_name) != 'tableorder'&& strtolower($class_name) != 'receipt' ){
             $group_data         = getUserGroupByUserId($session_data['user_id']);
             $user_permission    = explode(',',$group_data['permission']);
             $ci->session->set_userdata('user_permission', $user_permission);

@@ -10,7 +10,6 @@
       <span class="legend-span"><i class="fas fa-circle text-pink"></i>  Bill Raised</span>
       <span class="legend-span"><i class="fas fa-circle text-danger"></i> Bill Paid</span>
     </div>
-    <?php print_r($table) ; ?>
     <!-- Main content -->
     <section class="content">
       <form id="mainfrm" name="mainfrm" method="POST">
@@ -43,17 +42,15 @@
             }
             if (isset($table_s['table_id'])){
           ?>
-            <div class="col-lg-2 col-md-2  col-sm-6 btn createorder" table_id="<?= $table_s['table_id']; ?>" >
+            <div class="col-lg-2 col-md-2  col-sm-6 btn" >
               <!-- <a href="<?php echo base_url() ?>order?table_id=<?= $table_s['table_id']?>"> -->
                 <!-- small box -->
                 <div class="small-box hotel-tab  blank-tab <?=$table_status_val?>">
                   <div class="inner text-center hotel-table">
-                    <div class="<?=$table_status_val?>"> 
-                      <span><?php echo $table_s['tablename']?></span>
-                    </div>
-                    <div> <span>&nbsp;</span></div>
-                    <div class="<?=$table_status_val?>"> 
-                      <span>
+                    <span class="<?=$table_status_val?> createorder"  table_id="<?= $table_s['table_id']; ?>">
+                      <div><?php echo $table_s['tablename']?></div>
+                      <div>&nbsp;</div>
+                      <div> 
                        <?php if(isset($table_s['table_stime'])){?> 
                       <script>
                         var sec_<?=$table_s['table_id']?> = <?php echo $table_s['table_stime'];?>;
@@ -62,25 +59,11 @@
                         }, 1000);
                         </script>
                        <?php } ?>
-                       <span id="hours_<?=$table_s['table_id']?>" class="hours">00</span>:<span id="minutes_<?=$table_s['table_id']?>" class="minutes">00</span>:<span id="seconds_<?=$table_s['table_id']?>" class="seconds">00</span></span></div>
+                       <span id="hours_<?=$table_s['table_id']?>" class="hours">00</span>:<span id="minutes_<?=$table_s['table_id']?>" class="minutes">00</span>:<span id="seconds_<?=$table_s['table_id']?>" class="seconds">00</span>
+                    </div>
+                    </span>
                     <div class="row">
                       <div class="col-md-12 col-sm-12">
-                        <!-- <span>
-                          <a class="btn btn-app action-btn" href="<?php echo base_url() ?>table/edit/<?php echo $table_s['table_id'];?>">
-                            <i class="far fa-eye"></i> 
-                          </a>
-                        </span> -->
-                        <!-- <span>
-                          <a class="btn btn-app action-btn" href="<?php echo base_url() ?>table/edit/<?php echo $table_s['table_id'];?>">
-                            <i class="far fa-pencil"></i> 
-                          </a>
-                        </span>
-                        <span>
-                          <a class="btn btn-app action-btn" href="javascript:void(0);" onclick="tabledelete(<?php echo $table_s['table_id'];?>);">
-                            <i class="far fa-trash-alt"></i> 
-                          </a>
-                        </span> -->
-                        
                         <?php if($table_s['ord_status'] == 'PickedUpByWaiter'){?>
                           <span>
                             <a class="btn btn-app action-btn" href="javascript:void(0);" onclick="orderstatusupdateTable(<?=$table_s['table_id']?>,'OrderOnTable');" title="Order On Table">
@@ -88,7 +71,7 @@
                             </a>
                           </span>
                         <?php } ?>
-                        <?php if(($table_s['ord_status'] == 'BillPaid')||($table_s['ord_status'] == 'BillRaised')){?>
+                        <?php if(($table_s['ord_status'] == 'BillPaid') || ($table_s['ord_status'] == 'BillRaised')){?>
                           <span>
                             <a class="btn btn-app action-btn" href="javascript:void(0);" onclick="getorderBilltable(<?=$table_s['table_id']?>);" data-toggle="modal" data-target="#modal-default-1" >
                               <i class="fas fa-print"></i>
@@ -97,9 +80,9 @@
                           <?php }?>
                           <?php if(($table_s['ord_status'] != '')){?>
                             <span>
-                              <a class="btn btn-app action-btn" href="<?php echo base_url() ?>order?table_id=<?php echo $table_s['table_id'];?>&view=view">
+                              <a class="btn btn-app action-btn vieworder"  table_id="<?= $table_s['table_id']; ?>">
                                 <i class="far fa-eye"></i> 
-                              </a>
+                            </a>
                             </span>
                           <?php }?>
                             
