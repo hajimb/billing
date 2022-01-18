@@ -206,8 +206,7 @@
                     toast: true,
                     position: 'bottom-right'
                   }).then((result) => {
-                   
-                      window.location.href="table";
+                      window.location.href = base_url+"tableorder";
                    
                   })
 
@@ -681,7 +680,7 @@
           dataType: 'json',
           success:function(resp){
             if(resp.status == 1){
-              window.location.href="table";
+              window.location.href= base_url + "tableorder";
             }else{
 
             }

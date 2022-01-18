@@ -38,7 +38,7 @@
             <div class="col-lg-2 col-md-2  col-sm-6 ">
               <!-- small box -->
               <div class="small-box config-tab p-1">
-                <a href="<?php echo base_url(); ?>order/list">
+                <a href="<?php echo base_url(); ?>tableorder">
                   <div class="inner text-center bg-lightgray">
                     <div>
                       <i class="fas fa-clipboard fa-2x"></i>

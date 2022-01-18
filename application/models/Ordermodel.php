@@ -213,8 +213,10 @@ class Ordermodel extends CI_Model
         $result = $query->result_array();
         return $result;
     }
-    function getBillHeadActiveTable($table_id){
-        $query = $this->db->query("SELECT * FROM bill_head where table_id = '".$table_id."' and is_active = 1 order by Id DESC limit 1");
+    function getBillHeadActiveTable($table_id,$type){
+        $filter = '';
+        if($type == 0) $filter = "and status != 'BillPaid'";
+        $query = $this->db->query("SELECT * FROM bill_head where table_id = '".$table_id."'".$filter." and is_active = 1 order by Id DESC limit 1");
         $result = $query->result_array();
         return $result;
     }
@@ -239,10 +241,32 @@ class Ordermodel extends CI_Model
         return $result;
     }
 
-    function getorderdata($val)
+    function getorderdata($val,$type = 0)
     {        
+        //print_r($data);
+        //echo "SELECT h.*, i.*  FROM bill_head h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
+        // $data = array();
+        // $query = $this->db->query("SELECT i.*  FROM bill_head h, bill_item i where h.Id = i.bill_id and h.table_id = '".$val['table_id']."' and h.status != 'BillPaid' and h.is_active = 1");
+        // $result = $query->result_array();
+        
+        // foreach($result as $res){
+        //     $data['bill'] = $res;
+        //     $query1 = $this->db->query("SELECT h.*, t.tablename FROM kot_head h, tables t where t.table_id = h.table_id and  h.Id = '".$res['kot_id']."' and h.status != 'BillPaid' and h.is_active = 1");
+        //     $result1 = $query1->result_array();
+        //     foreach($result1 as $res1){
+        //         $query2 = $this->db->query("SELECT i.*, n.item_name FROM kot_item i, items n where i.kot_id = '".$res['Id']."' and n.item_id = i.item_id ");
+        //         $result2 = $query2->result_array();
+               
+        //         $res1['kot_detail'] = $result2;
+        //         $data['bill']['kot'][] = $res1;
+        //         $res['kot'][] = $res1;
+        //             // foreach($result2 as $res2){
+        //             //     $data['bill']['kot']['kot_detail'] = $res2;
+        //             // }
+        //     }
+        // }
 
-        $bill_head = $this->getBillHeadActiveTable($val);
+        $bill_head = $this->getBillHeadActiveTable($val,$type);
         // print_r($bill_head);
         // echo "<hr>";
         $d = array();
