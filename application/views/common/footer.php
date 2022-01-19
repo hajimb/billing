@@ -464,14 +464,14 @@
       var status = 'Paid';
       var Payment_type = $("#Payment_type").val();
       start_load()
-      var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=900,height=600")
-      setTimeout(function(){
-        nw.print()
-        setTimeout(function(){
-          nw.close()
-          end_load()
-        },500)
-      },500)
+      var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=330,height=600")
+      // setTimeout(function(){
+      //   nw.print()
+      //   setTimeout(function(){
+      //     nw.close()
+      //     end_load()
+      //   },500)
+      // },500)
      
      
      

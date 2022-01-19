@@ -7,3 +7,4 @@ application/logs/*
 master_payment_type (1).sql
 customer.sql
 extra_text.txt
+application/views/receipt-old.php
