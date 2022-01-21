@@ -39,7 +39,7 @@ if (!function_exists('load_js')) {
 }
 
 if (!function_exists('is_exists')) {
-    function is_exists($where, $table_name, $id = 0,$fldname = "id")
+    function is_exists($where, $table_name, $id = 0, $fldname = "id")
     {
         $ci = &get_instance();
         $ci->load->database();
