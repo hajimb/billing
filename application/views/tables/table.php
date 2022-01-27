@@ -10,10 +10,16 @@
       <span class="legend-span"><i class="fas fa-circle text-pink"></i>  Bill Raised</span>
       <span class="legend-span"><i class="fas fa-circle text-danger"></i> Bill Paid</span>
     </div>
+    <?php 
+    // echo "<pre>";
+    // print_r($table);
+    // ?>
     <!-- Main content -->
     <section class="content">
       <form id="mainfrm" name="mainfrm" method="POST">
         <input type="hidden" id="main_id" name="main_id" value="">
+        <input type="hidden" id="table_id" name="table_id" value="">
+        <input type="hidden" id="bill_id" name="bill_id" value="">
       </form>
       <div class="container-fluid">
         <div class="row p-2">
@@ -47,7 +53,7 @@
                 <!-- small box -->
                 <div class="small-box hotel-tab  blank-tab <?=$table_status_val?>">
                   <div class="inner text-center hotel-table">
-                    <span class="<?=$table_status_val?> createorder"  table_id="<?= $table_s['table_id']; ?>">
+                    <span class="<?=$table_status_val?> createorder"  table_id="<?= $table_s['table_id']; ?>" bill_id="<?= $table_s['bill_id']; ?>">
                       <div><?php echo $table_s['tablename']?></div>
                       <div>&nbsp;</div>
                       <div> 
@@ -80,7 +86,7 @@
                           <?php }?>
                           <?php if(($table_s['ord_status'] != '')){?>
                             <span>
-                              <a class="btn btn-app action-btn vieworder"  table_id="<?= $table_s['table_id']; ?>">
+                              <a class="btn btn-app action-btn vieworder"  table_id="<?= $table_s['table_id']; ?>" bill_id="<?= $table_s['bill_id']; ?>">
                                 <i class="far fa-eye"></i> 
                             </a>
                             </span>

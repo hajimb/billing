@@ -1,4 +1,5 @@
 'use strict';
+// var photo_url = base_url+'assets/img/no-image-available.jpg';
 var controller = "restaurant";
 
 $(document).on("click", ".saveChange", function(e) {
@@ -6,12 +7,20 @@ $(document).on("click", ".saveChange", function(e) {
     toastr.remove();
     var btnid = $(this).attr('id');
     var formId = $(this).data('form');
-    var form = $("#"+formId).serialize();
+    
+    var form = $("#"+formId)[0];
+    var formdata = new FormData(form);
+    
+    // var form = $("#"+formId).serialize();
     console.log("resData " + form);
     $.ajax({
         type: "POST",
         url: base_url + "Api/"+controller+"/save",
-        data: form,
+        data: formdata,
+        mimeType  : "multipart/form-data",
+        processData: false,  // Important!
+        contentType: false,
+        cache   : false,
         dataType: "json",
         beforeSend: function() {
             $("#"+btnid).startLoading();
@@ -41,4 +50,28 @@ $(document).on("click", ".saveChange", function(e) {
             $("#"+btnid).stopLoading();
         }
     });
+});
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#photo_name').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }else{
+        // console.log('photo_url:'+photo_url);
+        $('#photo_name').attr('src', photo_url);
+    }
+}
+
+$(document).on('click',"#reset_img",function (event) { 
+    var $el = $('#photo_file');
+    $el.wrap('<form>').closest('form').get(0).reset();
+    $el.unwrap();
+    $('#photo_name').attr('src', photo_url);
+});
+
+$("#photo_file").change(function(){
+    readURL(this);
 });

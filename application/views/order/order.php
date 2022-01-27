@@ -13,7 +13,9 @@
           <?php if(!isset($_REQUEST['view'])){?>
             <div class="col-lg-6 col-md-6 card">
               <div class="container p-2 d-flex">
-                <input type="text" class="form-control" id="search_item" placeholder="Select Item" onchange="getitemssearch();">
+                <form role="form" method="post" name="searcfrm" id="searcfrm">
+                  <input type="text" class="form-control" id="search_item" placeholder="Select Item" onchange="getitemssearch();">
+                </form>
               </div>
 
 

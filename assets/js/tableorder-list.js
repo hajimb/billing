@@ -20,14 +20,22 @@ $(function () {
 $(document).on("click", ".createorder", function(e) {
     var id = $(this).attr('table_id');
     $("#main_id").val(id);
+
+    var bill_id = $(this).attr('bill_id');
+    var table_id = $(this).attr('table_id');
+    $("#table_id").val(table_id);
+    $("#bill_id").val(bill_id);
+
     var url = base_url+controller+"/create";
     $("#mainfrm").attr('action', url);
     $("#mainfrm").submit();
 });
 
 $(document).on("click", ".vieworder", function(e) {
-    var id = $(this).attr('table_id');
-    $("#main_id").val(id);
+    var bill_id = $(this).attr('bill_id');
+    var table_id = $(this).attr('table_id');
+    $("#table_id").val(table_id);
+    $("#bill_id").val(bill_id);
     var url = base_url+controller+"/view";
     $("#mainfrm").attr('action', url);
     $("#mainfrm").submit();

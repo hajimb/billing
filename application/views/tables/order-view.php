@@ -1,3 +1,9 @@
+<?php 
+// echo "<br>table_id:".$table_id;
+// echo "<br>bill_id:".$bill_id;
+// echo "<pre>";
+// print_r($order); 
+?>
 <?php $i = 0; ?>
 <?php //echo "<pre>"; print_r($order);?>
 <div class="content-wrapper">

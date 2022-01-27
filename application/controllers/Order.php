@@ -16,7 +16,7 @@ class Order extends CI_Controller {
 
     }
 
-    public function list()
+    public function index()
     {
         // $this->data['data'] = getOrders($this->restaurant_id);
         $this->data['data'] =$this->Ordermodel->getComplateordersdata();
@@ -43,7 +43,7 @@ class Order extends CI_Controller {
         //$this->render_template('groups/index', $this->data);
     }	
 
-	public function index() {
+	public function index1() {
          $get_data = $this->input->get();
          $this->data['title'] = 'Nre order'; 
          $this->data['category'] = getData('category', $this->restaurant_id,"category_id");        

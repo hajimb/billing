@@ -48,6 +48,31 @@ function View(id){
                 $("#res_name").html(message.restaurant_name);
                 $("#res_contact").html(message.contact_no);
                 $("#res_address").html(nl2br(message.restaurant_address));
+                if(message.email != null && message.email != ''){
+                    $("#res_email").html(message.email);
+                    $("#div_email").show();
+                }else{
+                    $("#div_email").hide();
+                }
+                if(message.fssai_no != null && message.fssai_no != ''){
+                    $("#res_fssai_no").html(message.fssai_no);
+                    $("#div_fssai_no").show();
+                }else{
+                    $("#div_fssai_no").hide();
+                }
+                if(message.gstin_no != null && message.gstin_no != ''){
+                    $("#res_gstin_no").html(message.gstin_no);
+                    $("#div_gstin_no").show();
+                }else{
+                    $("#div_gstin_no").hide();
+                }
+                if(message.photo_file != null && message.photo_file != ''){
+                    $("#photo_name").attr("src","assets/images/"+message.photo_file);
+                    $("#div_logo").show();
+                }else{
+                    $("#div_logo").hide();
+                }
+                // $("#res_contact").html(message.contact_no);
                 $("#myModalView").modal('show');
             }
         }, error: function(){

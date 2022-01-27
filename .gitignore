@@ -8,3 +8,8 @@ master_payment_type (1).sql
 customer.sql
 extra_text.txt
 application/views/receipt-old.php
+truncate_table.sql
+application/config/database.php
+assets/images/
+database_update .sql
+updates.txt

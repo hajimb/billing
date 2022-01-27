@@ -1,48 +1,62 @@
-var controller = "tableorder";
+var controller = "order";
 
-function getitemssearch() {
-    var search = $('#search_item').val();
+$(document).on("click", "#searchtext", function(e) {
+    var formId = "searchForm";
+    var form = $("#"+formId).serialize();
     $('.cat_div_data').removeClass('active');
     $('.cat_div_data').removeClass('show');
-    url = base_url+"Api/order/getItemsbysearch/";
+    // console.log(form);
+    // url = base_url+"Api/order/search/";
     var html = '<div class="row p-2">';
     $.ajax({
-        method: "POST",
-        url: url,
-        data: {
-            search: search
+        type: "POST",
+        url: base_url + "Api/"+controller+"/search",
+        data: form,
+        dataType: "json",
+        beforeSend: function() {
+            // $("#"+btnid).startLoading();
         },
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        success: function(data) {
-            //alert(data);
-            console.log(data.items[0].cat_id)
-            var item = data.items;
+        success: function(resData) {
+            // console.log("resData " + JSON.stringify(resData));
+            var {status,validate,message, data} = resData;
+            if (validate === false) {
+                $.each(message, function(k, v) {
+                    if (v !== "") {
+                        toastr.error(v)
+                        $("#"+formId+" input[name='" + k + "']").focus();
+                        return false
+                    }
+                });
+            } else if (status === false) {
+                toastr.error(message)
+            } else {
+                toastr.success(message)
+                var item = data.items;
+                $.each(item, function(k, v) {
+                    // console.log(v.cat_id);
+                    html += '<div class="col-md-3 col-lg-3">';
+                    html += "<span data-json = '" + JSON.stringify(v) + "'>";
+                    html += '<a onclick="additem_table(' + v.item_id + ');" id="additem_' + v.item_id + '" class="btn bg-white items-btn" role="button" data-prod-id="' + v.item_id + '">';
+                    html += '<i class="far fa-dot-circle veglogo"></i> ' + v.item_name;
+                    html += '</a>';
+                    html += '</span>';
+                    html += '</div>'
+                    /// do stuff
+                });
+                html += '</div>';
+                $('#cat_item').html(html);
+                $('#cat_item').addClass('active');
+                $('#cat_item').addClass('show');
 
-            $.each(item, function(k, v) {
-                console.log(v.cat_id);
-
-                html += '<div class="col-md-3 col-lg-3">';
-                html += "<span data-json = '" + JSON.stringify(v) + "'>";
-                html += '<a onclick="additem_table(' + v.item_id + ');" id="additem_' + v.item_id + '" class="btn bg-white items-btn" role="button" data-prod-id="' + v.item_id + '">';
-                html += '<i class="far fa-dot-circle veglogo"></i> ' + v.item_name;
-                html += '</a>';
-                html += '</span>';
-                html += '</div>'
-                /// do stuff
-            });
-            html += '</div>';
-            $('#' + id + '_cat').html(html);
-            //$('#'+id+'_cat').toggle();
-            $('#' + id + '_cat').addClass('active');
-            $('#' + id + '_cat').addClass('show');
-            //data.items.forEach(element => console.log(element));
-        },
-        error: function(data) {
-            alert("failed");
+            }
+        }, error: function(){
+            // $("#"+btnid).stopLoading();
+        }, complete:function(data){
+            // $("#"+btnid).stopLoading();
         }
     });
-}
+});
+
 
 function getitems(id) {
 
@@ -59,7 +73,7 @@ function getitems(id) {
         processData: false,
         contentType: false,
         success: function(data) {
-            //alert(data);
+            console.log(data);
             console.log(data.items[0].cat_id)
             var item = data.items;
 
@@ -76,7 +90,7 @@ function getitems(id) {
                 /// do stuff
             });
             html += '</div>';
-            console.log(html);
+            // console.log(html);
             $('#cat_item').html(html);
             //$('#'+id+'_cat').toggle();
             $('#cat_item').addClass('active');

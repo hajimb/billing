@@ -56,10 +56,10 @@ class Stockmodel extends CI_Model
 
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            $result = array('msg' => 'Error While Updating Wastage Details','status' => false);
+            $result = array('msg' => 'Error While Updating Purchase Details','status' => false);
         } else {
             $this->db->trans_commit();
-            $result = array('msg' => 'Wastage Details Updated successfully','status' => true);
+            $result = array('msg' => 'Purchase Details Updated successfully','status' => true);
         }
         return $result;
     }
@@ -72,10 +72,10 @@ class Stockmodel extends CI_Model
         $this->db->update($this->table, $data);
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            $result = array('msg' => 'Error While Deleting Wastage','status' => false);
+            $result = array('msg' => 'Error While Deleting Purchase','status' => false);
         } else {
             $this->db->trans_commit();
-            $result = array('msg' => 'Wastage Deleted Successfully','status' => true);
+            $result = array('msg' => 'Purchase Deleted Successfully','status' => true);
         }
         return $result;
     }

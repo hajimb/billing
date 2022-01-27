@@ -435,7 +435,7 @@
       var status = 'Paid';
       var Payment_type = $("#Payment_type").val();
       start_load()
-      var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=900,height=600")
+      var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=330,height=600")
       setTimeout(function(){
         nw.print()
         setTimeout(function(){
@@ -465,16 +465,13 @@
       var Payment_type = $("#Payment_type").val();
       start_load()
       var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=330,height=600")
-      // setTimeout(function(){
-      //   nw.print()
-      //   setTimeout(function(){
-      //     nw.close()
-      //     end_load()
-      //   },500)
-      // },500)
-     
-     
-     
+      setTimeout(function(){
+        nw.print()
+        setTimeout(function(){
+          nw.close()
+          end_load()
+        },500)
+      },500)
     });
 
     $('#table_status_change').click(function(){
@@ -739,11 +736,11 @@
               var item = resp.data;
               console.log(item)
               var html = '<input type="hidden" name="bill_print_id" id="bill_print_id" value="'+item[0].bill_id+'"><div class="table card-body">';
-              html += '<table class="table data-table"  id="'+item[0].Id+'">';
+              html += '<table class="table data-table"  id="'+item[0].bill_id+'">';
               html += '<thead>';
               html += '<tr>';
               html += '<th colspan=2>Table: '+item[0].tablename+'</th>';
-              html += '<th colspan=2>Invoice No: '+item[0].invoice_no+'</th>';
+              html += '<th colspan=2>Invoice No: '+item['bill'].invoice_no+'</th>';
               html += '</tr>';
               html += '<tr>';
               html += '<th>Item Name</th>';
@@ -780,9 +777,9 @@
               html += '</table>';
               html += '</div>';
               html += '<div class="card-body">';
-              if(item[0].payment_type != ''){
+              if(item['bill'].payment_type != ''){
                 html += '<div class="form-group">';
-                html += '<label for="inputMessage">Payment Type: '+item[0].payment_type+'</label>';
+                html += '<label for="inputMessage">Payment Type: '+item['bill'].payment_type+'</label>';
                 html += '</div>';
               }
               html += '</div>';
@@ -793,7 +790,7 @@
     }
     function print_kot(id){
       start_load()
-      var nw = window.open('<?php echo base_url() ?>receipt/kotprint?id='+id,"_blank","width=900,height=600")
+      var nw = window.open('<?php echo base_url() ?>receipt/kotprint?id='+id,"_blank","width=330,height=600")
       setTimeout(function(){
         nw.print()
         setTimeout(function(){

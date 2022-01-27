@@ -53,8 +53,8 @@ class Upload extends REST_Controller {
 	}
 
     public function category_post(){  
-        is_dir($upload_path);
         $upload_path 			 = $this->config->item('upload_path');
+        is_dir($upload_path);
         $config['upload_path']   =  $upload_path;
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']      = '1000';
@@ -87,8 +87,8 @@ class Upload extends REST_Controller {
     }
 
     public function items_post(){  
-        is_dir($upload_path);
         $upload_path 			 = $this->config->item('upload_path');
+        is_dir($upload_path);
         $config['upload_path']   =  $upload_path;
 	    $config['allowed_types'] = 'xlsx|xls';
 	    $config['max_size']      = '1000';
@@ -156,7 +156,7 @@ class Upload extends REST_Controller {
                         $stock_status = 0;
                     }
                     // $stock_status   = addslashes($data['values'][$key]['F']);
-                    $where          = array('cat_id'=> $cat_id, 'item_name'=> $item_name, 'short_code' => $short_code, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
+                    $where          = array('item_name'=> $item_name, 'short_code' => $short_code, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
                     if(is_exists($where, 'items', 0, 'item_id') > 0 ){
                         $count++;
                     }else{

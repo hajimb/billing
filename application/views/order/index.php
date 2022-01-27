@@ -9,7 +9,7 @@
     <span class="legend-span"><i class="fas fa-circle text-secondary"></i>  Order On Table</span>
     <span class="legend-span"><i class="fas fa-circle text-pink"></i>  Bill Raised</span>
     <span class="legend-span"><i class="fas fa-circle text-danger"></i> Bill Paid</span>
-</div><?php print_r($user_permission); ?>
+</div><?php //print_r($user_permission); ?>
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">

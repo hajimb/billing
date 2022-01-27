@@ -24,9 +24,12 @@
 <body class="receipt">
 <section class="sheet">
 	<table width="100%">
+		<?php if($restaurant['photo_file'] != '' ){ ?>
 		<tr>
-			<td class="text-center"><img src="<?= base_url();?>assets/images/punjabgrill.jpeg" style="width:70%"></td>
-		</tr><tr>
+			<td class="text-center"><img src="<?= base_url();?>assets/images/<?= $restaurant['photo_file']; ?>" style="width:70%"></td>
+		</tr>
+		<?php } ?>
+		<tr>
 			<td class="text-center"><h2><b><?php echo $restaurant['restaurant_name'] ?></b></h2></td>
 		</tr><tr>
 			<td class="text-center"><?php echo $restaurant['restaurant_address'] ?></td>
@@ -40,9 +43,9 @@
 		</tr>
 		<tr>
 			<td>
-				Date : 09/01/2022 <br />
+				Date : <?php echo date("d/m/Y h:i:s",strtotime($bill['bill']['created_date'])) ?> <br />
 				Cashier : CASHIER <br />
-				Bill No : 25590
+				Bill No : <?php echo $bill['bill']['invoice_no'] ?>
 			</td> 
 		</tr>
 		<tr>
@@ -54,33 +57,60 @@
 						<td width="20%" class="text-right">Price</td> 
 						<td width="20%" class="text-right">Amount</td> 
 					</tr>
+					<?php 
+						$b = count($bill);
+						$i = 1;
+						$qnty = 0;
+						$bill_amount  = 0;
+						foreach($bill as $billd){
+							if($i != $b){
+								$qnty 			= intval($qnty) + intval($billd['qty']); 
+								$item_price 	= intval($billd['amount']);
+								$qty 			= intval($billd['qty']);
+								$item_amount 	= $item_price * $qty;
+								$bill_amount 	= intval($bill_amount) + intval($item_amount); 
+						?>
 					<tr>
-						<td>Mexican Crock Pot </td> 
-						<td class="text-center">1</td> 
-						<td class="text-right">329.00</td> 
-						<td class="text-right">329.00</td> 
+						<td><?= $billd['item_name'] ?></td> 
+						<td class="text-center"><?= $qty;  ?></td> 
+						<td class="text-right"><?= number_format($item_price,2) ?></td> 
+						<td class="text-right"><?= number_format($item_amount,2) ?></td> 
 					</tr>
-					<tr>
-						<td>Bottled Water</td> 
-						<td class="text-center">1</td> 
-						<td class="text-right">39.00</td> 
-						<td class="text-right">39.00</td> 
-					</tr>
+						<?php 
+							$i++;
+							} 
+						} ?>
 					<tr class="border-top">
-						<td class="text-right">Total Qty : 2</td> 
+						<td class="text-right">Total Qty : <?= $qnty; ?></td> 
 						<td colspan = 2 class="text-right">Sub Total</td> 
-						<td class="text-right">368.00</td> 
+						<td class="text-right"><?= number_format($bill_amount,2) ?></td> 
 					</tr>
+					<?php if(isset($bill['bill']['sgst']) && $bill['bill']['sgst'] >0){ ?>
 					<tr>
-						<td class="text-right">368.00 @ SGST</td> 
-						<td colspan = 2 class="text-right">2.5%</td> 
-						<td class="text-right">9.20</td> 
+						<td class="text-right"><?= number_format($bill_amount,2) ?> @ SGST</td> 
+						<td colspan = 2 class="text-right"><?= $bill['bill']['sgst'] ;?>%</td> 
+						<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['sgst'] / 100),2); ?></td> 
 					</tr>
+					<?php } ?>
+					<?php if(isset($bill['bill']['cgst']) && $bill['bill']['cgst'] >0){ ?>
 					<tr>
-						<td class="text-right">368.00 @ CGST</td> 
-						<td colspan = 2 class="text-right">2.5%</td> 
-						<td class="text-right">9.20</td> 
+						<td class="text-right"><?= number_format($bill_amount,2) ?> @ CGST</td> 
+						<td colspan = 2 class="text-right"><?= $bill['bill']['cgst'] ;?>%</td> 
+						<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['cgst'] / 100),2); ?></td> 
 					</tr>
+					<?php } ?>
+					<?php if(isset($bill['bill']['vat']) && $bill['bill']['vat'] >0){ ?>
+					<tr>
+						<td class="text-right"><?= number_format($bill_amount,2) ?> @ VAT</td> 
+						<td colspan = 2 class="text-right"><?= $bill['bill']['vat'] ;?>%</td> 
+						<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['vat'] / 100),2); ?></td> 
+					</tr>
+					<?php } ?>
+					<tr class="border-top border-bottom">
+						<td colspan = 2 class="text-right">Grand Total</td> 
+						<td colspan = 2 class="text-right"><?= number_format($bill['bill']['total'],2); ?></td> 
+					</tr>
+					<?php if(false) { ?>
 					<tr class="border-top">
 						<td colspan = 2 class="text-right"><small>Round Off</small></td> 
 						<td colspan = 2 class="text-right"><small>-0.40</small></td> 
@@ -89,20 +119,29 @@
 						<td colspan = 2 class="text-right"><b>Grand Total</b></td> 
 						<td colspan = 2 class="text-right"><b>386.00</b></td> 
 					</tr>
+					<?php } ?>
 				</table>
 			</td> 
 		</tr>
+		<?php if($restaurant['fssai_no'] != '' ){ ?>
 		<tr>
-			<td class="text-center"><b>FSSAI Lic No 107200250012227</b></td>
-		</tr><tr>
-			<td class="text-center"><b>Urban Kitchen Pvt Ltd</b></td>
-		</tr><tr>
-			<td class="text-center"><b>GSTIN 107200250012227</b></td>
-		</tr><tr>
+			<td class="text-center"><b>FSSAI Lic No <?= $restaurant['fssai_no'] ;?></b></td>
+		</tr>
+		<?php }if($restaurant['company_name'] != '' ){ ?>
+		<tr>
+			<td class="text-center"><b><?= $restaurant['company_name'] ;?></b></td>
+		</tr>
+		<?php } if($restaurant['gstin_no'] != '' ){ ?>
+		<tr>
+			<td class="text-center"><b>GSTIN <?= $restaurant['gstin_no'] ;?></b></td>
+		</tr>
+		<?php } if($restaurant['email'] != '' ){ ?>
+		<tr>
 			<td class="text-center">
 				write to us at <br />
-				<b>teastfdsa @gmail.com</b>
-		</td>
+				<b><?= $restaurant['email'] ;?></b>
+			</td>
+		<?php } ?>
 		</tr>
 	</table>
 </section>

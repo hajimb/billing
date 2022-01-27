@@ -8,6 +8,7 @@ class Wastagemodel extends CI_Model
     }
 
     public function getData($id, $restaurant_id){
+
         $this->db->select("w.wastage_id, w.restaurant_id, w.rawmaterial_id, w.wastage, w.unit, w.modified_date, mu.units, r.rawmaterial");
         $this->db->from($this->table.' w');
         $this->db->join('rawmaterial r','w.restaurant_id = r.restaurant_id AND r.is_deleted = 0 AND r.restaurant_id = '.$restaurant_id, 'left');

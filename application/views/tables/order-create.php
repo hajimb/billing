@@ -3,9 +3,16 @@
             <div class="container-fluid m-0">
                 <div class="row m-0">
                     <div class="col-lg-6 col-md-6 card">
-                        <div class="container p-2 d-flex">
-                            <input type="text" class="form-control" id="search_item" placeholder="Search Item" onchange="getitemssearch();">
-                        </div>
+                            <form role="form" method="post" name="searchForm" id="searchForm">
+                            <div class="input-group">
+                                <input type="search" class="form-control form-control-lg" id="search_text" name="search_text" placeholder="Search Item Here">
+                                <div class="input-group-append">
+                                    <button type="button" id="searchtext" class="btn btn-lg btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                         <div class="row card-body">
                             <div class="col-lg-3 col-md-3 ">
                                 <ul class="nav nav-pills nav-sidebar flex-sidebar menu-categories ">
@@ -20,10 +27,6 @@
                             <div class="col-lg-9 col-md-9">
                                 <div class="tab-content container p-2">
                                     <div id="cat_item" class="cat_div_data tab-pane fade in"></div>
-                                    <?php foreach ($category as $category_s1) { ?>
-                                        <div id="<?= $category_s1['category_id'] . '_cat' ?>" class="cat_div_data tab-pane fade in">
-                                        </div>
-                                    <?php } ?>
                                     <div id="search_cat" class="cat_div_data tab-pane fade in">
                                     </div>
                                 </div>

@@ -31,14 +31,16 @@ class Receipt extends CI_Controller {
 		$this->load->view('receipt');
 		//$this->load->view('common/footer');
 	}
-
+    
     public function kotprint() {
         $this->data['title'] = 'kotprint'; 
         $post_data = $this->input->get();
-       // print_r($post_data);
-        $this->data["kot"] = $this->Ordermodel->getkottable($post_data);
-		$this->load->view('common/header',$this->data);
-        $this->load->view('common/sidebar',$this->data);
+        // print_r($post_data);
+        $this->data["restaurant"]   = getData('restaurant', 0, "restaurant_id",$this->restaurant_id);
+        $this->data["kot"]          = $this->Ordermodel->getkottable($post_data);
+        $this->load->view('common/top',$this->data);
+		// $this->load->view('common/header',$this->data);
+        // $this->load->view('common/sidebar',$this->data);
 		$this->load->view('kot_print');
 		//$this->load->view('common/footer');
 	}

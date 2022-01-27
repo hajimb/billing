@@ -34,11 +34,26 @@
               </div>
             </div>
             <?php endif; ?>
-            <?php if(in_array('order', $user_permission)): ?>
+            <?php if(in_array('tableorder', $user_permission)): ?>
             <div class="col-lg-2 col-md-2  col-sm-6 ">
               <!-- small box -->
               <div class="small-box config-tab p-1">
                 <a href="<?php echo base_url(); ?>tableorder">
+                  <div class="inner text-center bg-lightgray">
+                    <div>
+                      <i class="fas fa-clipboard fa-2x"></i>
+                    </div>
+                    <h5>Table Orders</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <?php endif; ?>
+            <?php if(in_array('order', $user_permission)): ?>
+            <div class="col-lg-2 col-md-2  col-sm-6 ">
+              <!-- small box -->
+              <div class="small-box config-tab p-1">
+                <a href="<?php echo base_url(); ?>order">
                   <div class="inner text-center bg-lightgray">
                     <div>
                       <i class="fas fa-clipboard fa-2x"></i>
@@ -75,6 +90,22 @@
                       <i class="fas fa-users fa-2x"></i>
                     </div>
                     <h5>Customers</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- ./col -->
+            <?php endif; ?>
+            <?php if(in_array('upload', $user_permission)): ?>
+            <div class="col-lg-2 col-md-2  col-sm-6">
+              <!-- small box -->
+              <div class="small-box config-tab p-1">
+                <a href="<?php echo base_url(); ?>upload">
+                  <div class="inner text-center bg-lightgray">
+                    <div>
+                      <i class="fas fa-file-upload fa-2x"></i>
+                    </div>
+                    <h5>XLS Import</h5>
                   </div>
                 </a>
               </div>

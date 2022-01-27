@@ -11,25 +11,91 @@ class Restaurant extends REST_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Restaurantmodel');
-        $this->last_query = false;
+        $this->last_query   = false;
+        $this->load->library('image_lib');
+        $this->path         = FCPATH.'assets/images/';
     }
     
     public function save_post(){ 
-        // print_r($_POST);
-        $id = $this->post("main_id");
+        // print_r($_FILES);
+        // exit;
+        // 
+        $id = $this->input->post("main_id");
+        // echo "ID: ".$id;
+        // exit;
         $data   = array('status' => false,'validate' => false, 'message' => array());
        
         $this->form_validation->set_rules('main_id', 'ID', 'required|numeric|trim');
-        $this->form_validation->set_rules('restaurant_name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('company_name', 'Company Name', 'required|trim');
+        $this->form_validation->set_rules('restaurant_name', 'Restaurant Name', 'required|trim');
         $this->form_validation->set_rules('contact_no', 'Contact Number', 'required|trim');
+        if($this->input->post("email") != '')
+            $this->form_validation->set_rules('email', 'Email Id', 'valid_email');
         $this->form_validation->set_rules('restaurant_address', 'Address', 'required|trim');
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-
-            $updatedata['restaurant_name']         = $this->post("restaurant_name") ;
-            $updatedata['contact_no']        = $this->post("contact_no") ;
-            $updatedata['restaurant_address']         = $this->post("restaurant_address") ;
+            
+            $updatedata['restaurant_name']      = $this->input->post("restaurant_name") ;
+            $updatedata['contact_no']           = $this->input->post("contact_no") ;
+            $updatedata['restaurant_address']   = $this->input->post("restaurant_address") ;
+            $updatedata['company_name']         = $this->input->post("company_name") ;
+            $updatedata['email']                = $this->input->post("email") ;
+            $updatedata['fssai_no']             = $this->input->post("fssai_no") ;
+            $updatedata['gstin_no']             = $this->input->post("gstin_no") ;
+            
+            // print_r($updatedata);
+            // exit;
+            if (isset($_FILES['photo_file']) && is_uploaded_file($_FILES['photo_file']['tmp_name'])) {
+                // echo "File uploaded \n";
+                // print_R($_FILES);
+                // exit;
+                $this->load->library('upload');
+                $photo_name         = uniqid();
+                $photo_name         = slugify(trim($updatedata['restaurant_name'])).'_'.$photo_name;
+                $temp_folder        = $this->path;
+                // echo "Temp Folder : ".$temp_folder ;
+                // $config['file_name']            = $photo_name;
+                // $config['max_size']             =  1024;
+                $config['upload_path']          = $temp_folder;
+                $config['overwrite']            = true; 
+                $config['allowed_types']        = 'gif|jpg|png|jpeg';
+                // print_r($config);
+                // exit;
+                try{
+                    $this->upload->initialize($config);
+                    if ( !$this->upload->do_upload('photo_file'))
+                    {
+                        $data['message']  = 'Photo File : '.$this->upload->display_errors();
+                        $data['validate'] = true;
+                        // print_r($data);
+                        echo json_encode($data);
+                        exit;
+                    }else{
+                        $filedata   = $this->upload->data();
+                        // echo "Temp File Saved \n";
+                        // print_r($filedata);
+                        // exit;
+                        $file_name  = $filedata['full_path'];
+                        $photo_name = $photo_name.$filedata['file_ext'];
+                        copy($file_name, $this->path .$photo_name);
+                        unlink($file_name);
+    
+                        $updatedata['photo_file']    = $photo_name ;
+                        
+                        $img_name   = $this->input->post('img_name');
+                        if($img_name != ''){
+                            $img_name = $this->path . $img_name;
+                            unlink($img_name);
+                        }   
+                    }
+    
+                }catch(Exception $e){
+                    print_r($e);
+                }
+            }
+            // print_r($updatedata);
+            // exit;
             $datareq = $this->Restaurantmodel->save($updatedata,$id);
             $this->response([
                 'status'    => $datareq['status'],

@@ -253,33 +253,6 @@ if (!function_exists('getGroupData')) {
     }
 }
 
-/* Get User Groups of Particular User */
-if (!function_exists('getOrders')) {
-    function getOrders($restaurant_id = 0, $type = '')
-    {
-        $result = array();
-        $ci = &get_instance();
-        $ci->load->database();
-        $query = $ci->db->query("SELECT h.*, t.tablename  FROM bill_head h, tables t  where t.table_id = h.table_id and (h.status = 'Done' OR h.status = 'BillPaid' OR h.status = 'BillRaised')");
-        $ci->db->select('*');
-        $ci->db->from('groups');
-
-		if(! is_null($groupId)) {
-			if($groupId == 0){
-				$groupId = 1;
-				$where = "id != 1";
-			}else{
-				$where = "id = $groupId";
-			}
-            $ci->db->where($where);
-		}
-		$query  = $ci->db->get();
-		$result = $query->result_array();
-		return $result;
-    }
-}
-
-
 if (!function_exists('getPaymentType')){
     function getPaymentType(){
         $ci=& get_instance();
@@ -318,18 +291,22 @@ if (!function_exists('getTableData')){
                 $ci->db->from('bill_head');
                 $ci->db->where('table_id',$res['table_id']);
                 $ci->db->where('is_active',1);
-                $ci->db->order_by('id','DESC');
+                $ci->db->order_by('Id','DESC');
                 $ci->db->limit(1);
                 $query1  = $ci->db->get();
                 $result1 = $query1->result_array();
                 if(count($result1) > 0 ){
                     $diff = strtotime(date('Y-m-d H:i:s')) - strtotime($result1[0]['created_date'])  ;
-                    $res['table_tot'] = $result1[0]['total'];
+                    $res['table_tot']   = $result1[0]['total'];
                     $res['table_stime'] = $diff;
+                    $res['bill_id']     = $result1[0]['Id'];
                 }else{
                     $res['table_tot'] = '';
                     $res['table_stime'] = 0;
+                    $res['bill_id']     = 0;
                 }
+            }else{
+                $res['bill_id']     = 0;
             }
             $data[] = $res;
         }
@@ -337,3 +314,70 @@ if (!function_exists('getTableData')){
     }    
 }
 
+
+if (!function_exists('slugify')) { //checked
+    setlocale(LC_ALL, 'en_US.UTF8');
+    function slugify($text){
+        $text = preg_replace('/[^A-Za-z0-9\s\-]/', '', $text); // Removes special chars.
+        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+        // trim
+        $text = trim($text, '-');
+        // transliterate
+        //$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        // lowercase
+        $text = strtolower($text);
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+        if (empty($text)){
+            return 'n-a';
+        }else{
+            $text = preg_replace('/-+/', '-', $text); // Replaces multiple hyphens with single one.
+            return $text;
+        }
+    }
+}
+
+
+
+if (!function_exists('getTableOrderData')){
+    function getTableOrderData($bill_id = 0)
+    {
+        $ci=& get_instance();
+        $ci->load->database();
+        $data = array();
+        
+        $ci->db->select('*');
+		$ci->db->from('tables');
+        $ci->db->where('is_deleted',0);
+        if($restaurant_id > 0 ) $ci->db->where('restaurant_id',$restaurant_id);
+        if($table_id > 0 ) $ci->db->where('table_id',$table_id);
+		$query  = $ci->db->get();
+		$result = $query->result_array();
+        foreach($result as $res){
+            if($res['ord_status'] != ''){
+                $ci->db->select('*');
+                $ci->db->from('bill_head');
+                $ci->db->where('table_id',$res['table_id']);
+                $ci->db->where('is_active',1);
+                $ci->db->order_by('Id','DESC');
+                $ci->db->limit(1);
+                $query1  = $ci->db->get();
+                $result1 = $query1->result_array();
+                if(count($result1) > 0 ){
+                    $diff = strtotime(date('Y-m-d H:i:s')) - strtotime($result1[0]['created_date'])  ;
+                    $res['table_tot']   = $result1[0]['total'];
+                    $res['table_stime'] = $diff;
+                    $res['bill_id']     = $result1[0]['Id'];
+                }else{
+                    $res['table_tot'] = '';
+                    $res['table_stime'] = 0;
+                    $res['bill_id']     = 0;
+                }
+            }else{
+                $res['bill_id']     = 0;
+            }
+            $data[] = $res;
+        }
+        return $data;
+    }    
+}

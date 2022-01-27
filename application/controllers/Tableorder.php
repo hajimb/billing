@@ -51,15 +51,17 @@ class Tableorder extends CI_Controller {
     }   
     
     public function view() {
-        $table_id = $this->input->post('main_id');
-        $this->data['table_id'] = $table_id; 
-        $this->data['title']    = 'View Order'; 
-        $this->data["pagename"]  = "order-view";
-        $this->data['page_title'] = "Table Order";
+        $table_id   = $this->input->post('table_id');
+        $bill_id    = $this->input->post('bill_id');
+        $this->data['table_id']     = $table_id; 
+        $this->data['bill_id']      = $bill_id; 
+        $this->data['title']        = 'View Order'; 
+        $this->data["pagename"]     = "order-view";
+        $this->data['page_title']   = "Table Order";
         $this->data['breadcrumb'][] = '<a href="'.base_url().'tableorder">Order</a>';
         $this->data['breadcrumb'][] = "View";
-        $this->data['category'] = getData('category', $this->restaurant_id,"category_id");        
-        $this->data['table']    = getTableData($this->restaurant_id,$table_id);
+        $this->data['category']     = getData('category', $this->restaurant_id,"category_id");        
+        $this->data['table']        = getTableData($this->restaurant_id,$table_id);
         $type = 0 ;
         if($this->data['table'][0]['ord_status']=='BillPaid'){
             $type = 1 ;
@@ -68,6 +70,7 @@ class Tableorder extends CI_Controller {
         $this->data['discount'] = getData('discount', $this->restaurant_id,"discount_id");   
         if(isset($table_id)){
             $this->data['order'] = $this->Ordermodel->getorderdata($table_id,$type);
+            // $this->data['order'] = getTableOrderData($bill_id);
             
         }
         $this->data['tax']      = $this->Ordermodel->getactivetax();

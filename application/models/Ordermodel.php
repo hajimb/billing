@@ -14,6 +14,34 @@ class Ordermodel extends CI_Model
         $this->load->database();
     }
 
+
+    function search($searchText)
+    {        
+        $result = array('msg' => 'No Record Found','status' => false, 'data' => array());
+        if($this->session->userdata('user_session')){
+            $user_session = $this->session->userdata('user_session');
+            $restaurant_id = $user_session["restaurant_id"];
+            $this->db->select("*");
+            $this->db->from('items');
+            $this->db->where("(item_name like '%".$searchText."%' OR short_code like '%".$searchText."%')");
+            $this->db->where("restaurant_id", $restaurant_id);
+            $query      = $this->db->get();
+            $rows       = $query->num_rows(); 
+            // echo $this->db->last_query();
+            if($rows > 0){
+                $result['data']['items']     = $query->result_array();
+                $result['msg']      = $rows . ' Record(s) found';
+                $result['status']   = TRUE;
+            }
+        }
+        return $result;
+
+
+        $query = $this->db->query("SELECT *  FROM items WHERE cat_name like '%".$searchText."%'");
+        $result = $query->result_array();
+        return $result;
+    }
+
     public function addOrderRequest($data)
     {
         $data["created_date"] = date('Y-m-d H:i:s');
@@ -33,7 +61,7 @@ class Ordermodel extends CI_Model
             $bill_data["modified_date"] = date('Y-m-d H:i:s');
             $bill_data["created_by"] = $user_session['user_id'];
             $bill_data["modify_by"] = $user_session['user_id'];
-            $bill_data["bill_type"] = $data['order_type'];
+             $bill_data["bill_type"] = $data['order_type'];
             // $bill_data["mobile"] = $data['mobile'];
             // $bill_data["name"] = $data['name'];
             $bill_data["items"] = $totalitem;
@@ -174,24 +202,43 @@ class Ordermodel extends CI_Model
     }
 
     function getkottable($data)
-    {        
-        //print_r($data);
-        //echo "SELECT h.*, i.*  FROM bill_head h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
-        // $query = $this->db->query("SELECT h.*, i.*, n.item_name, t.tablename  FROM bill_head h, bill_item i, items n, tables t where h.Id = i.bill_id and n.item_id = i.item_id and t.table_id = h.table_id and h.Id = '".$data['id']."' ");
-        $query = $this->db->query("SELECT h.*,i.item_id ,i.qty, n.item_name, t.tablename, h.* FROM kot_item i, kot_head h, items n, tables t  WHERE h.Id = i.kot_id and n.item_id = i.item_id and t.table_id = h.table_id and h.Id = '".$data['id']."' ");
+    {   
+
+        $this->db->select("h.kot,h.created_date, i.item_id, i.qty, n.item_name, t.tablename, t.capacity, au.username");
+        $this->db->from('kot_item i');
+        $this->db->join("kot_head h", "h.Id = i.kot_id", "left");
+        $this->db->join("items n", "n.item_id = i.item_id", "left");
+        $this->db->join("tables t", "t.table_id = h.table_id", "left");
+        $this->db->join("admin_users au", "au.id = h.created_by", "left");
+        $this->db->where("h.Id", $data['id']);
+        $query      = $this->db->get();
         $result = $query->result_array();
+
+        // //print_r($data);
+        // //echo "SELECT h.*, i.*  FROM bill_head h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
+        // // $query = $this->db->query("SELECT h.*, i.*, n.item_name, t.tablename  FROM bill_head h, bill_item i, items n, tables t where h.Id = i.bill_id and n.item_id = i.item_id and t.table_id = h.table_id and h.Id = '".$data['id']."' ");
+        // $sql = "SELECT h.*,i.item_id ,i.qty, n.item_name, t.tablename,t.capacity, h.* FROM kot_item i, kot_head h, items n, tables t  WHERE h.Id = i.kot_id and n.item_id = i.item_id and t.table_id = h.table_id and h.Id = '".$data['id']."' ";
+        // $query = $this->db->query($sql);
+        // echo $sql;
+        // $result = $query->result_array();
         //print_r($result);
         return $result;
     }
 
     function getordertable($data)
     {        
+        //$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
         //print_r($data);
         //echo "SELECT h.*, i.*  FROM bill_head h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
         // $query = $this->db->query("SELECT h.*, i.*, n.item_name, t.tablename  FROM bill_head h, bill_item i, items n, tables t where h.Id = i.bill_id and n.item_id = i.item_id and t.table_id = h.table_id and h.Id = '".$data['id']."' ");
-        $query = $this->db->query("SELECT i.item_id ,sum(i.qty) as qty, i.amount as amount, sum(i.price) as price,n.item_name, t.tablename, h.* FROM kot_item i, kot_head h, items n, tables t  WHERE h.Id = i.kot_id and n.item_id = i.item_id and t.table_id = h.table_id and h.bill_id = '".$data['id']."' GROUP BY i.item_id,h.bill_id ");
+        $query = $this->db->query("SELECT i.item_id ,sum(i.qty) as qty, i.amount as amount, sum(i.price) as price,n.item_name, t.tablename, h.* FROM kot_item i, kot_head h, items n, tables t  WHERE h.Id = i.kot_id and n.item_id = i.item_id and t.table_id = h.table_id and h.bill_id = '".$data['id']."' GROUP BY i.item_id, h.bill_id ");
         $result = $query->result_array();
-        $query1 = $this->db->query("SELECT * FROM bill_head WHERE Id = '".$data['id']."' ");
+        $this->db->select('t.vat, t.sgst, t.cgst, bh.*');
+        $this->db->from('bill_head bh');
+        $this->db->join('tax t', 't.restaurant_id = bh.restaurant_id AND t.is_default = 1', 'left');
+        $this->db->where('id',$data['id']);
+        $query1 = $this->db->get();
+        // $query1 = $this->db->query("SELECT * FROM bill_head WHERE Id = '".$data['id']."' ");
         $result1 = $query1->row_array();
         $result['bill'] = $result1;
         //print_r($result);
@@ -221,7 +268,9 @@ class Ordermodel extends CI_Model
         return $result;
     }
     function getBillItem($bill_id){
-        $query = $this->db->query("SELECT * FROM bill_item where bill_id = '".$bill_id."'");
+        $sql = "SELECT * FROM bill_item where bill_id = '".$bill_id."'";
+        // echo $sql;
+        $query = $this->db->query($sql);
         $result = $query->result_array();
         return $result;
     }
