@@ -1,6 +1,13 @@
 'use strict';
 var controller = "user";
 
+$(document).on('keypress' ,'#username', function( e ) {
+   if(e.which === 32) {
+        toastr.error('Space Not Allowed');
+        return false;
+   }
+});
+
 $(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
     toastr.remove();

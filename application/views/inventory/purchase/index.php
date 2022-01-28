@@ -12,7 +12,6 @@
                 <th>Invoice N</th>
                 <th>Raw Material</th>
                 <th>Current Stock</th>
-                <th>Unit</th>                                                       
                 <th>From</th>                            
                 <th>Total ( <i class="fas fa-rupee-sign"></i> )</th>
                 <th>Payment</th>
@@ -34,12 +33,11 @@
                     <td><?php echo $row['invoice_no'];?></td>
                     <td><?php echo $row['rawmaterial'];?></td>
                     <td><?php echo $row['stock'];?></td>
-                    <td><?php echo $row['units'];?></td>
                     <td><?php echo $row['supplier_name'];?></td>
                     <td><?php echo $row['total_amount'];?></td>
                     <td><?php echo $row['ptype'];?></td>
                     <td><?php echo $row['paid_amount'];?></td>
-                    <td><?php echo $row['purchase_date'];?></td>
+                    <td><?php echo $row['invoice_date'];?></td>
                     <td nowrap>
                       <button onClick="Edit(<?= $row['stock_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
                       <button onClick="Delete(<?= $row['stock_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>

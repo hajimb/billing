@@ -1,23 +1,35 @@
-'use strict';
-var controller = "purchase";
+var controller = "rawmaterial";
 
-$(document).on("change", "#rawmaterial_id", function(e) {
-    var unit = $('option:selected', this).attr('data-id');
-    $("#lblunits").html(unit);
-    console.log(unit);
+$(function () {
+    $(document).ready(function() {
+        $('#mainTable').DataTable();
+        $("#mainGroupNav").addClass('active');
+        $("#manageGroupNav").addClass('active');
+    });
 });
 
+function Edit(id){
+    $("#main_id").val(id);
+    var url = base_url+controller+"/used-edit";
+    $("#mainfrm").attr('action', url);
+    $("#mainfrm").submit();
+}
 
-$(document).on("click", ".saveChange", function(e) {
+function Delete(id){
+    $("#main_id").val(id);
+    $("#myModalDelete").modal('show');
+}
+
+$(document).on("click", "#confirmdelete", function(e) {
     e.preventDefault();
     toastr.remove();
     var btnid = $(this).attr('id');
     var formId = $(this).data('form');
     var form = $("#"+formId).serialize();
-    console.log("resData " + form);
+    $(".btn").prop('disabled',true);    
     $.ajax({
         type: "POST",
-        url: base_url + "Api/"+controller+"/save",
+        url: base_url + "Api/"+controller+"/delete",
         data: form,
         dataType: "json",
         beforeSend: function() {
@@ -30,21 +42,20 @@ $(document).on("click", ".saveChange", function(e) {
                 $.each(message, function(k, v) {
                     if (v !== "") {
                         toastr.error(v)
-                        $("#"+formId+" #" + k + "").focus();
+                        $("#"+formId+" input[name='" + k + "']").focus();
                         return false
                     }
                 });
             } else if (status === false) {
                 toastr.error(message)
             } else {
+                $("#myModalDelete").modal('hide');
                 toastr.success(message)
                  window.setTimeout(function() {
                     window.location.href = base_url+controller;
                 }, 1500);
             }
-        }, error: function(err){
-            // alert(JSON.stringify(err))
-            console.log(JSON.stringify(err))
+        }, error: function(){
             $("#"+btnid).stopLoading();
         }, complete:function(data){
             $("#"+btnid).stopLoading();

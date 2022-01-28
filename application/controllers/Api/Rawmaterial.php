@@ -13,16 +13,15 @@ class Rawmaterial extends REST_Controller {
     }
 
     public function save_post(){
-        $Return = array('status' => false,'validate' => false, 'message' => array());
         $this->form_validation->set_rules('rawmaterial', 'Raw Material', 'required|trim');
+        $this->form_validation->set_rules('unit', 'Unit', 'required|numeric|trim');
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-
             $main_id = $this->post('main_id');
-            
             $data['restaurant_id']  = $this->post("restaurant_id") ;
             $data['rawmaterial']    = $this->input->post("rawmaterial");
+            $data['unit']           = $this->input->post("unit");
             $result                 = $this->Rawmaterialmodel->save($data, $main_id);
             $this->response([
                 'validate' => TRUE,
@@ -34,6 +33,38 @@ class Rawmaterial extends REST_Controller {
             foreach ($this->input->post() as $key => $value) {
                 $verror[$key] = form_error($key);
             }
+            $verror['extra'] = validation_errors();
+            $this->response([
+                'validate'   => FALSE,
+                'status' => FALSE,
+                'message' => $verror
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function saveused_post(){
+        $this->form_validation->set_rules('rawmaterial_id', 'Raw Material', 'required|trim');
+        $this->form_validation->set_rules('quantity', 'Quantity', 'required|trim');
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_message('required', 'Enter %s');
+        if ($this->form_validation->run()) {
+            $main_id = $this->post('main_id');
+            $data['restaurant_id']  = $this->post("restaurant_id") ;
+            $data['rawmaterial']    = $this->input->post("rawmaterial");
+            $data['quantity']       = $this->input->post("quantity");
+            $data['oldquantity']    = $this->input->post("oldquantity");
+            $result                 = $this->Rawmaterialmodel->saveused($data, $main_id);
+            $this->response([
+                'validate' => TRUE,
+                'status' => $result['status'],
+                'message' => $result['msg']
+            ], REST_Controller::HTTP_OK);
+            
+        } else {
+            foreach ($this->input->post() as $key => $value) {
+                $verror[$key] = form_error($key);
+            }
+            $verror['extra'] = validation_errors();
             $this->response([
                 'validate'   => FALSE,
                 'status' => FALSE,

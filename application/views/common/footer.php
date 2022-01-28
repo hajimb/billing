@@ -169,6 +169,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.mockjax.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap-typeahead.js"></script>
 <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/disableautofill/src/jquery.disableAutoFill.min.js"></script> 
 <script>
   window.start_load = function(){
     $('body').prepend('<di id="preloader2"></di>')

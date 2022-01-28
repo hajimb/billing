@@ -1,12 +1,5 @@
 'use strict';
-var controller = "purchase";
-
-$(document).on("change", "#rawmaterial_id", function(e) {
-    var unit = $('option:selected', this).attr('data-id');
-    $("#lblunits").html(unit);
-    console.log(unit);
-});
-
+var controller = "rawmaterial";
 
 $(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
@@ -17,7 +10,7 @@ $(document).on("click", ".saveChange", function(e) {
     console.log("resData " + form);
     $.ajax({
         type: "POST",
-        url: base_url + "Api/"+controller+"/save",
+        url: base_url + "Api/"+controller+"/saveused",
         data: form,
         dataType: "json",
         beforeSend: function() {
@@ -28,9 +21,10 @@ $(document).on("click", ".saveChange", function(e) {
             var {status,validate,message} = resData;
             if (validate === false) {
                 $.each(message, function(k, v) {
+                    alert(v)
                     if (v !== "") {
                         toastr.error(v)
-                        $("#"+formId+" #" + k + "").focus();
+                        $("#"+formId+" #'" + k + "']").focus();
                         return false
                     }
                 });
@@ -43,11 +37,12 @@ $(document).on("click", ".saveChange", function(e) {
                 }, 1500);
             }
         }, error: function(err){
-            // alert(JSON.stringify(err))
-            console.log(JSON.stringify(err))
             $("#"+btnid).stopLoading();
         }, complete:function(data){
             $("#"+btnid).stopLoading();
         }
     });
+    return false;
 });
+
+

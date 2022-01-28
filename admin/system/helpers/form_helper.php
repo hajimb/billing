@@ -361,7 +361,7 @@ if ( ! function_exists('form_dropdown'))
 	 * @param	mixed	$extra
 	 * @return	string
 	 */
-	function form_dropdown($data = '', $options = array(), $selected = array(), $extra = '')
+	function form_dropdown($data = '', $options = array(), $selected = array(), $extra = '',$attribute = false)
 	{
 		$defaults = array();
 
@@ -408,7 +408,7 @@ if ( ! function_exists('form_dropdown'))
 		$multiple = (count($selected) > 1 && stripos($extra, 'multiple') === FALSE) ? ' multiple="multiple"' : '';
 
 		$form = '<select '.rtrim(_parse_form_attributes($data, $defaults)).$extra.$multiple.">\n";
-
+		print_r($options);
 		foreach ($options as $key => $val)
 		{
 			$key = (string) $key;
@@ -419,17 +419,26 @@ if ( ! function_exists('form_dropdown'))
 				{
 					continue;
 				}
+				if($attribute === true){
+					foreach ($val as $optgroup_key => $optgroup_val)
+					{
+						$sel = in_array($key, $selected) ? ' selected="selected"' : '';
+						$form .= '<option value="'.html_escape($key).'" data-id="'.html_escape($optgroup_key).'"'.$sel.'>'
+							.(string) $optgroup_val."</option>\n";
+					}
 
-				$form .= '<optgroup label="'.$key."\">\n";
-
-				foreach ($val as $optgroup_key => $optgroup_val)
-				{
-					$sel = in_array($optgroup_key, $selected) ? ' selected="selected"' : '';
-					$form .= '<option value="'.html_escape($optgroup_key).'"'.$sel.'>'
-						.(string) $optgroup_val."</option>\n";
+				}else{
+					$form .= '<optgroup label="'.$key."\">\n";
+	
+					foreach ($val as $optgroup_key => $optgroup_val)
+					{
+						$sel = in_array($optgroup_key, $selected) ? ' selected="selected"' : '';
+						$form .= '<option value="'.html_escape($optgroup_key).'"'.$sel.'>'
+							.(string) $optgroup_val."</option>\n";
+					}
+	
+					$form .= "</optgroup>\n";
 				}
-
-				$form .= "</optgroup>\n";
 			}
 			else
 			{

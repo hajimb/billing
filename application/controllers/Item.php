@@ -14,7 +14,6 @@ class Item extends CI_Controller {
 
     public function index()
 	{
-		echo $this->restaurant_id;
         $this->data['data'] = getData('items', $this->restaurant_id, "item_id");
         $this->data['js']   = array(
 			"assets/plugins/datatables/jquery.dataTables.min.js",

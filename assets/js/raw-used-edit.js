@@ -1,12 +1,5 @@
 'use strict';
-var controller = "purchase";
-
-$(document).on("change", "#rawmaterial_id", function(e) {
-    var unit = $('option:selected', this).attr('data-id');
-    $("#lblunits").html(unit);
-    console.log(unit);
-});
-
+var controller = "wastagelisting";
 
 $(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
@@ -30,7 +23,7 @@ $(document).on("click", ".saveChange", function(e) {
                 $.each(message, function(k, v) {
                     if (v !== "") {
                         toastr.error(v)
-                        $("#"+formId+" #" + k + "").focus();
+                        $("#"+formId+" input[name='" + k + "']").focus();
                         return false
                     }
                 });
@@ -42,12 +35,22 @@ $(document).on("click", ".saveChange", function(e) {
                     window.location.href = base_url+controller;
                 }, 1500);
             }
-        }, error: function(err){
-            // alert(JSON.stringify(err))
-            console.log(JSON.stringify(err))
+        }, error: function(){
             $("#"+btnid).stopLoading();
         }, complete:function(data){
             $("#"+btnid).stopLoading();
         }
     });
 });
+
+
+function isNumber(evt) {
+    toastr.remove()
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if(charCode > 31 && (charCode < 48 || charCode > 57)) {
+        toastr.error("Only Numbers Allowed")
+        $("#mobile").val('').focus();
+        return false;
+    }
+  }

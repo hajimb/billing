@@ -21,6 +21,7 @@ $(document).on("click", ".saveChange", function(e) {
             var {status,validate,message} = resData;
             if (validate === false) {
                 $.each(message, function(k, v) {
+                    alert(v)
                     if (v !== "") {
                         toastr.error(v)
                         $("#"+formId+" input[name='" + k + "']").focus();
@@ -35,12 +36,14 @@ $(document).on("click", ".saveChange", function(e) {
                     window.location.href = base_url+controller;
                 }, 1500);
             }
-        }, error: function(){
+        }, error: function(err){
+            alert('err');
             $("#"+btnid).stopLoading();
         }, complete:function(data){
             $("#"+btnid).stopLoading();
         }
     });
+    return false;
 });
 
 

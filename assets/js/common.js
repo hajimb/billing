@@ -73,3 +73,8 @@ $(document).on("keypress", ".numberOnly", function(event) {
         event.preventDefault();
     }
 });
+
+$(document).ready(function(){
+    $("input").attr("autocomplete", "new-password");
+    // $('form').disableAutoFill();
+});

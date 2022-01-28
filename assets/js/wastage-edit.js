@@ -1,6 +1,6 @@
 'use strict';
 var controller = "wastagelisting";
-
+var rurl = $('#rurl').val();
 $(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
     toastr.remove();
@@ -32,7 +32,7 @@ $(document).on("click", ".saveChange", function(e) {
             } else {
                 toastr.success(message)
                  window.setTimeout(function() {
-                    window.location.href = base_url+controller;
+                    window.location.href = base_url+rurl;
                 }, 1500);
             }
         }, error: function(){

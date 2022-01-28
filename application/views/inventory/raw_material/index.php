@@ -9,7 +9,8 @@
             <thead>
               <tr>
                 <th>Sr No</th>
-                <th>Raw Material</th>  
+                <th>Raw Material</th>
+                <th>Unit</th>
                 <th><a href="<?php echo base_url('rawmaterial/create') ?>" class="btn btn-default">Add New</a></th>
               </tr>
             </thead>
@@ -24,6 +25,7 @@
                   <tr>
                     <th scope="row"><?php echo $i;?></th>
                     <td><?php echo $row['rawmaterial'];?></td>
+                    <td><?php echo $row['units'];?></td>
                     <td nowrap>
                       <button onClick="Edit(<?= $row['rawmaterial_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
                       <button onClick="Delete(<?= $row['rawmaterial_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>

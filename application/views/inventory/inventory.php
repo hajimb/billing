@@ -103,6 +103,17 @@
                                 </a>
                             </div>
                         </div>
+
+                        <div class="col-lg-2 col-md-2  col-sm-6">
+                            <!-- small box -->
+                            <div class="small-box config-tab ">
+                                <a href="<?php echo base_url(); ?>rawmaterial-used">
+                                    <div class="inner text-center bg-lightgray">
+                                        <h5>Raw Material Used</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     <!-- ./col -->
                     </div>
                 <!-- /.row -->

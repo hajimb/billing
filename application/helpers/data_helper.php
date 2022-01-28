@@ -136,12 +136,12 @@ if (!function_exists('getRawmaterial')){
         $ci=& get_instance();
         $ci->load->database();
         $return = array();
-        $query = $ci->db->query("SELECT * FROM rawmaterial WHERE is_deleted = 0 AND restaurant_id=".$restaurant_id);
+        $query = $ci->db->query("SELECT rm.rawmaterial_id, rm.rawmaterial, u.units FROM rawmaterial rm left join master_unit u on u.id = rm.unit WHERE rm.is_deleted = 0 AND rm.restaurant_id=".$restaurant_id);
         $query = $query->result_array();
         if( is_array( $query ) && count( $query ) > 0 ){
-            $return[0] = '-- Select Raw Material --';
+            $return[] = array(''=>'-- Select Raw Material --');
             foreach($query as $row){
-                $return[$row['rawmaterial_id']] = $row['rawmaterial'];
+                $return[$row['rawmaterial_id']] = array($row['units'] => $row['rawmaterial']);
             }
         }
         return $return;
@@ -380,4 +380,24 @@ if (!function_exists('getTableOrderData')){
         }
         return $data;
     }    
+}
+
+if (!function_exists('getId')) {
+    function getId($data){
+        $ci = &get_instance();
+        $ci->load->database();
+        $ci->db->select('id');
+        $ci->db->from('current_stock');
+        $ci->db->where('restaurant_id', $data['restaurant_id']);
+        $ci->db->where('rawmaterial_id', $data['rawmaterial_id']);
+        $query = $ci->db->get();
+        $rows = $query->num_rows();
+        if($rows > 0){
+            $result = $query->row();
+            $id     = $result->id;
+        }else{
+            $id = 0;
+        }
+        return $id;        
+    }
 }

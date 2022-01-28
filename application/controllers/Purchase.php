@@ -47,13 +47,12 @@ class Purchase extends CI_Controller {
     public function create($id = 0,$todo = "Add"){
 		$this->data['title']        = $todo." stock"; 
         $this->data['pagename']     = 'stock-edit'; 
-		$this->data['page_title']   = "Manage stock";
+		$this->data['page_title']   = "Purchase";
 		$this->data['breadcrumb'][0] = "stock";
 		$this->data['breadcrumb'][1] = $todo;
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
         $this->data['restaurant']   = getRestaurant();
-        // $this->data['category']     = getCategory($this->restaurant_id);
         $this->data["data"]         = getData('stock', $this->restaurant_id,"stock_id", $id);
         $this->data["units"]        = getUnit();
         $this->data["ptype"]        = getPaymentType();

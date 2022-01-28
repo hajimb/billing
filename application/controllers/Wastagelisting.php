@@ -44,8 +44,9 @@ class Wastagelisting extends CI_Controller {
         $this->create($id, $todo);
 	}
 
-    public function create($id = 0,$todo = "Add"){
+    public function create($id = 0, $todo = "Add", $type='Wastage'){
 		$this->data['title']        = $todo." Wastage"; 
+        $this->data['rurl']     	= 'wastagelisting'; 
         $this->data['pagename']     = 'wastage-edit'; 
 		$this->data['page_title']   = "Manage wastage";
 		$this->data['breadcrumb'][] = '<a href="'.base_url().'inventory">Inventory</a>';

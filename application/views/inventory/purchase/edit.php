@@ -8,28 +8,24 @@
 				<form role="form" method="post" name="mainfrm" id="mainfrm">
 					<div class="card-body">
 						<div class="row">
-						<div class="col-sm-3">
+							<div class="col-sm-3">
 								<div class="form-group">
 									<label for="rawmaterial">Raw Material</label>
 									<?php 
 										$js = 'id="rawmaterial_id" class="form-control"';
-										echo form_dropdown('rawmaterial_id', $rawmaterial, $data['rawmaterial_id'] ?? "",$js);
+										echo form_dropdown('rawmaterial_id', $rawmaterial, $data['rawmaterial_id'] ?? "",$js,true);
 									?>
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<div class="form-group">
 									<label for="stock">Stock</label>
-									<input type="text" id="stock" name="stock" autocomplete="off" class="form-control numberOnly" value="<?= $data ['stock'] ?? '';?>">
-								</div>
-							</div>
-							<div class="col-sm-3">
-								<div class="form-group">
-									<label for="unit">Unit</label>
-									<?php 
-										$js = 'id="unit" class="form-control"';
-										echo form_dropdown('unit', $units, $data['unit'] ?? "",$js);
-									?>
+									<div class="input-group mb-3">
+										<input type="text" id="stock" name="stock" autocomplete="off" class="form-control numberOnly" value="<?= $data ['stock'] ?? '';?>">
+										<div class="input-group-append">
+											<span class="input-group-text" id="lblunits"></span>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-sm-3">
@@ -42,6 +38,12 @@
 								<div class="form-group">
 									<label for="invoice_no">Invoice Number</label>
 									<input type="text" id="invoice_no" name="invoice_no" autocomplete="off" class="form-control"  value="<?= $data ['invoice_no'] ?? '';?>">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="form-group">
+									<label for="invoice_date">Invoice Date</label>
+									<input type="date" id="invoice_date" name="invoice_date" autocomplete="off" class="form-control" required value="<?= $data['invoice_date'] ?? '';?>"/>
 								</div>
 							</div>
 							<div class="col-sm-3">
@@ -70,6 +72,7 @@
 							<div class="row">
 								<div class="col-sm-4">
 									<input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
+									<input type="hidden" id="entry_type" name="entry_type" value="P">
 									<input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $session_data['restaurant_id'];?>">
 									<button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
 									<button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>

@@ -21,7 +21,7 @@ class User extends REST_Controller {
         $groups = $this->post("groups");
         $data   = array('status' => false,'validate' => false, 'message' => array());
         $this->form_validation->set_rules('main_id', 'User ID', 'required|numeric|trim');
-        $this->form_validation->set_rules('username', 'Username', 'required|trim');
+        $this->form_validation->set_rules('username', 'Username', 'required|callback_whitespace|trim');
         $this->form_validation->set_rules('firstname', 'First Name', 'required|trim');
         $this->form_validation->set_rules('lastname', 'Last Name', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
@@ -38,7 +38,6 @@ class User extends REST_Controller {
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-
             $updatedata['restaurant_id']    = $restaurant_id ;
             $updatedata['username']         = $this->post("username") ;
             $updatedata['firstname']        = $this->post("firstname") ;
@@ -65,6 +64,15 @@ class User extends REST_Controller {
                 'validate'  => FALSE,
                 'message'   => $verror,
             ], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function whitespace($username){
+        if ( preg_match('/\s/',$username) ){
+            $this->form_validation->set_message('whitespace', 'Username Not contain space');
+            return FALSE;
+        }else{
+            return TRUE;
         }
     }
 
