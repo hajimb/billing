@@ -4,7 +4,7 @@
 		<div class="col-md-12 col-xs-12">
 			<div class="card card-warning">
 				<div class="card-header">
-				<h3 class="card-title"><?= $todo;?> Raw Material</h3>
+				<h3 class="card-title"><?= $todo;?> Used Raw Material</h3>
 				</div>
 				<form role="form" method="post" name="mainfrm" id="mainfrm">
 					<div class="card-body">
@@ -14,15 +14,20 @@
 									<label for="rawmaterial">Raw Material</label>
 									<?php 
 										$js = 'id="rawmaterial_id" class="form-control"';
-										echo form_dropdown('rawmaterial_id', $rawmaterial, $data['rawmaterial_id'] ?? "",$js);
+										echo form_dropdown('rawmaterial_id', $rawmaterial, $data['rawmaterial_id'] ?? "",$js, true);
 									?>
 								</div>
 							</div>
 							<div class="col-sm-3">
-								<div class="form-group">
-									<label for="stock">Quantity</label>
-									<input type="hidden" id="oldstock" name="oldstock"value="<?= $data['stock'] ?? '';?>">
-									<input type="number" id="stock" name="stock" autocomplete="off" class="form-control" value="<?= $data['stock'] ?? '0';?>">
+							<div class="form-group">
+									<label for="stock">Stock</label>
+									<div class="input-group mb-3">
+										<input type="hidden" id="oldstock" name="oldstock" value="<?= $data['stock'] ?? '0';?>">
+										<input type="text" id="stock" name="stock" autocomplete="off" class="form-control numberOnly" value="<?= $data ['stock'] ?? '';?>">
+										<div class="input-group-append">
+											<span class="input-group-text" id="lblunits"><?= $data ['units'] ?? '';?></span>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-sm-3">

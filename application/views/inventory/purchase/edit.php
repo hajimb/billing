@@ -1,9 +1,10 @@
+<input type="hidden" id="rurl" value="<?= $rurl;?>">
 <section class="content">
 	<div class="row">
 		<div class="col-md-12 col-xs-12">
 			<div class="card card-warning">
 				<div class="card-header">
-				<h3 class="card-title"><?= $todo;?> Raw Material</h3>
+				<h3 class="card-title"><?= $todo;?> Purchase</h3>
 				</div>
 				<form role="form" method="post" name="mainfrm" id="mainfrm">
 					<div class="card-body">
@@ -21,9 +22,10 @@
 								<div class="form-group">
 									<label for="stock">Stock</label>
 									<div class="input-group mb-3">
+										<input type="hidden" id="oldstock" name="oldstock" value="<?= $data['stock'] ?? '0';?>">
 										<input type="text" id="stock" name="stock" autocomplete="off" class="form-control numberOnly" value="<?= $data ['stock'] ?? '';?>">
 										<div class="input-group-append">
-											<span class="input-group-text" id="lblunits"></span>
+											<span class="input-group-text" id="lblunits"><?= $data ['units'] ?? '';?></span>
 										</div>
 									</div>
 								</div>

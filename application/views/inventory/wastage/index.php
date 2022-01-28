@@ -1,3 +1,4 @@
+<input type="hidden" id="rurl" value="<?= $rurl;?>">
 <!-- Main content -->
 <section class="content">
   <!-- Small boxes (Stat box) -->
@@ -13,7 +14,7 @@
                 <th>Wastag Stock </th>
                 <th>Unit</th>
                 <th>Last Updated</th> 
-                <th><a href="<?php echo base_url('wastagelisting/create') ?>" class="btn btn-default">Add New</a></th>
+                <th><a href="<?php echo base_url('wastage/create') ?>" class="btn btn-default">Add New</a></th>
               </tr>
             </thead>
             <form id="mainfrm" action="" method="post">

@@ -1,6 +1,12 @@
 'use strict';
-var controller = "wastagelisting";
-var rurl = $('#rurl').val();
+var controller  = "inventory";
+var rurl        = $('#rurl').val();
+
+$(document).on("change", "#rawmaterial_id", function(e) {
+    var unit = $('option:selected', this).attr('data-id');
+    $("#lblunits").html(unit);
+});
+
 $(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
     toastr.remove();
@@ -10,7 +16,7 @@ $(document).on("click", ".saveChange", function(e) {
     console.log("resData " + form);
     $.ajax({
         type: "POST",
-        url: base_url + "Api/"+controller+"/save",
+        url: base_url + "Api/"+controller+"/wastage_used_save",
         data: form,
         dataType: "json",
         beforeSend: function() {

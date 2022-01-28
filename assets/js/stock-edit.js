@@ -1,10 +1,10 @@
 'use strict';
-var controller = "purchase";
+var controller = "inventory";
+var rurl        = $('#rurl').val();
 
 $(document).on("change", "#rawmaterial_id", function(e) {
     var unit = $('option:selected', this).attr('data-id');
     $("#lblunits").html(unit);
-    console.log(unit);
 });
 
 
@@ -17,7 +17,7 @@ $(document).on("click", ".saveChange", function(e) {
     console.log("resData " + form);
     $.ajax({
         type: "POST",
-        url: base_url + "Api/"+controller+"/save",
+        url: base_url + "Api/"+controller+"/"+rurl+"_save",
         data: form,
         dataType: "json",
         beforeSend: function() {
@@ -39,7 +39,7 @@ $(document).on("click", ".saveChange", function(e) {
             } else {
                 toastr.success(message)
                  window.setTimeout(function() {
-                    window.location.href = base_url+controller;
+                    window.location.href = base_url+rurl;
                 }, 1500);
             }
         }, error: function(err){

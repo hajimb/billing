@@ -1,5 +1,5 @@
-var controller = "purchase";
-
+var controller = "inventory";
+var rurl        = $('#rurl').val();
 $(function () {
     $(document).ready(function() {
         $('#mainTable').DataTable();
@@ -10,7 +10,7 @@ $(function () {
 
 function Edit(id){
     $("#main_id").val(id);
-    var url = base_url+controller+"/edit";
+    var url = base_url+rurl+"/edit";
     $("#mainfrm").attr('action', url);
     $("#mainfrm").submit();
 }
@@ -29,7 +29,7 @@ $(document).on("click", "#confirmdelete", function(e) {
     $(".btn").prop('disabled',true);    
     $.ajax({
         type: "POST",
-        url: base_url + "Api/"+controller+"/delete",
+        url: base_url + "Api/"+controller+"/"+rurl+"_delete",
         data: form,
         dataType: "json",
         beforeSend: function() {
@@ -52,7 +52,7 @@ $(document).on("click", "#confirmdelete", function(e) {
                 $("#myModalDelete").modal('hide');
                 toastr.success(message)
                  window.setTimeout(function() {
-                    window.location.href = base_url+controller;
+                    window.location.href = base_url+rurl;
                 }, 1500);
             }
         }, error: function(){

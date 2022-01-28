@@ -139,7 +139,7 @@ if (!function_exists('getRawmaterial')){
         $query = $ci->db->query("SELECT rm.rawmaterial_id, rm.rawmaterial, u.units FROM rawmaterial rm left join master_unit u on u.id = rm.unit WHERE rm.is_deleted = 0 AND rm.restaurant_id=".$restaurant_id);
         $query = $query->result_array();
         if( is_array( $query ) && count( $query ) > 0 ){
-            $return[] = array(''=>'-- Select Raw Material --');
+            $return[''] = array('' =>'--Select Raw Material --');
             foreach($query as $row){
                 $return[$row['rawmaterial_id']] = array($row['units'] => $row['rawmaterial']);
             }
@@ -178,7 +178,8 @@ if (!function_exists('getModules')) {
 		$ci->db->from('master_modules');
 		$ci->db->where('to_show',1);
 		$ci->db->where('is_deleted',0);
-		$ci->db->order_by('name', 'ASC');
+		$ci->db->where('parent_id',0);
+		$ci->db->order_by('sort_id', 'ASC');
 		$query      = $ci->db->get();
 		$result = $query->result_array();
 		return $result;
@@ -195,7 +196,6 @@ if (!function_exists('getUserGroupByUserId')) {
         $result = array();
         $ci = &get_instance();
         $ci->load->database();
-
         $ci->db->select('GROUP_CONCAT(mm.classname) as permission');
 		$ci->db->from('user_group ug');
 		$ci->db->join('groups g','g.id = ug.group_id', 'left');
@@ -401,3 +401,24 @@ if (!function_exists('getId')) {
         return $id;        
     }
 }
+
+
+if (!function_exists('GetUserRoles')) {
+    function GetUserRoles($groupId){
+        $ci = &get_instance();
+        $ci->load->database();
+        // SELECT mm.* FROM master_modules mm left join groups g on find_in_set( mm.id,g.permission) WHERE g.id = 1
+        $ci->db->select('mm.*');
+        $ci->db->from('master_modules mm');
+        $ci->db->join('groups g','find_in_set(mm.id,g.permission)<>0','left');
+        $ci->db->where('g.id',$groupId);
+        // $ci->db->where('mm.parent_id',0);
+        $ci->db->order_by('mm.parent_id','ASC');
+        $ci->db->order_by('mm.sort_id','ASC');
+        // $ci->db->where('FIND_IN_SET(classname,'.$data.')');
+        $query = $ci->db->get();
+		$result = $query->result_array();
+		return $result;       
+    }
+}
+

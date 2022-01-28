@@ -14,13 +14,14 @@ class Wastagemodel extends CI_Model
 
         $this->db->select("s.stock_id, s.invoice_date, s.restaurant_id, s.rawmaterial_id, s.stock, r.unit, s.modified_date, mu.units, r.rawmaterial");
         $this->db->from($this->table.' s');
-        $this->db->join('rawmaterial r','s.restaurant_id = r.restaurant_id AND r.is_deleted = 0 AND r.restaurant_id = '.$restaurant_id, 'left');
+        $this->db->join('rawmaterial r','s.rawmaterial_id = r.rawmaterial_id AND r.restaurant_id = '.$restaurant_id, 'left');
         $this->db->join('master_unit mu','r.unit = mu.id', 'left');
         if($id){
             $this->db->where('s.stock_id', $id);
         }
         $this->db->where('s.restaurant_id', $restaurant_id);
         $this->db->where('s.is_deleted', 0);
+        $this->db->where('r.is_deleted', 0);
         $this->db->where('s.entry_type', $type);
         $this->db->group_by('s.stock_id');
         $query = $this->db->get();
@@ -44,8 +45,10 @@ class Wastagemodel extends CI_Model
         $oldstock = $data['oldstock'];
         unset($data['oldstock']);
         if($id == 0) {
-            $data["created_by"]   = $this->created_by;
-            $data["created_date"] = $this->created_date;
+            $data["created_by"]     = $this->created_by;
+            $data["created_date"]   = $this->created_date;
+            $data["modify_by"]      = $this->created_by;
+            $data["modified_date"]  = $this->created_date;
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }else{
@@ -61,6 +64,8 @@ class Wastagemodel extends CI_Model
             $currentStock = array(
                 'created_by'        => $this->created_by, 
                 'created_date'      => $this->created_date, 
+                'modified_by'       => $this->created_by, 
+                'modified_date'     => $this->created_date, 
                 'restaurant_id'     => $data['restaurant_id'], 
                 'rawmaterial_id'    => $data['rawmaterial_id'], 
                 'current_stock'     => $data['stock'], 
@@ -89,10 +94,10 @@ class Wastagemodel extends CI_Model
 
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            $result = array('msg' => 'Error While Updating Wastage Details','status' => false);
+            $result = array('msg' => 'Error While Updating Details','status' => false);
         } else {
             $this->db->trans_commit();
-            $result = array('msg' => 'Wastage Details Updated successfully','status' => true);
+            $result = array('msg' => 'Details Updated successfully','status' => true);
         }
         return $result;
     }
@@ -105,10 +110,10 @@ class Wastagemodel extends CI_Model
         $this->db->update($this->table, $data);
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            $result = array('msg' => 'Error While Deleting Wastage','status' => false);
+            $result = array('msg' => 'Error While Deleting Item','status' => false);
         } else {
             $this->db->trans_commit();
-            $result = array('msg' => 'Wastage Deleted Successfully','status' => true);
+            $result = array('msg' => 'Item Deleted Successfully','status' => true);
         }
         return $result;
     }

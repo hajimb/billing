@@ -25,7 +25,7 @@
                   <tr>
                     <th scope="row"><?php echo $i;?></th>
                     <td><?php echo $row['rawmaterial'];?></td>
-                    <td><?php echo $row['currentstock'] - $row['totalwastage'];?></td>
+                    <td><?php echo $row['current_stock'];?></td>
                     <td><?php echo $row['units'];?></td>
                     <td><?php echo $row['modified_date'];?></td>
                   </tr>

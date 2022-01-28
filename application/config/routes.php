@@ -49,8 +49,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller']   = 'home';
-$route['404_override'] 		   = '';
-$route['translate_uri_dashes'] = FALSE;
-$route['rawmaterial-used']	   = 'rawmaterial/usedlist';
-$route['rawmaterial/used-edit']= 'rawmaterial/used';
+$route['default_controller']            = 'home';
+$route['404_override'] 		            = '';
+$route['translate_uri_dashes']          = FALSE;
+$route['currentstock']                  = 'inventory/currentstock';
+$route['stockreport']                   = 'inventory/stockreport';
+
+$route['rawmaterial']                   = 'inventory/rawmaterial';
+$route['rawmaterial/create']            = 'inventory/rawmaterial_create';
+$route['rawmaterial/edit']              = 'inventory/rawmaterial_edit';
+
+$route['rawmaterialused']              = 'inventory/rawmaterialused';
+$route['rawmaterialused/create']       = 'inventory/rawmaterialused_create';
+$route['rawmaterialused/edit']         = 'inventory/rawmaterialused_edit';
+
+$route['purchase']                      = 'inventory/purchase';
+$route['purchase/create']               = 'inventory/purchase_create';
+$route['purchase/edit']                 = 'inventory/purchase_edit';
+
+$route['wastage']                      = 'inventory/wastage';
+$route['wastage/create']               = 'inventory/wastage_create';
+$route['wastage/edit']                 = 'inventory/wastage_edit';
+$route['indent']                        = 'inventory/indent';
+
+// $route['rawmaterial-used']	    = 'rawmaterial/usedlist';
+// $route['rawmaterial/used-edit'] = 'rawmaterial/used';

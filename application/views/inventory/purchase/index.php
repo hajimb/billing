@@ -1,3 +1,4 @@
+<input type="hidden" id="rurl" value="<?= $rurl;?>">
 <!-- Main content -->
 <section class="content">
   <!-- Small boxes (Stat box) -->
@@ -32,7 +33,7 @@
                     <th scope="row"><?php echo $i;?></th>
                     <td><?php echo $row['invoice_no'];?></td>
                     <td><?php echo $row['rawmaterial'];?></td>
-                    <td><?php echo $row['stock'];?></td>
+                    <td><?php echo $row['stock'].' '.$row['units'];?></td>
                     <td><?php echo $row['supplier_name'];?></td>
                     <td><?php echo $row['total_amount'];?></td>
                     <td><?php echo $row['ptype'];?></td>

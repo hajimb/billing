@@ -1,3 +1,4 @@
+<input type="hidden" id="rurl" value="<?= $rurl;?>">
 <!-- Main content -->
 <section class="content">
   <!-- Small boxes (Stat box) -->
