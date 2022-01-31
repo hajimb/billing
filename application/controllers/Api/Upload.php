@@ -198,18 +198,16 @@ class Upload extends REST_Controller {
         }
     } 
 
-    private function getUnitid($rawmaterial, $restaurant_id){
+    private function getUnitid($unit){
         $this->db->select('*');
-        $this->db->from('rawmaterial');
-        $this->db->where('rawmaterial',$rawmaterial);
-        $this->db->where('restaurant_id',$restaurant_id);
+        $this->db->from('master_unit');
+        $this->db->where('units',$unit);
         $this->db->where('is_deleted',0);
         $query = $this->db->get();
         $rows = $query->num_rows(); 
         if($rows == 0){
-            $data['rawmaterial'] = $rawmaterial;
-            $data['restaurant_id'] = $restaurant_id;
-            $this->db->insert('rawmaterial', $data);
+            $data['units'] = $unit;
+            $this->db->insert('master_unit', $data);
             return $this->db->insert_id();
         }else{
             $result = $query->row();
@@ -272,7 +270,7 @@ class Upload extends REST_Controller {
                 if($data['values'][$key]['A'] != ''){
                     $rawmaterial    = addslashes($data['values'][$key]['A']);
                     $unit	        = addslashes($data['values'][$key]['B']);
-                    $cat_id         = $this->getUnitid($rawmaterial, $restaurant_id);
+                    $cat_id         = $this->getUnitid($unit);
                     $where          = array('rawmaterial'=> $rawmaterial, 'unit' => $unit, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
                     if(is_exists($where, 'rawmaterial', 0, 'rawmaterial_id') > 0 ){
                         $count++;
