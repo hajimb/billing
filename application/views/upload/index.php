@@ -49,6 +49,26 @@
                 </div>
             </div>
         </form>
+
+        <form id="RawmaterialForm" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="Rawmaterial">Upload Rawmaterial</label> 
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <input type="file" id="rawmaterial" name="rawmaterials" class="form-control" autocomplete="off"/>          
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                  <input type="hidden" name="restaurant_id" value="<?= $session_data['restaurant_id'];?>">
+                  <input class="btn btn-primary" type="submit" value="Upload Rawmaterials">
+                  <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
+                </div>
+            </div>
+        </form>
       </div>
     </div>
   </div>
