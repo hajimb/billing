@@ -12,7 +12,7 @@ class Stockmodel extends CI_Model
         $this->created_date = date('Y-m-d H:i:s');
     }
 
-    public function getData($id, $restaurant_id){
+    public function getData($id, $restaurant_id, $payment_type=''){
         $this->db->select("s.stock_id, s.invoice_no, s.restaurant_id, s.rawmaterial_id, s.stock, s.supplier_name, s.invoice_date, re.restaurant_name, s.total_amount, s.paid_amount, s.payment_type, r.rawmaterial, mp.ptype, mu.units");
         $this->db->from($this->table.' s');
         $this->db->join('rawmaterial r','s.rawmaterial_id = r.rawmaterial_id AND r.restaurant_id = '.$restaurant_id, 'left');
@@ -27,6 +27,9 @@ class Stockmodel extends CI_Model
         $this->db->where('s.is_deleted', 0);
         $this->db->where('r.is_deleted', 0);
         $this->db->where('s.entry_type', 'P');
+        if($payment_type){
+            $this->db->where('s.payment_type', $payment_type);
+        }
         $this->db->group_by('s.stock_id');
         $query = $this->db->get();
         // print $this->db->last_query();
@@ -55,11 +58,32 @@ class Stockmodel extends CI_Model
             $data["modified_date"]  = $this->created_date;
             $this->db->insert($this->table, $data);
             $id = $this->db->insert_id();
+
+            $cashflow['reason']         = "Raw Material Purchase";
+            $cashflow['restaurant_id']  = "Raw Material Purchase";
+            $cashflow['cash_type ']     = "O";
+            $cashflow["created_by"]     = $this->created_by;
+            $cashflow["created_date"]   = $this->created_date;
+            $cashflow["cash_date"]      = $data['invoice_date'];
+            $cashflow["amount"]         = $data['paid_amount'];
+            $cashflow["user_id"]        = $this->created_by;
+            $cashflow["pid"]            = $id;
+            $this->db->insert('cash_flow', $cashflow);
+
         }else{
             $data["modify_by"]      = $this->created_by;
             $data["modified_date"]  = $this->created_date;
             $this->db->where('stock_id', $id);
             $this->db->update($this->table, $data);
+
+            $cashflow["modify_by"]      = $this->created_by;
+            $cashflow["modified_date"]  = $this->created_date;
+            $cashflow["amount"]         = $data['paid_amount'];
+            $cashflow["user_id"]        = $this->created_by;
+            $cashflow["cash_date"]      = $data['invoice_date'];
+
+            $this->db->where('pid', $id);
+            $this->db->update('cash_flow', $cashflow);
         }   
         $current_stock_id = getId($data);
 
@@ -88,8 +112,7 @@ class Stockmodel extends CI_Model
             if($newStock >= 0){
                 $this->db->set('current_stock', 'current_stock + '.$newStock, false);        
             }else{
-                $this->db->set('current_stock', 'current_stock '.$newStock, false);        
-
+                $this->db->set('current_stock', 'current_stock '.$newStock, false);
             }
             $this->db->set('modified_date', 'NOW()', false);        
             $this->db->set('modified_by', $this->created_by);        
@@ -114,6 +137,10 @@ class Stockmodel extends CI_Model
         $data = array('is_deleted ' => 1);
         $this->db->where('stock_id', $id);
         $this->db->update($this->table, $data);
+
+        $this->db->where('pid', $id);
+        $this->db->update('cash_flow', $data);
+
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
             $result = array('msg' => 'Error While Deleting Purchase','status' => false);
@@ -153,6 +180,7 @@ class Stockmodel extends CI_Model
         // $result = $query->result_array();
         // return $result;
     }
+
     public function getIndent($id, $restaurant_id){
         $this->db->select("raw.rawmaterial_id, raw.rawmaterial, IFNULL(cs.current_stock, 0) AS stock, mu.units");
         $this->db->from('rawmaterial raw');
@@ -176,5 +204,60 @@ class Stockmodel extends CI_Model
         }else{
             return array();
         }
+    }
+
+    public function getDuepayment($pid){
+        $this->db->select('SUM(amount) As amount');
+        $this->db->from('cash_flow');
+        $this->db->where('pid', $pid);
+        $query = $this->db->get();
+        return $query->row();
+    }
+    
+    public function gettotal($pid){
+        $this->db->select('total_amount');
+        $this->db->from('stock');
+        $this->db->where('stock_id', $pid);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function paydueamount($data, $main_id, $ip){
+        $this->db->trans_begin();
+        $cashflow['reason']         = "Raw Material Purchase";
+        $cashflow['restaurant_id']  = "Raw Material Purchase";
+        $cashflow['cash_type ']     = "O";
+        $cashflow["created_by"]     = $this->created_by;
+        $cashflow["created_date"]   = $this->created_date;
+        $cashflow["cash_date"]      = $this->created_date;
+        $cashflow["amount"]         = $data['paid_amount'];
+        $cashflow["user_id"]        = $this->created_by;
+        $cashflow["pid"]            = $main_id;
+        $this->db->insert('cash_flow', $cashflow);
+
+        $where = array(
+            'restaurant_id'  => $data['restaurant_id'], 
+            'stock_id'       => $main_id
+        );
+
+        $data["modify_by"]      = $this->created_by;
+        $data["modified_date"]  = $this->created_date;
+        $this->db->where($where);
+        $this->db->set('paid_amount', 'paid_amount + '.$data["paid_amount"], false);    
+        $this->db->set('modified_date', 'NOW()', false);        
+        $this->db->set('modify_by', $this->created_by);
+        if($data['payment_type']){
+            $this->db->set('payment_type', $data['payment_type']);
+        }
+        $this->db->update($this->table);
+
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $result = array('msg' => 'Error While Deleting Purchase','status' => false);
+        } else {
+            $this->db->trans_commit();
+            $result = array('msg' => 'Purchase Deleted Successfully','status' => true);
+        }
+        return $result;
     }
 }

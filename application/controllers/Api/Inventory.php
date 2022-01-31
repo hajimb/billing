@@ -177,5 +177,63 @@ class Inventory extends REST_Controller {
         }*/
     }
 
-    
+    public function getdetail_post() {
+        $id = $this->post('id');
+        $result = $this->Stockmodel->getDuepayment($id);
+        $total = $this->Stockmodel->gettotal($id);
+
+        if(!empty($result)){
+            $data['status'] = TRUE;
+            $data['amount'] = $result->amount;
+            $data['total']  = $total->total_amount;
+            $this->response($data, REST_Controller::HTTP_OK);
+        }else{
+            //set the response and exit
+            $this->response([
+                'status' => FALSE,
+                'amount' => 0,
+                'total' => 0,
+                'message' => 'No Record Found.'
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function paydueamount_post(){
+        // print_r($_POST);exit;
+        $Return = array('status' => false,'validate' => false, 'message' => array());
+        $this->form_validation->set_rules('stock_id', 'Stock Id Missing', 'required|numeric|trim');
+        $this->form_validation->set_rules('restaurant_id', 'Restaurant Id Missing', 'required|numeric|trim');
+        $this->form_validation->set_rules('paid_amount', 'Paid Amount', 'required|trim');
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_message('required', 'Enter %s');
+        if ($this->form_validation->run()) {
+           
+            $main_id = $this->post('stock_id');
+            $data['paid_amount']    = $this->post('paid_amount');
+            $data['restaurant_id']  = $this->post('restaurant_id');
+            $ramount                = $this->post('ramount');
+            $ip                     = $this->input->ip_address();
+            if($ramount == $data['paid_amount']){
+                $data['payment_type'] = 1;
+            }
+            // print_r($data);exit;
+            $result                 = $this->Stockmodel->paydueamount($data, $main_id, $ip);
+            $this->response([
+                'validate' => TRUE,
+                'status' => $result['status'],
+                'message' => $result['msg']
+            ], REST_Controller::HTTP_OK);
+            
+        } else {
+            foreach ($this->input->post() as $key => $value) {
+                $verror[$key] = form_error($key);
+            }
+            $verror['y'] = validation_errors();
+            $this->response([
+                'validate'   => FALSE,
+                'status' => FALSE,
+                'message' => $verror
+            ], REST_Controller::HTTP_OK);
+        }
+    }
 }

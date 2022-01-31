@@ -40,8 +40,13 @@
                     <td><?php echo $row['paid_amount'];?></td>
                     <td><?php echo $row['invoice_date'];?></td>
                     <td nowrap>
-                      <button onClick="Edit(<?= $row['stock_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                      <button onClick="Delete(<?= $row['stock_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      <?php if ($row['ptype']== 'Fully Paid'){
+                        echo "No Action";
+                      }else{?>
+                      <button class="btn btn-success getdetail" data-id="<?= $row['stock_id']; ?>">Pay Now</button>
+                        <button onClick="Edit(<?= $row['stock_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                        <button onClick="Delete(<?= $row['stock_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      <?php }?>
                     </td>
                   </tr>
                   <?php $i++; }  ?>
@@ -77,6 +82,62 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" id = "confirmdelete" data-form="mainfrm">Confirm</button>
+        <button type="button" class="btn btn-warning" id="cancelmenu" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div id="payNowModal" class="modal fade" role="dialog" data-keyboard="true" data-backdrop="static" tabindex="-1">
+  <div class="modal-dialog ">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Pay Due Payment</h4>
+      </div>
+      <div class="modal-body" style="overflow: auto;">
+        <div class="main-grid">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                      <label>Total Payment</label>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <span id="totalPayment"></span>
+                </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Previous Paid</label>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                  <span id="previouspaid"></span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Amount to be pay</label>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" id="paid_amount" name="paid_amount" class="form-control" required/>          
+                  <input type="hidden" id="ramount" name="ramount"/>          
+                  <input type="hidden" id="stock_id" name="stock_id"/>          
+                  <input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $restaurant_id;?>"/>          
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id = "paynow" data-id="mainfrm">Paynow</button>
         <button type="button" class="btn btn-warning" id="cancelmenu" data-dismiss="modal">Cancel</button>
       </div>
     </div>

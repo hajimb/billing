@@ -136,6 +136,7 @@ class Inventory extends CI_Controller {
 		$this->data['page_title'] = "Purchase List";
 		$this->data['breadcrumb'][] = '<a href="'.base_url().'inventory">Inventory</a>';
 		$this->data['breadcrumb'][] = "Purchase List";
+		$this->data['restaurant_id'] = $this->restaurant_id;
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
         $this->load->view('common/breadcrumb',$this->data);
