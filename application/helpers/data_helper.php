@@ -216,7 +216,10 @@ if (!function_exists('getExpenseData')) {
         $ci = &get_instance();
         $ci->load->database();
 
-        $ci->db->select('e.*, au.username ');
+        $ci->db->select('e.*, au.username, (CASE
+            WHEN e.cash_type = "I" THEN "Cash In"
+            WHEN e.cash_type = "O" THEN "Cash Out"
+        END) As ctype');
         $ci->db->from($table_name.' e');
         $ci->db->join('admin_users au','au.id = e.user_id', 'left');
         $ci->db->where('e.is_deleted',0);
