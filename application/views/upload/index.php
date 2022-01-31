@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <input type="file" id="rawmaterial" name="rawmaterials" class="form-control" autocomplete="off"/>          
+                        <input type="file" id="rawmaterials" name="rawmaterials" class="form-control" autocomplete="off"/>          
                     </div>
                 </div>
                 <div class="col-sm-4">
