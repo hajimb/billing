@@ -142,28 +142,29 @@ class Inventory extends REST_Controller {
 
     public function wastage_used_save_post(){
         // print_r($_POST);
+        
         $Return = array('status' => false,'validate' => false, 'message' => array());
-        $this->form_validation->set_rules('rawmaterial_id', 'Raw Material', 'required|numeric|trim');
-        $this->form_validation->set_rules('stock', 'Quantity', 'required|trim');
-        $this->form_validation->set_rules('invoice_date', 'Date', 'required|trim');
-        $this->form_validation->set_error_delimiters('', '');
-        $this->form_validation->set_message('required', 'Enter %s');
-        if ($this->form_validation->run()) {
+        // $this->form_validation->set_rules('rawmaterial_id', 'Raw Material', 'required|numeric|trim');
+        // $this->form_validation->set_rules('stock', 'Quantity', 'required|trim');
+        // $this->form_validation->set_rules('invoice_date', 'Date', 'required|trim');
+        // $this->form_validation->set_error_delimiters('', '');
+        // $this->form_validation->set_message('required', 'Enter %s');
+        // if ($this->form_validation->run()) {
             $main_id = $this->post('main_id');
             $data['restaurant_id']  = $this->post("restaurant_id") ;
-            $data['rawmaterial_id'] = $this->input->post("rawmaterial_id");
-            $data['stock']          = $this->input->post("stock");
-            $data['oldstock']       = $this->input->post('oldstock') ?? 0;
+            // $data['rawmaterial_id'] = $this->input->post("rawmaterial_id");
+            // $data['stock']          = $this->input->post("stock");
+            // $data['oldstock']       = $this->input->post('oldstock') ?? 0;
             $data['entry_type']     = $this->input->post('entry_type');
             $data['invoice_date']   = $this->input->post('invoice_date');
-            $result                 = $this->Wastagemodel->save($data, $main_id);
+            $result                 = $this->Wastagemodel->save($_POST, $main_id);
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],
                 'message' => $result['msg']
             ], REST_Controller::HTTP_OK);
             
-        } else {
+       /* } else {
             foreach ($this->input->post() as $key => $value) {
                 $verror[$key] = form_error($key);
             }
@@ -173,7 +174,7 @@ class Inventory extends REST_Controller {
                 'status' => FALSE,
                 'message' => $verror
             ], REST_Controller::HTTP_OK);
-        }
+        }*/
     }
 
     

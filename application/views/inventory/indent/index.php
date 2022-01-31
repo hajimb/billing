@@ -5,33 +5,42 @@
     <div class="col-md-12 col-xs-12">
       <div class="card">
         <div class="card-body">
-          <table id="mainTable" class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Sr No</th>
-                <th>Raw Material</th>
-                <th>Stock</th>
-                <th>Unit</th>
-              </tr>
-            </thead>
-            <form id="mainfrm" action="" method="post">
-              <input type="hidden" id="main_id" name="main_id" value="">
+            <form method="post" id="indent">
+                <div class="panel-heading">
+                    <button class="btn btn-sm pull-right btn-success saveChange" id='submit' data-form="indent" type="submit">Print Indent</button>
+                </div>
+                <table style="width: 100%;" id="printTable" class="table table-bordered table-striped" cellpadding="5" cellspacing="5">
+                  <thead>
+                    <tr>
+                      <th>Sr No</th>
+                      <th>Raw Material</th>
+                      <th width="200px">Stock</th>
+                      <th>Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if ($data) : 
+                      $i = 1;?>
+                      <?php 
+                      foreach($data as $row) { ?> 
+                        <tr>
+                          <th scope="row"><?php echo $i;?></th>
+                          <td>
+                            <?php echo $row['rawmaterial'];?>
+                              <input type="hidden" name="rawmaterial[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['rawmaterial'];?>">
+                          </td>
+                          <td>
+                              <input type="text" name="stock[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['stock'];?>" class="form-control" style="border:none">
+                          </td>
+                          <td>
+                            <?php echo $row['units'];?>
+                            <input type="hidden" name="unit[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['units'];?>"></td>
+                        </tr>
+                        <?php $i++; }  ?>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
             </form>
-            <tbody>
-              <?php if ($data) : 
-                $i = 1;?>
-                <?php 
-                foreach($data as $row) { ?> 
-                  <tr>
-                    <th scope="row"><?php echo $i;?></th>
-                    <td><?php echo $row['rawmaterial'];?></td>
-                    <td><?php echo $row['stock'];?></td>
-                    <td><?php echo $row['units'];?></td>
-                  </tr>
-                  <?php $i++; }  ?>
-              <?php endif; ?>
-            </tbody>
-          </table>
         </div>
         <!-- /.card-body -->
       </div>

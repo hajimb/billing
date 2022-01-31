@@ -157,5 +157,46 @@ class Item extends REST_Controller {
             ], REST_Controller::HTTP_OK);
         }        
     }
+
+    public function take_post(){
+        $rawmaterial    = $this->post('rawmaterial');
+        $stock          = $this->post('stock');
+        $unit           = $this->post('unit');
+        $html  = '<style>
+                    @media print {
+                        @page {
+                            size: 80mm auto;
+                        }
+                    }
+                    body.receipt { 
+                        width: 80mm ;
+                        height:100%;
+                        margin: 5mm;
+                    }
+                    body.receipt .sheet { width: 80mm; height:100%}  
+                    @media print { body.receipt { width: 80mm; height:100% } }
+                </style>
+                <body class="receipt">
+                <section class="sheet">';
+        $html .= '<table style="width: 100%; border-collapse:collapse; font-family:verdana" border=1 cellpadding="5" cellspacing="5">
+                  <thead>
+                    <tr>
+                      <th align="left">Sr No</th>
+                      <th align="left">Raw Material</th>
+                      <th align="left">Stock</th>
+                      <th align="left">Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+            $i=1;
+            foreach($rawmaterial as $key => $val){
+                if($stock[$key]!='0.00' && $stock[$key] != ''){
+                    $html .= '<tr><td align="left">'.$i.'</td><td align="left">'.$val.'</td><td align="left">'.$stock[$key].'</td><td align="left">'.$unit[$key].'</td></tr>';
+                    $i++;
+                }
+            }
+            $html .='</tbody></table></section></body>';
+            echo $html;
+    }
     
 }

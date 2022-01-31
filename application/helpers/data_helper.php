@@ -174,15 +174,15 @@ if (!function_exists('getModules')) {
         $ci = &get_instance();
         $ci->load->database();
 
-		$ci->db->select('*');
-		$ci->db->from('master_modules');
-		$ci->db->where('to_show',1);
-		$ci->db->where('is_deleted',0);
-		$ci->db->where('parent_id',0);
-		$ci->db->order_by('sort_id', 'ASC');
-		$query      = $ci->db->get();
-		$result = $query->result_array();
-		return $result;
+        $ci->db->select('*');
+        $ci->db->from('master_modules');
+        $ci->db->where('to_show',1);
+        $ci->db->where('is_deleted',0);
+        $ci->db->where('parent_id',0);
+        $ci->db->order_by('sort_id', 'ASC');
+        $query      = $ci->db->get();
+        $result = $query->result_array();
+        return $result;
     }
 }
 
@@ -197,14 +197,14 @@ if (!function_exists('getUserGroupByUserId')) {
         $ci = &get_instance();
         $ci->load->database();
         $ci->db->select('GROUP_CONCAT(mm.classname) as permission');
-		$ci->db->from('user_group ug');
-		$ci->db->join('groups g','g.id = ug.group_id', 'left');
-		$ci->db->join('master_modules mm','FIND_IN_SET(mm.id, g.permission)',"left",false);
-		$ci->db->where('ug.user_id',$user_id);
-		$query  = $ci->db->get();
+        $ci->db->from('user_group ug');
+        $ci->db->join('groups g','g.id = ug.group_id', 'left');
+        $ci->db->join('master_modules mm','FIND_IN_SET(mm.id, g.permission)',"left",false);
+        $ci->db->where('ug.user_id',$user_id);
+        $query  = $ci->db->get();
         // echo $ci->db->last_query();
-		$result = $query->row_array();
-		return $result;
+        $result = $query->row_array();
+        return $result;
     }
 }
 
@@ -217,13 +217,13 @@ if (!function_exists('getExpenseData')) {
         $ci->load->database();
 
         $ci->db->select('e.*, au.username ');
-		$ci->db->from($table_name.' e');
-		$ci->db->join('admin_users au','au.id = e.user_id', 'left');
-		$ci->db->where('e.is_deleted',0);
-		$ci->db->where('e.restaurant_id',$restaurant_id);
-		$query  = $ci->db->get();
-		$result = $query->result_array();
-		return $result;
+        $ci->db->from($table_name.' e');
+        $ci->db->join('admin_users au','au.id = e.user_id', 'left');
+        $ci->db->where('e.is_deleted',0);
+        $ci->db->where('e.restaurant_id',$restaurant_id);
+        $query  = $ci->db->get();
+        $result = $query->result_array();
+        return $result;
     }
 }
 
@@ -238,18 +238,18 @@ if (!function_exists('getGroupData')) {
         $ci->db->select('*');
         $ci->db->from('groups');
 
-		if(! is_null($groupId)) {
-			if($groupId == 0){
-				$groupId = 1;
-				$where = "id != 1";
-			}else{
-				$where = "id = $groupId";
-			}
+        if(! is_null($groupId)) {
+            if($groupId == 0){
+                $groupId = 1;
+                $where = "id != 1";
+            }else{
+                $where = "id = $groupId";
+            }
             $ci->db->where($where);
-		}
-		$query  = $ci->db->get();
-		$result = $query->result_array();
-		return $result;
+        }
+        $query  = $ci->db->get();
+        $result = $query->result_array();
+        return $result;
     }
 }
 
@@ -279,12 +279,12 @@ if (!function_exists('getTableData')){
         $ci->load->database();
         $data = array();
         $ci->db->select('*');
-		$ci->db->from('tables');
-		$ci->db->where('is_deleted',0);
+        $ci->db->from('tables');
+        $ci->db->where('is_deleted',0);
         if($restaurant_id > 0 ) $ci->db->where('restaurant_id',$restaurant_id);
         if($table_id > 0 ) $ci->db->where('table_id',$table_id);
-		$query  = $ci->db->get();
-		$result = $query->result_array();
+        $query  = $ci->db->get();
+        $result = $query->result_array();
         foreach($result as $res){
             if($res['ord_status'] != ''){
                 $ci->db->select('*');
@@ -347,12 +347,12 @@ if (!function_exists('getTableOrderData')){
         $data = array();
         
         $ci->db->select('*');
-		$ci->db->from('tables');
+        $ci->db->from('tables');
         $ci->db->where('is_deleted',0);
         if($restaurant_id > 0 ) $ci->db->where('restaurant_id',$restaurant_id);
         if($table_id > 0 ) $ci->db->where('table_id',$table_id);
-		$query  = $ci->db->get();
-		$result = $query->result_array();
+        $query  = $ci->db->get();
+        $result = $query->result_array();
         foreach($result as $res){
             if($res['ord_status'] != ''){
                 $ci->db->select('*');
@@ -417,8 +417,8 @@ if (!function_exists('GetUserRoles')) {
         $ci->db->order_by('mm.sort_id','ASC');
         // $ci->db->where('FIND_IN_SET(classname,'.$data.')');
         $query = $ci->db->get();
-		$result = $query->result_array();
-		return $result;       
+        $result = $query->result_array();
+        return $result;       
     }
 }
 

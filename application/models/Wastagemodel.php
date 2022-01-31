@@ -39,57 +39,71 @@ class Wastagemodel extends CI_Model
         }
     }
     
-    public function save($data,$id)
+    public function save($postData,$id)
     {   
         $this->db->trans_begin();
-        $oldstock = $data['oldstock'];
-        unset($data['oldstock']);
+        // $oldstock = $data['oldstock'];
+        // unset($data['oldstock']);
         if($id == 0) {
-            $data["created_by"]     = $this->created_by;
-            $data["created_date"]   = $this->created_date;
-            $data["modify_by"]      = $this->created_by;
-            $data["modified_date"]  = $this->created_date;
-            $this->db->insert($this->table,$data);
-            $id = $this->db->insert_id();
+            // print_r($postData);
+            $insData = array();
+            foreach($postData['test'] as $key => $val){
+                $insData[] = array(
+                    "created_by"     => $this->created_by,
+                    "entry_type"     => $postData['entry_type'],
+                    "created_date"   => $this->created_date,
+                    "modified_date"  => $this->created_date,
+                    "rawmaterial_id" => $postData['test'][$key]['rawmaterial_id'],
+                    "restaurant_id"  => $postData['restaurant_id'],
+                    "stock"          => $postData['test'][$key]['stock'],
+                    "invoice_date"   => $postData['test'][$key]['invoice_date'],
+                );
+            }
+           
+            $this->db->insert_batch($this->table, $insData);
+            // $id = $this->db->insert_id();
         }else{
             $data["modify_by"]      = $this->created_by;
             $data["modified_date"]  = $this->created_date;
             $this->db->where('stock_id', $id);
             $this->db->update($this->table, $data);
         }
-
-        $current_stock_id = getId($data);
-
-        if( $current_stock_id == 0){
-            $currentStock = array(
-                'created_by'        => $this->created_by, 
-                'created_date'      => $this->created_date, 
-                'modified_by'       => $this->created_by, 
-                'modified_date'     => $this->created_date, 
-                'restaurant_id'     => $data['restaurant_id'], 
-                'rawmaterial_id'    => $data['rawmaterial_id'], 
-                'current_stock'     => $data['stock'], 
-            );
-            $this->db->insert($this->current_stock, $currentStock);
-        }else{
-            $newStock = $data['stock'];
-            // if($oldstock > 0){
-                $newStock = $oldstock - $newStock ;
-            // }
-            $where = array(
-                'restaurant_id'  => $data['restaurant_id'], 
-                'rawmaterial_id' => $data['rawmaterial_id'], 
-                'id'             => $current_stock_id
-            );
-            if($newStock >= 0){
-                $this->db->set('current_stock', 'current_stock + '.$newStock, false);        
-            }else{
-                $this->db->set('current_stock', 'current_stock '.$newStock, false);        
+        
+        foreach($postData['test'] as $key => $val){
+            $data['restaurant_id'] = $postData['restaurant_id'];
+            $data['rawmaterial_id']= $postData['test'][$key]['rawmaterial_id'];
+            $oldstock = $postData['test'][$key]['oldstock'];
+            if($oldstock == ''){
+                $oldstock = 0;
             }
-            $this->db->set('modified_date', 'NOW()', false);        
-            $this->db->set('modified_by', $this->created_by);        
-            $this->db->where($where);
-            $this->db->update($this->current_stock);
+            $current_stock_id = getId($data);
+            if( $current_stock_id == 0){
+                $currentStock = array(
+                    'created_by'        => $this->created_by, 
+                    'created_date'      => $this->created_date, 
+                    'restaurant_id'     => $postData['restaurant_id'], 
+                    'rawmaterial_id'    => $postData['test'][$key]['rawmaterial_id'], 
+                    'current_stock'     => $postData['test'][$key]['stock'], 
+                );
+                $this->db->insert($this->current_stock, $currentStock);
+            }else{
+                $newStock = $postData['test'][$key]['stock'];
+                $newStock = $oldstock - $newStock ;
+                $where = array(
+                    'restaurant_id'  => $postData['restaurant_id'], 
+                    'rawmaterial_id' => $postData['test'][$key]['rawmaterial_id'], 
+                    'id'             => $current_stock_id
+                );
+                if($newStock >= 0){
+                    $this->db->set('current_stock', 'current_stock + '.$newStock, false);        
+                }else{
+                    $this->db->set('current_stock', 'current_stock '.$newStock, false);        
+                }
+                $this->db->set('modified_date', 'NOW()', false);        
+                $this->db->set('modified_by', $this->created_by);        
+                $this->db->where($where);
+                $this->db->update($this->current_stock);
+            }
         }
 
         if ($this->db->trans_status() === false) {

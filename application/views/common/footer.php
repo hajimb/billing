@@ -169,7 +169,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.mockjax.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap-typeahead.js"></script>
 <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/disableautofill/src/jquery.disableAutoFill.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/repeater.js"></script> 
 <script>
   window.start_load = function(){
     $('body').prepend('<di id="preloader2"></di>')
@@ -439,10 +439,10 @@
       var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=330,height=600")
       setTimeout(function(){
         nw.print()
-        setTimeout(function(){
-          nw.close()
-          end_load()
-        },500)
+        // setTimeout(function(){
+        //   nw.close()
+        //   end_load()
+        // },500)
       },500)
      
      
@@ -468,10 +468,10 @@
       var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=330,height=600")
       setTimeout(function(){
         nw.print()
-        setTimeout(function(){
-          nw.close()
-          end_load()
-        },500)
+        // setTimeout(function(){
+        //   nw.close()
+        //   end_load()
+        // },500)
       },500)
     });
 
@@ -794,10 +794,10 @@
       var nw = window.open('<?php echo base_url() ?>receipt/kotprint?id='+id,"_blank","width=330,height=600")
       setTimeout(function(){
         nw.print()
-        setTimeout(function(){
-          nw.close()
-          end_load()
-        },500)
+        // setTimeout(function(){
+        //   nw.close()
+        //   end_load()
+        // },500)
       },500)
     }
     function getorderBilltable(id){
