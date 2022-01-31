@@ -59,5 +59,10 @@ class Discount extends CI_Controller {
 		$this->load->view('common/footer');
     }
 
+    public function getdiscount(){
+        $post_data = $this->input->post();
+        $return = GetDiscount($this->restaurant_id,$post_data['id']);
+        echo json_encode($return);
+    }
 
 }

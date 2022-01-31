@@ -215,7 +215,7 @@
                                   ?>
                                   <tr>
                                       <th colspan="4">KOT No. <?=$ord1['kot']?></th>
-                                      <th colspan="4" class="text-right"><a class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="print_kot(<?=$ord1['Id']?>);" title="Print KOT">
+                                      <th colspan="4" class="text-right"><a class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="print_kot(<?=$ord1['Id']?>,false);" title="Print KOT">
                                       <strong>Print KOT</strong></a></th>
                                   </tr>
                                   <?php

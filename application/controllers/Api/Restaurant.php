@@ -47,46 +47,70 @@ class Restaurant extends REST_Controller {
             // print_r($updatedata);
             // exit;
             if (isset($_FILES['photo_file']) && is_uploaded_file($_FILES['photo_file']['tmp_name'])) {
-                // echo "File uploaded \n";
-                // print_R($_FILES);
-                // exit;
                 $this->load->library('upload');
                 $photo_name         = uniqid();
                 $photo_name         = slugify(trim($updatedata['restaurant_name'])).'_'.$photo_name;
                 $temp_folder        = $this->path;
-                // echo "Temp Folder : ".$temp_folder ;
-                // $config['file_name']            = $photo_name;
-                // $config['max_size']             =  1024;
                 $config['upload_path']          = $temp_folder;
                 $config['overwrite']            = true; 
                 $config['allowed_types']        = 'gif|jpg|png|jpeg';
-                // print_r($config);
-                // exit;
                 try{
                     $this->upload->initialize($config);
                     if ( !$this->upload->do_upload('photo_file'))
                     {
                         $data['message']  = 'Photo File : '.$this->upload->display_errors();
                         $data['validate'] = true;
-                        // print_r($data);
                         echo json_encode($data);
                         exit;
                     }else{
                         $filedata   = $this->upload->data();
-                        // echo "Temp File Saved \n";
-                        // print_r($filedata);
-                        // exit;
                         $file_name  = $filedata['full_path'];
                         $photo_name = $photo_name.$filedata['file_ext'];
-                        copy($file_name, $this->path .$photo_name);
+                        copy($file_name, $this->path."logo/".$photo_name);
                         unlink($file_name);
     
                         $updatedata['photo_file']    = $photo_name ;
                         
                         $img_name   = $this->input->post('img_name');
                         if($img_name != ''){
-                            $img_name = $this->path . $img_name;
+                            $img_name = $this->path."logo/".$img_name;
                             unlink($img_name);
+                        }   
+                    }
+    
+                }catch(Exception $e){
+                    print_r($e);
+                }
+            }
+            if (isset($_FILES['qr_code']) && is_uploaded_file($_FILES['qr_code']['tmp_name'])) {
+                $this->load->library('upload');
+                $photo_name         = uniqid();
+                $photo_name         = slugify(trim($updatedata['restaurant_name'])).'_'.$photo_name;
+                $temp_folder        = $this->path;
+                $config['upload_path']          = $temp_folder;
+                $config['overwrite']            = true; 
+                $config['allowed_types']        = 'gif|jpg|png|jpeg';
+                try{
+                    $this->upload->initialize($config);
+                    if ( !$this->upload->do_upload('qr_code'))
+                    {
+                        $data['message']  = 'Photo File : '.$this->upload->display_errors();
+                        $data['validate'] = true;
+                        echo json_encode($data);
+                        exit;
+                    }else{
+                        $filedata   = $this->upload->data();
+                        $file_name  = $filedata['full_path'];
+                        $photo_name = $photo_name.$filedata['file_ext'];
+                        copy($file_name, $this->path."qr/".$photo_name);
+                        unlink($file_name);
+    
+                        $updatedata['qr_code']    = $photo_name ;
+                        
+                        $qr_name   = $this->input->post('qr_name');
+                        if($qr_name != ''){
+                            $qr_name = $this->path."qr/".$qr_name;
+                            unlink($qr_name);
                         }   
                     }
     

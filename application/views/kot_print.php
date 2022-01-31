@@ -35,7 +35,7 @@
 	<table width="100%">
 		<?php if($restaurant['photo_file'] != '' ){ ?>
 		<tr>
-			<td class="text-center"><img src="<?= base_url();?>assets/images/<?= $restaurant['photo_file']; ?>" style="width:70%"></td>
+			<td class="text-center"><img src="<?= base_url();?>assets/images/logo/<?= $restaurant['photo_file']; ?>" style="width:70%"></td>
 		</tr>
 		<?php } ?>
 		<tr>
@@ -72,8 +72,9 @@
 						$total_items 	= 0;
 						foreach($kot as $kotd){
 							$i++;
-							$qnty 		= $kotd['qty'];
-							$itemname 	= $kotd['item_name'];
+							$qnty 			= $kotd['qty'];
+							$itemname 		= $kotd['item_name'];
+							$instruction 	= $kotd['instruction'];
 
 							$total_qnty = intval($total_qnty) + intval($qnty);
 							$total_items++;
@@ -82,7 +83,7 @@
 						<td class="text-center"><?= $i ?></td> 
 						<td><?= $itemname;  ?></td> 
 						<td class="text-center"><?= $qnty ?></td> 
-						<td class="text-right"></td> 
+						<td><?= $instruction; ?></td> 
 					</tr>
 					<?php } ?>
 					<tr class="border-top border-bottom">

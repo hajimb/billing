@@ -26,7 +26,7 @@
 	<table width="100%">
 		<?php if($restaurant['photo_file'] != '' ){ ?>
 		<tr>
-			<td class="text-center"><img src="<?= base_url();?>assets/images/<?= $restaurant['photo_file']; ?>" style="width:70%"></td>
+			<td class="text-center"><img src="<?= base_url();?>assets/images/logo/<?= $restaurant['photo_file']; ?>" style="width:70%"></td>
 		</tr>
 		<?php } ?>
 		<tr>
@@ -100,16 +100,26 @@
 					</tr>
 					<?php } ?>
 					<?php if(isset($bill['bill']['vat']) && $bill['bill']['vat'] >0){ ?>
-					<tr>
-						<td class="text-right"><?= number_format($bill_amount,2) ?> @ VAT</td> 
-						<td colspan = 2 class="text-right"><?= $bill['bill']['vat'] ;?>%</td> 
-						<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['vat'] / 100),2); ?></td> 
-					</tr>
+						<tr>
+							<td class="text-right"><?= number_format($bill_amount,2) ?> @ VAT</td> 
+							<td colspan = 2 class="text-right"><?= $bill['bill']['vat'] ;?>%</td> 
+							<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['vat'] / 100),2); ?></td> 
+						</tr>
 					<?php } ?>
-					<tr class="border-top border-bottom">
-						<td colspan = 2 class="text-right">Grand Total</td> 
-						<td colspan = 2 class="text-right"><?= number_format($bill['bill']['total'],2); ?></td> 
-					</tr>
+					<?php if(isset($bill['bill']['discount_amt']) && $bill['bill']['discount_amt'] >0){ ?>
+						<tr class="border-top border-bottom">
+							<td colspan = 2 class="text-right">Total</td> 
+							<td colspan = 2 class="text-right"><?= number_format(($bill['bill']['total'] + $bill['bill']['discount_amt']),2); ?></td> 
+						</tr>
+						<tr class="border-top border-bottom">
+							<td colspan = 2 class="text-right">Discount</td> 
+							<td colspan = 2 class="text-right"><?= number_format($bill['bill']['discount_amt'],2); ?></td> 
+						</tr>
+					<?php } ?>
+						<tr class="border-top border-bottom">
+							<td colspan = 2 class="text-right">Grand Total</td> 
+							<td colspan = 2 class="text-right"><?= number_format($bill['bill']['total'],2); ?></td> 
+						</tr>
 					<?php if(false) { ?>
 					<tr class="border-top">
 						<td colspan = 2 class="text-right"><small>Round Off</small></td> 
@@ -141,8 +151,12 @@
 				write to us at <br />
 				<b><?= $restaurant['email'] ;?></b>
 			</td>
-		<?php } ?>
 		</tr>
+		<?php } if($restaurant['qr_code'] != '' ){ ?>
+		<tr>
+			<td class="text-center"><img src="<?= base_url();?>assets/images/qr/<?= $restaurant['qr_code']; ?>" style="width:70%"></td>
+		</tr>
+		<?php } ?>
 	</table>
 </section>
 </body>

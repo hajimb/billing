@@ -50,7 +50,8 @@
                                 </label>
                             </div>
                             <div class="tab-content">
-                                <form action="" id="manage-order-dineein">
+                            <form role="form" method="post" name="mainfrm" id="mainfrm">    
+                            <!-- <form action="" id="manage-order-dineein"> -->
                                     <input type="hidden" name="order_type" value="dinein">
                                     <?php  if(isset($order) && count($order)>0){?>
                                     <input type="hidden" name="ord_id" id="ord_id" value="<?=$order['Id']?>">
@@ -82,8 +83,8 @@
                                                         <th scope="col">Items</th>
                                                         <th scope="col">Check Items</th>
                                                         <th scope="col">Quantity</th>
-                                                        <th class="text-right" scope="col">Amount</th>
-                                                        <th class="text-right" scope="col">Price</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Instruction</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
