@@ -197,4 +197,99 @@ class Upload extends REST_Controller {
             return $result->category_id;
         }
     } 
+
+    private function getUnitid($rawmaterial, $restaurant_id){
+        $this->db->select('*');
+        $this->db->from('rawmaterial');
+        $this->db->where('rawmaterial',$rawmaterial);
+        $this->db->where('restaurant_id',$restaurant_id);
+        $this->db->where('is_deleted',0);
+        $query = $this->db->get();
+        $rows = $query->num_rows(); 
+        if($rows == 0){
+            $data['rawmaterial'] = $rawmaterial;
+            $data['restaurant_id'] = $restaurant_id;
+            $this->db->insert('rawmaterial', $data);
+            return $this->db->insert_id();
+        }else{
+            $result = $query->row();
+            return $result->rawmaterial_id;
+        }
+    } 
+
+
+    public function rawmaterial_post(){  
+        $upload_path 			 = $this->config->item('upload_path');
+        is_dir($upload_path);
+        $config['upload_path']   =  $upload_path;
+	    $config['allowed_types'] = 'xlsx|xls';
+	    $config['max_size']      = '1000';
+	    $config['overwrite']	 = FALSE;
+		$config['encrypt_name']	 = TRUE;
+		$config['remove_spaces'] = TRUE;
+	    $this->load->library('upload', $config);
+	    $this->upload->initialize($config);
+	    if(!$this->upload->do_upload('rawmaterials')){
+            $this->response([
+                'validate' => TRUE,
+                'status' => FALSE,
+                'msg' => $this->upload->display_errors()
+            ], REST_Controller::HTTP_OK);
+	    }else{
+	        $data     = array('upload_data' => $this->upload->data());
+	  	    $success  = $this->importRawmaterialData($data['upload_data']['file_name'], $this->post('restaurant_id'));
+            if($success==0){
+                $msg = 'Items Successfully Added';
+            }else{
+                $msg = 'Items Successfully Added<br />Total Records <b>'.$this->total. '</b> Duplicate Records found '.$success;
+            }
+            $this->response([
+                'validate'  => TRUE,
+                'status'    => TRUE,
+                'msg'       => $msg
+            ], REST_Controller::HTTP_OK);
+		}
+    }
+
+    public function importRawmaterialData($path, $restaurant_id){
+		$this->load->library('excel');
+		$file = "./uploads/".$path;
+		$objPHPExcel 	 = PHPExcel_IOFactory::load($file);
+		$cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
+		foreach ($cell_collection as $cell) {
+			$column		= $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
+			$row        = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
+			$data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
+			$arr_data[$row][$column] = $data_value;
+		}
+		$data['values'] = $arr_data;
+        // print_r($data);
+		$insdata 		= array();
+        $this->total    = count($arr_data) - 1;
+        $count=0;
+		foreach ($data['values'] as $key => $value){
+			if($key > 1){
+                if($data['values'][$key]['A'] != ''){
+                    $rawmaterial    = addslashes($data['values'][$key]['A']);
+                    $unit	        = addslashes($data['values'][$key]['B']);
+                    $cat_id         = $this->getUnitid($rawmaterial, $restaurant_id);
+                    $where          = array('rawmaterial'=> $rawmaterial, 'unit' => $unit, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
+                    if(is_exists($where, 'rawmaterial', 0, 'rawmaterial_id') > 0 ){
+                        $count++;
+                    }else{
+                        $insdata = array(
+                            'rawmaterial'   => $rawmaterial,
+                            'unit'          => $unit,
+                            'is_deleted'    => 0,
+                            'restaurant_id' => $restaurant_id,
+                            'created_by'    => $this->session->userdata('user_session')['user_id'],
+                            'created_date'  => date('Y-m-d H:i:s')
+                        );
+                        $this->db->insert('rawmaterial', $insdata);
+                    }
+                }
+            }
+		}
+        return $count;
+	}
 }
