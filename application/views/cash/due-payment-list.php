@@ -1,4 +1,3 @@
-<input type="hidden" id="rurl" value="<?= $rurl;?>">
 <!-- Main content -->
 <section class="content">
   <!-- Small boxes (Stat box) -->
@@ -17,8 +16,11 @@
                 <th>Total ( <i class="fas fa-rupee-sign"></i> )</th>
                 <th>Payment</th>
                 <th>Paid Amount ( <i class="fas fa-rupee-sign"></i> )</th>
+                <th>Remaining Amount ( <i class="fas fa-rupee-sign"></i> )</th>
                 <th>Invoice Date</th>
-                <th><a href="<?php echo base_url('purchase/create') ?>" class="btn btn-default">Add New</a></th>
+                <th>
+                    <!-- <a href="<?php echo base_url('purchase/create') ?>" class="btn btn-default">Add New</a> -->
+                </th>
               </tr>
             </thead>
             <form id="mainfrm" action="" method="post">
@@ -38,15 +40,10 @@
                     <td><?php echo $row['total_amount'];?></td>
                     <td><?php echo $row['ptype'];?></td>
                     <td><?php echo $row['paid_amount'];?></td>
+                    <td><?php echo $row['total_amount'] - $row['paid_amount'];?></td>
                     <td><?php echo $row['invoice_date'];?></td>
                     <td nowrap>
-                      <?php if ($row['ptype']== 'Fully Paid'){
-                        echo "No Action";
-                      }else{?>
-                      <button class="btn btn-success getdetail" data-id="<?= $row['stock_id']; ?>">Pay Now</button>
-                        <button onClick="Edit(<?= $row['stock_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                        <button onClick="Delete(<?= $row['stock_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                      <?php }?>
+                        <button class="btn btn-success getdetail" data-id="<?= $row['stock_id']; ?>">Pay Now</button>
                     </td>
                   </tr>
                   <?php $i++; }  ?>
@@ -63,30 +60,6 @@
   <!-- /.row -->
 </section>
 <!-- /.content -->
-
-
-<!-- Delete Modal -->
-<div id="myModalDelete" class="modal fade" role="dialog" data-keyboard="true" data-backdrop="static" tabindex="-1">
-  <div class="modal-dialog ">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Confirm Deletion</h4>
-      </div>
-      <div class="modal-body" style="overflow: auto;">
-        <div class="main-grid">
-          <div class="col-md-12 ">
-            Are you sure You want to Delete the selected Item ?
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id = "confirmdelete" data-form="mainfrm">Confirm</button>
-        <button type="button" class="btn btn-warning" id="cancelmenu" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <!-- Delete Modal -->
