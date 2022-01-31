@@ -297,16 +297,11 @@ class Inventory extends CI_Controller {
 			"assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js",
 			"assets/plugins/datatables-responsive/js/dataTables.responsive.min.js",
 			"assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js",
-			"https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js",
-			"https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js",
-			"https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js",
-			"https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js",
 		);
 		$this->data['css']     = array(
 			"assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css",
 			"assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css",
 			"assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css",
-			"https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"
 		);
 		$this->data["pagename"]  = "indent-material-list";
 		$this->data['page_title'] = "Indent";

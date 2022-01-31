@@ -216,7 +216,6 @@ class Inventory extends REST_Controller {
             if($ramount == $data['paid_amount']){
                 $data['payment_type'] = 1;
             }
-            // print_r($data);exit;
             $result                 = $this->Stockmodel->paydueamount($data, $main_id, $ip);
             $this->response([
                 'validate' => TRUE,
