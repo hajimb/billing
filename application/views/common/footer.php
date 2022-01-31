@@ -170,6 +170,9 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap-typeahead.js"></script>
 <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/repeater.js"></script> 
+ 
+
+
 <script>
   window.start_load = function(){
     $('body').prepend('<di id="preloader2"></di>')
@@ -1012,4 +1015,10 @@ if(isset($pagename)){
     }
   }
 ?>
+<script src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/jszip.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/pdfmake.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/vfs_fonts.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/buttons.print.min.js"></script>
 </html>

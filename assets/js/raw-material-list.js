@@ -3,7 +3,28 @@ var rurl        = $('#rurl').val();
 
 $(function () {
     $(document).ready(function() {
-        $('#mainTable').DataTable();
+        $('#mainTable').DataTable({
+            dom: 'lBfrtip',
+            buttons: {
+                buttons: [
+                {
+                    extend: "excelHtml5",
+                    className: "btn btn-primary",
+                    exportOptions: {
+                    columns: [0,1,2]
+                    },filename: "Raw Material List",
+                },
+                {
+                    extend: "csvHtml5",
+                    className: "btn btn-default",
+                    exportOptions: {
+                        columns: [0,1,2]
+                    },
+                    filename: "Raw Material List",
+                },
+                ],
+            },
+        });
         $("#mainGroupNav").addClass('active');
         $("#manageGroupNav").addClass('active');
     });

@@ -31,8 +31,9 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/summernote/summernote-bs4.min.css">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/custom/custom.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/custom/custom.css?ver=<?= time();?>">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css?ver=<?= time();?>">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/buttons.dataTables.min.css">
   <link rel="icon" href="<?php echo base_url(); ?>assets/img/favicon.ico" type="image/x-icon"/>
   <?php
     if (isset($css)) {

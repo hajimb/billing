@@ -2,7 +2,28 @@ var controller = "Stock";
 
 $(function () {
     $(document).ready(function() {
-        $('#mainTable').DataTable();
+        $('#mainTable').DataTable({
+            dom: 'lBfrtip',
+            buttons: {
+                buttons: [
+                {
+                    extend: "excelHtml5",
+                    className: "btn btn-primary",
+                    exportOptions: {
+                    columns: [0,1,2,3,4]
+                    },filename: "Current Stock List",
+                },
+                {
+                    extend: "csvHtml5",
+                    className: "btn btn-default",
+                    exportOptions: {
+                        columns: [0,1,2,3,4]
+                    },
+                    filename: "Current Stock List",
+                },
+                ],
+            },
+        });
         $("#mainGroupNav").addClass('active');
         $("#manageGroupNav").addClass('active');
     });
