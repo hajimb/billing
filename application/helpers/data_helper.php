@@ -210,7 +210,7 @@ if (!function_exists('getUserGroupByUserId')) {
 
 /* Get User Groups of Particular User */
 if (!function_exists('getExpenseData')) {
-    function getExpenseData($table_name,$restaurant_id)
+    function getExpenseData($table_name, $restaurant_id, $cash_type, $id)
     {
         $result = array();
         $ci = &get_instance();
@@ -221,6 +221,12 @@ if (!function_exists('getExpenseData')) {
         $ci->db->join('admin_users au','au.id = e.user_id', 'left');
         $ci->db->where('e.is_deleted',0);
         $ci->db->where('e.restaurant_id',$restaurant_id);
+        if($cash_type){
+            $ci->db->where('e.cash_type', $cash_type);
+        }
+        if($id){
+            $ci->db->where('e.expense_id', $id);
+        }
         $query  = $ci->db->get();
         $result = $query->result_array();
         return $result;

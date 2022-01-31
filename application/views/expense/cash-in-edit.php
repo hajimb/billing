@@ -5,7 +5,7 @@
         <div class="col-md-12 col-xs-12">
           <div class="card card-warning">
             <div class="card-header">
-              <h3 class="card-title"><?= $todo;?> Cash Out</h3>
+              <h3 class="card-title"><?= $todo;?> Cash In</h3>
             </div>
             <form role="form" method="post" name="mainfrm" id="mainfrm">
             <!-- /.card-header -->
@@ -52,7 +52,7 @@
                 <div class="row">
                   <div class="col-sm-4">
                     <input type="hidden" id="main_id" name="main_id" value="<?= $main_id; ?>">
-                    <input type="hidden" id="cash_type" name="cash_type" value="O">
+                    <input type="hidden" id="cash_type" name="cash_type" value="I">
                     <input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $session_data['restaurant_id'];?>">
                     <button class="btn btn-primary saveChange" id="update" type="submit" data-form="mainfrm"><i class="fa fa-save" style="display: none"></i>Save </button>
                     <button class="btn btn-warning goBack" type="button"><i class="fa fa-save" style="display: none"></i>Cancel </button>
