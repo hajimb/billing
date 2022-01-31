@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2022 at 01:23 PM
+-- Generation Time: Jan 31, 2022 at 01:14 PM
 -- Server version: 10.3.32-MariaDB-0ubuntu0.20.04.1
 -- PHP Version: 7.4.26
 
@@ -129,8 +129,8 @@ INSERT INTO `bill_head` (`Id`, `restaurant_id`, `table_id`, `name`, `mobile`, `i
 (3, 5, 1, '', '', 2, 452, 0, 0, 0, 73.62, 1300.62, 'BillPaid', 2201243, '2022-01-24 19:09:35', '2022-01-24 19:09:35', 10, 10, 0, 'dinein', 'Cash', 1),
 (4, 5, 8, '', '', 2, 310, 0, 0, 0, 18.6, 328.6, 'BillPaid', 2201244, '2022-01-24 19:10:54', '2022-01-24 19:10:54', 10, 10, 0, 'dinein', 'Cash', 1),
 (5, 5, 1, '', '', 3, 150, 0, 0, 0, 9, 159, 'BillPaid', 2201245, '2022-01-24 19:11:02', '2022-01-24 19:11:02', 10, 10, 0, 'dinein', 'Cash', 1),
-(6, 5, 1, '', '', 2, 250, 0, 0, 0, 0, 250, 'OrderTaken', 2201256, '2022-01-25 17:35:24', '2022-01-25 17:35:24', 10, 10, 0, 'dinein', '', 1),
-(7, 5, 1, '', '', 2, 250, 0, 0, 0, 15, 265, 'OrderTaken', 2201257, '2022-01-25 17:35:48', '2022-01-25 17:35:48', 10, 10, 0, 'dinein', '', 1);
+(6, 5, 1, '', '', 2, 250, 0, 0, 0, 33.6, 593.6, 'OrderTaken', 2201256, '2022-01-25 17:35:24', '2022-01-25 17:35:24', 10, 10, 0, 'dinein', '', 1),
+(7, 5, 1, '', '', 2, 250, 0, 0, 0, 15, 265, 'BillPaid', 2201257, '2022-01-25 17:35:48', '2022-01-25 17:35:48', 10, 10, 0, 'dinein', 'Cash', 1);
 
 -- --------------------------------------------------------
 
@@ -161,7 +161,8 @@ INSERT INTO `bill_item` (`Id`, `bill_id`, `kot_id`, `created_date`) VALUES
 (8, 4, 8, '2022-01-24 19:10:54'),
 (9, 5, 9, '2022-01-24 19:11:02'),
 (10, 6, 10, '2022-01-25 17:35:24'),
-(11, 7, 11, '2022-01-25 17:35:48');
+(11, 7, 11, '2022-01-25 17:35:48'),
+(12, 6, 12, '2022-01-28 15:07:51');
 
 -- --------------------------------------------------------
 
@@ -216,6 +217,34 @@ INSERT INTO `category` (`category_id`, `restaurant_id`, `category`, `modified_da
 (15, 5, 'Punjabi', '0000-00-00 00:00:00', '2022-01-14 11:46:33', 0),
 (16, 5, 'dasdasds', '0000-00-00 00:00:00', '2022-01-14 12:06:30', 0),
 (17, 1, 'Punjabi Dishses', '0000-00-00 00:00:00', '2022-01-25 12:56:40', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `current_stock`
+--
+
+DROP TABLE IF EXISTS `current_stock`;
+CREATE TABLE `current_stock` (
+  `id` int(11) NOT NULL,
+  `restaurant_id` int(11) NOT NULL,
+  `rawmaterial_id` int(11) NOT NULL,
+  `current_stock` decimal(10,2) NOT NULL,
+  `created_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `modified_date` timestamp NULL DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `modified_by` int(11) NOT NULL,
+  `ip` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `current_stock`
+--
+
+INSERT INTO `current_stock` (`id`, `restaurant_id`, `rawmaterial_id`, `current_stock`, `created_date`, `modified_date`, `created_by`, `modified_by`, `ip`) VALUES
+(1, 5, 9, '165.00', '2022-01-28 05:10:58', '2022-01-28 05:59:31', 10, 10, '::1'),
+(2, 5, 8, '40.00', '2022-01-28 05:11:28', '2022-01-31 07:24:45', 10, 10, '::1'),
+(3, 5, 7, '-40.00', '2022-01-28 12:09:01', '2022-01-31 07:24:45', 10, 10, '::1');
 
 -- --------------------------------------------------------
 
@@ -339,11 +368,11 @@ CREATE TABLE `groups` (
 
 INSERT INTO `groups` (`id`, `group_name`, `permission`, `created_date`, `modified_date`, `is_deleted`) VALUES
 (1, 'MasterAdmin', '10,18,23', NULL, NULL, 0),
-(2, 'Admin', '1,3,4,5,6,7,8,9,11,2,12,13,14,15,16,17,20,21,26,22,27,23,24,25', NULL, '2022-01-21 15:28:48', 0),
-(3, 'Kitchen', '13', NULL, '2022-01-14 18:48:23', 0),
-(4, 'Waiter', '26', NULL, '2022-01-19 11:44:21', 0),
-(5, 'Manager', '1,3,4,5,6,7,8,9,11,2,12,13,14,15,16,17,20,21,26,22,23,24,25', NULL, '2022-01-19 11:44:35', 0),
-(6, 'Owner', '1,3,4,5,6,7,8,9,11,2,12,13,14,15,16,17,20,21,26,22,27,23,24,25', NULL, '2022-01-21 15:28:42', 0);
+(2, 'Admin', '26,14,13,4,27,1,9,25,11,21,2,12,8,23,5,6,22,7', NULL, '2022-01-28 13:33:52', 0),
+(3, 'Kitchen', '13', NULL, '2022-01-28 13:34:07', 0),
+(4, 'Waiter', '26', NULL, '2022-01-28 13:34:02', 0),
+(5, 'Manager', '26,14,13,4,1,9,25,11,21,2,12,8,23,5,6,22,7', NULL, '2022-01-28 13:34:21', 0),
+(6, 'Owner', '26,14,13,4,27,1,9,25,11,21,2,12,8,23,5,6,22,7', NULL, '2022-01-28 13:34:13', 0);
 
 -- --------------------------------------------------------
 
@@ -443,7 +472,8 @@ INSERT INTO `kot_head` (`Id`, `bill_id`, `kot`, `restaurant_id`, `table_id`, `na
 (8, 4, 8, 5, 8, '', '', 2, 310, 0, 0, 0, 0, 310, 'BillPaid', 2201244, '2022-01-24 19:10:54', '2022-01-24 19:10:54', 10, 10, 0, 'dinein', 'Cash', 1),
 (9, 5, 9, 5, 1, '', '', 3, 150, 0, 0, 0, 0, 150, 'BillPaid', 2201245, '2022-01-24 19:11:02', '2022-01-24 19:11:02', 10, 10, 0, 'dinein', 'Cash', 1),
 (10, 6, 1, 5, 1, '', '', 2, 250, 0, 0, 0, 0, 250, 'OrderTaken', 2201256, '2022-01-25 17:35:24', '2022-01-25 17:35:24', 10, 10, 0, 'dinein', '', 1),
-(11, 7, 2, 5, 1, '', '', 2, 250, 0, 0, 0, 0, 250, 'OrderTaken', 2201257, '2022-01-25 17:35:48', '2022-01-25 17:35:48', 10, 10, 0, 'dinein', '', 1);
+(11, 7, 2, 5, 1, '', '', 2, 250, 0, 0, 0, 0, 250, 'BillPaid', 2201257, '2022-01-25 17:35:48', '2022-01-25 17:35:48', 10, 10, 0, 'dinein', 'Cash', 1),
+(12, 6, 1, 5, 1, '', '', 2, 310, 0, 0, 0, 0, 310, 'OrderTaken', 2201288, '2022-01-28 15:07:51', '2022-01-28 15:07:51', 10, 10, 0, 'dinein', '', 1);
 
 -- --------------------------------------------------------
 
@@ -487,7 +517,9 @@ INSERT INTO `kot_item` (`Id`, `kot_id`, `item_id`, `qty`, `amount`, `price`, `cr
 (18, 10, 4, 1, 160, 160, '2022-01-25 17:35:24'),
 (19, 10, 13, 1, 90, 90, '2022-01-25 17:35:24'),
 (20, 11, 4, 1, 160, 160, '2022-01-25 17:35:48'),
-(21, 11, 13, 1, 90, 90, '2022-01-25 17:35:48');
+(21, 11, 13, 1, 90, 90, '2022-01-25 17:35:48'),
+(22, 12, 4, 1, 160, 160, '2022-01-28 15:07:51'),
+(23, 12, 5, 1, 150, 150, '2022-01-28 15:07:51');
 
 -- --------------------------------------------------------
 
@@ -1001,7 +1033,14 @@ INSERT INTO `log` (`log_id`, `log_msg`, `createddate`, `controller`) VALUES
 (491, 'Havemore  Owner sign-out successfully.', '2022-01-21 13:16:40', 'Logout'),
 (492, 'Admin sign-out successfully.', '2022-01-21 17:52:56', 'Logout'),
 (493, 'Havemore  Owner sign-out successfully.', '2022-01-25 12:51:27', 'Logout'),
-(494, 'Punjab grill manager sign-out successfully.', '2022-01-25 12:55:23', 'Logout');
+(494, 'Punjab grill manager sign-out successfully.', '2022-01-25 12:55:23', 'Logout'),
+(495, 'Admin sign-out successfully.', '2022-01-27 15:04:11', 'Logout'),
+(496, 'Havemore  Owner sign-out successfully.', '2022-01-28 12:45:09', 'Logout'),
+(497, 'Admin sign-out successfully.', '2022-01-28 13:03:16', 'Logout'),
+(498, 'Havemore  Owner sign-out successfully.', '2022-01-28 13:30:26', 'Logout'),
+(499, 'Havemore Waiter sign-out successfully.', '2022-01-28 13:30:54', 'Logout'),
+(500, 'Havemore  Owner sign-out successfully.', '2022-01-28 13:32:26', 'Logout'),
+(501, 'Admin sign-out successfully.', '2022-01-28 13:34:32', 'Logout');
 
 -- --------------------------------------------------------
 
@@ -1014,7 +1053,10 @@ CREATE TABLE `master_modules` (
   `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `classname` varchar(100) DEFAULT NULL,
+  `fa_class` varchar(200) NOT NULL,
   `to_show` tinyint(1) NOT NULL DEFAULT 1,
+  `parent_id` int(11) NOT NULL DEFAULT 0,
+  `sort_id` int(11) NOT NULL DEFAULT 0,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -1022,34 +1064,35 @@ CREATE TABLE `master_modules` (
 -- Dumping data for table `master_modules`
 --
 
-INSERT INTO `master_modules` (`id`, `name`, `classname`, `to_show`, `is_deleted`) VALUES
-(1, 'Cash Flow', 'cashflow', 1, 0),
-(2, 'Item Category', 'category', 1, 0),
-(3, 'Current Stock', 'currentstock', 1, 0),
-(4, 'Customers', 'customer', 1, 0),
-(5, 'Day End', 'dayend', 1, 0),
-(6, 'Day End History', 'dayendhistory', 1, 0),
-(7, 'Discount', 'discount', 1, 0),
-(8, 'Due Payment', 'duepayment', 1, 0),
-(9, 'Expense', 'expense', 1, 0),
-(10, 'User Groups', 'groups', 0, 1),
-(11, 'Inventory', 'inventory', 1, 0),
-(12, 'Items', 'item', 1, 0),
-(13, 'Kot', 'kot', 1, 0),
-(14, 'Orders', 'order', 1, 0),
-(15, 'Purchase', 'purchase', 1, 0),
-(16, 'Raw Material', 'rawmaterial', 1, 0),
-(17, 'Receipt', 'receipt', 1, 0),
-(18, 'Restaurants', 'restaurant', 0, 0),
-(19, 'Role', 'role', 0, 0),
-(20, 'Stock Report', 'stockreport', 1, 0),
-(21, 'Table', 'table', 1, 0),
-(22, 'Tax', 'tax', 1, 0),
-(23, 'Users', 'user', 1, 0),
-(24, 'Wastage Listing', 'wastagelisting', 1, 0),
-(25, 'Withdrawal', 'withdrawal', 1, 0),
-(26, 'Table Order', 'tableorder', 1, 0),
-(27, 'Upload', 'upload', 1, 0);
+INSERT INTO `master_modules` (`id`, `name`, `classname`, `fa_class`, `to_show`, `parent_id`, `sort_id`, `is_deleted`) VALUES
+(1, 'Cash Flow', 'cashflow', 'fas fa-money-bill-wave-alt fa-2x', 1, 0, 7, 0),
+(2, 'Item Category', 'category', 'fas fa-cogs fa-2x', 1, 0, 12, 0),
+(3, 'Current Stock', 'currentstock', '', 1, 11, 0, 0),
+(4, 'Customers', 'customer', 'fas fa-users fa-2x', 1, 0, 5, 0),
+(5, 'Day End', 'dayend', 'fas fa-calendar-day fa-2x', 1, 0, 16, 0),
+(6, 'Day End History', 'dayendhistory', 'fas fa-calendar-week fa-2x', 1, 0, 18, 0),
+(7, 'Discount', 'discount', 'fas fa-tag fa-2x', 1, 0, 20, 0),
+(8, 'Due Payment', 'duepayment', 'fas fa-file-invoice-dollar fa-2x', 1, 0, 15, 0),
+(9, 'Expense', 'expense', 'fas fa-clipboard-list fa-2x', 1, 0, 8, 0),
+(10, 'User Groups', 'groups', 'fas fa-users fa-2x', 0, 0, 14, 1),
+(11, 'Inventory', 'inventory', 'fas fa-clipboard-list fa-2x', 1, 0, 10, 0),
+(12, 'Items', 'item', 'fas fa-th-large fa-2x', 1, 0, 13, 0),
+(13, 'Kot', 'kot', 'fas fa-receipt fa-2x', 1, 0, 4, 0),
+(14, 'Orders', 'order', 'fas fa-clipboard fa-2x', 1, 0, 3, 0),
+(15, 'Purchase', 'purchase', '', 1, 11, 0, 0),
+(16, 'Raw Material', 'rawmaterial', '', 1, 11, 0, 0),
+(17, 'Receipt', 'receipt', '', 1, -1, 0, 0),
+(18, 'Restaurants', 'restaurant', 'fas fa-utensils fa-2x', 0, 0, 1, 0),
+(19, 'Role', 'role', '', 0, -1, 0, 0),
+(20, 'Stock Report', 'stockreport', '', 1, 11, 0, 0),
+(21, 'Table', 'table', 'fas fa-clipboard-list fa-2x', 1, 0, 11, 0),
+(22, 'Tax', 'tax', 'fas fa-donate fa-2x', 1, 0, 19, 0),
+(23, 'Users', 'user', 'far fa-id-card fa-2x', 1, 0, 15, 0),
+(24, 'Wastage', 'wastagelisting', '', 1, 11, 0, 0),
+(25, 'Withdrawal', 'withdrawal', 'fas fa-clipboard-list fa-2x', 1, 0, 9, 0),
+(26, 'Table Order', 'tableorder', 'fas fa-clipboard fa-2x', 1, 0, 2, 0),
+(27, 'XLS Import', 'upload', 'fas fa-file-upload fa-2x', 1, 0, 6, 0),
+(28, 'Raw Material Used', 'rawmaterial-used', '', 1, 11, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1126,7 +1169,9 @@ INSERT INTO `order_status_log` (`Id`, `order_id`, `status`, `create_date`) VALUE
 (12, 4, 'BillPaid', '2022-01-24 19:11:25'),
 (13, 5, 'BillPaid', '2022-01-24 19:11:38'),
 (14, 6, 'OrderTaken', '2022-01-25 17:35:24'),
-(15, 7, 'OrderTaken', '2022-01-25 17:35:48');
+(15, 7, 'OrderTaken', '2022-01-25 17:35:48'),
+(16, 7, 'BillRaised', '2022-01-28 13:30:44'),
+(17, 7, 'BillPaid', '2022-01-28 13:30:46');
 
 -- --------------------------------------------------------
 
@@ -1139,6 +1184,7 @@ CREATE TABLE `rawmaterial` (
   `rawmaterial_id` int(255) NOT NULL,
   `restaurant_id` int(11) NOT NULL,
   `rawmaterial` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit` int(11) NOT NULL,
   `created_date` datetime NOT NULL,
   `modified_date` datetime NOT NULL,
   `created_by` int(11) NOT NULL,
@@ -1150,15 +1196,17 @@ CREATE TABLE `rawmaterial` (
 -- Dumping data for table `rawmaterial`
 --
 
-INSERT INTO `rawmaterial` (`rawmaterial_id`, `restaurant_id`, `rawmaterial`, `created_date`, `modified_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
-(1, 0, 'Potato', '2021-08-19 16:43:05', '0000-00-00 00:00:00', 0, 0, 0),
-(2, 0, 'Paneer', '2021-08-19 16:47:30', '0000-00-00 00:00:00', 0, 0, 0),
-(3, 0, 'Tomato', '2021-12-04 08:36:21', '0000-00-00 00:00:00', 0, 0, 0),
-(4, 0, 'Surmai', '2021-12-05 12:56:44', '0000-00-00 00:00:00', 0, 0, 0),
-(5, 0, 'Tea', '2021-12-15 15:55:30', '0000-00-00 00:00:00', 0, 0, 0),
-(6, 0, 'Milk', '2022-01-04 11:04:48', '0000-00-00 00:00:00', 0, 0, 0),
-(7, 5, 'Salt', '2022-01-15 12:49:30', '2022-01-15 12:50:21', 10, 10, 0),
-(8, 5, 'Potato', '2022-01-15 12:51:47', '0000-00-00 00:00:00', 10, 0, 0);
+INSERT INTO `rawmaterial` (`rawmaterial_id`, `restaurant_id`, `rawmaterial`, `unit`, `created_date`, `modified_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
+(1, 0, 'Potato', 1, '2021-08-19 16:43:05', '0000-00-00 00:00:00', 0, 0, 0),
+(2, 0, 'Paneer', 1, '2021-08-19 16:47:30', '0000-00-00 00:00:00', 0, 0, 0),
+(3, 0, 'Tomato', 1, '2021-12-04 08:36:21', '0000-00-00 00:00:00', 0, 0, 0),
+(4, 0, 'Surmai', 1, '2021-12-05 12:56:44', '0000-00-00 00:00:00', 0, 0, 0),
+(5, 0, 'Tea', 3, '2021-12-15 15:55:30', '0000-00-00 00:00:00', 0, 0, 0),
+(6, 0, 'Milk', 3, '2022-01-04 11:04:48', '0000-00-00 00:00:00', 0, 0, 0),
+(7, 5, 'Salt', 1, '2022-01-15 12:49:30', '2022-01-28 17:32:21', 10, 10, 0),
+(8, 5, 'Potato', 1, '2022-01-15 12:51:47', '0000-00-00 00:00:00', 10, 0, 0),
+(9, 5, 'Onion', 1, '2022-01-27 16:57:27', '0000-00-00 00:00:00', 10, 0, 1),
+(10, 5, 'Oil', 3, '2022-01-28 17:32:30', '0000-00-00 00:00:00', 10, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1268,16 +1316,15 @@ DROP TABLE IF EXISTS `stock`;
 CREATE TABLE `stock` (
   `stock_id` int(255) NOT NULL,
   `restaurant_id` int(255) NOT NULL,
-  `cat_id` int(255) NOT NULL DEFAULT 0,
   `rawmaterial_id` int(255) NOT NULL,
   `stock` int(255) NOT NULL,
-  `unit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `supplier_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `invoice_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `purchase_date` datetime NOT NULL,
+  `invoice_date` date DEFAULT NULL,
   `total_amount` double(8,2) NOT NULL,
   `payment_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `paid_amount` double(8,2) NOT NULL,
+  `entry_type` char(4) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified_date` datetime NOT NULL,
   `created_date` datetime NOT NULL,
   `created_by` int(255) NOT NULL,
@@ -1289,19 +1336,20 @@ CREATE TABLE `stock` (
 -- Dumping data for table `stock`
 --
 
-INSERT INTO `stock` (`stock_id`, `restaurant_id`, `cat_id`, `rawmaterial_id`, `stock`, `unit`, `supplier_name`, `invoice_no`, `purchase_date`, `total_amount`, `payment_type`, `paid_amount`, `modified_date`, `created_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
-(1, 1, 1, 0, 25, 'KG', NULL, '', '0000-00-00 00:00:00', 0.00, '', 0.00, '0000-00-00 00:00:00', '2021-08-14 09:43:54', 0, 0, 1),
-(2, 1, 1, 0, 50, 'KG', NULL, '', '0000-00-00 00:00:00', 0.00, '', 0.00, '2021-08-14 09:59:06', '2021-08-14 09:59:06', 0, 0, 1),
-(3, 2, 0, 0, 2, 'KG', NULL, '', '0000-00-00 00:00:00', 0.00, '', 0.00, '2021-08-16 07:56:59', '2021-08-16 07:56:59', 0, 0, 1),
-(4, 1, 0, 0, 50, 'KG', 'Fortune Atta', 'F001', '2021-08-16 17:19:10', 1700.00, 'Fully', 1700.00, '2021-08-16 17:19:10', '2021-08-16 17:19:10', 0, 0, 0),
-(5, 1, 0, 0, 10, 'KG', 'Amul', 'f002', '2021-08-16 17:20:22', 2500.00, 'Partially', 2000.00, '2021-08-16 17:20:22', '2021-08-16 17:20:22', 0, 0, 0),
-(6, 1, 0, 1, 50, 'KG', 'Shakti Shop', 'f001', '2021-08-19 17:25:27', 1600.00, 'Fully', 1600.00, '2021-08-19 17:25:27', '2021-08-19 17:25:27', 0, 0, 0),
-(7, 1, 0, 2, 25, 'KG', 'Amul', 'f002', '2021-08-19 17:26:21', 2200.00, 'Partially', 1500.00, '2021-08-19 17:26:21', '2021-08-19 17:26:21', 0, 0, 0),
-(8, 1, 0, 1, 68, 'KG', 'Shakti Shop', 'f003', '2021-08-20 14:45:22', 2100.00, 'Fully', 2100.00, '2021-08-20 14:45:22', '2021-08-20 14:45:22', 0, 0, 0),
-(9, 5, 0, 3, 50, 'KG', 'kakaji', '2342444', '2021-12-04 10:52:29', 2500.00, 'Fully', 1500.00, '2021-12-04 10:52:29', '2021-12-04 10:52:29', 10, 10, 0),
-(10, 5, 0, 4, 65, 'Unit', 'Colaba', '23432534563', '2021-12-05 12:58:14', 20000.00, 'Partially', 15000.00, '2021-12-05 12:58:14', '2021-12-05 12:58:14', 13, 13, 0),
-(11, 5, 0, 1, 23, 'KG', 'Dmart', '12123', '2022-01-04 14:17:48', 1200.00, 'Fully', 1200.00, '2022-01-04 14:17:48', '2022-01-04 14:17:48', 21, 21, 0),
-(12, 2, 0, 7, 10, 'KG', 'Test', '123', '2022-01-15 13:08:24', 120.00, 'Fully', 120.00, '2022-01-15 13:08:24', '2022-01-15 13:08:24', 10, 10, 0);
+INSERT INTO `stock` (`stock_id`, `restaurant_id`, `rawmaterial_id`, `stock`, `supplier_name`, `invoice_no`, `invoice_date`, `total_amount`, `payment_type`, `paid_amount`, `entry_type`, `modified_date`, `created_date`, `created_by`, `modify_by`, `is_deleted`) VALUES
+(1, 5, 9, 100, 'ABC', '123', '2022-01-25', 1250.00, '1', 1250.00, 'P', '2022-01-28 11:19:16', '2022-01-28 10:40:58', 10, 10, 0),
+(2, 5, 8, 50, 'XYZ', '456', '2022-01-23', 100.00, '1', 100.00, 'P', '2022-01-28 17:38:44', '2022-01-28 10:41:28', 10, 10, 0),
+(3, 5, 8, 10, 'ddd', '45656', '2022-01-25', 152.00, '1', 152.00, 'P', '0000-00-00 00:00:00', '2022-01-28 10:41:55', 10, 0, 0),
+(4, 5, 9, 10, NULL, '', '2022-01-26', 0.00, '', 0.00, 'W', '0000-00-00 00:00:00', '2022-01-28 11:24:34', 10, 0, 0),
+(5, 5, 9, 25, NULL, '', '2022-01-26', 0.00, '', 0.00, 'U', '2022-01-28 11:29:31', '2022-01-28 11:27:16', 10, 10, 0),
+(6, 5, 7, 100, 'jlkj', '4546', '2022-01-25', 1523.00, '1', 1523.00, 'P', '2022-01-28 17:39:01', '2022-01-28 17:39:01', 10, 10, 0),
+(7, 5, 7, 100, NULL, '', '2022-01-22', 0.00, '', 0.00, 'U', '2022-01-28 18:01:28', '2022-01-28 17:57:46', 10, 10, 0),
+(8, 5, 7, 15, NULL, '', '2022-01-22', 0.00, '', 0.00, 'U', '2022-01-28 18:01:50', '2022-01-28 18:01:39', 10, 10, 0),
+(9, 5, 8, 10, NULL, '', '2022-01-22', 0.00, '', 0.00, 'W', '2022-01-28 18:02:59', '2022-01-28 18:02:42', 10, 10, 0),
+(10, 5, 7, 10, NULL, '', '2022-01-22', 0.00, '', 0.00, 'U', '2022-01-28 18:16:03', '2022-01-28 18:15:39', 10, 10, 0),
+(11, 5, 7, 5, NULL, '', '2022-01-23', 0.00, '', 0.00, 'W', '2022-01-28 18:16:40', '2022-01-28 18:16:40', 10, 10, 0),
+(12, 5, 7, 10, NULL, '', '2022-01-22', 0.00, '', 0.00, 'U', '2022-01-31 12:54:45', '2022-01-31 12:54:45', 10, 0, 0),
+(13, 5, 8, 20, NULL, '', '2022-01-22', 0.00, '', 0.00, 'U', '2022-01-31 12:54:45', '2022-01-31 12:54:45', 10, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1511,6 +1559,12 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indexes for table `current_stock`
+--
+ALTER TABLE `current_stock`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -1662,13 +1716,19 @@ ALTER TABLE `bill_head`
 -- AUTO_INCREMENT for table `bill_item`
 --
 ALTER TABLE `bill_item`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `current_stock`
+--
+ALTER TABLE `current_stock`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -1704,25 +1764,25 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `kot_head`
 --
 ALTER TABLE `kot_head`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `kot_item`
 --
 ALTER TABLE `kot_item`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=495;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=502;
 
 --
 -- AUTO_INCREMENT for table `master_modules`
 --
 ALTER TABLE `master_modules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `master_payment_type`
@@ -1740,13 +1800,13 @@ ALTER TABLE `master_unit`
 -- AUTO_INCREMENT for table `order_status_log`
 --
 ALTER TABLE `order_status_log`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `rawmaterial`
 --
 ALTER TABLE `rawmaterial`
-  MODIFY `rawmaterial_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `rawmaterial_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `restaurant`
@@ -1770,7 +1830,7 @@ ALTER TABLE `status_master`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `stock_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `stock_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tables`
