@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 require APPPATH . './libraries/REST_Controller.php';
 
-class Expense extends REST_Controller {
+class Cash extends REST_Controller {
     private $last_query= null;
     function __construct() {
         parent::__construct();

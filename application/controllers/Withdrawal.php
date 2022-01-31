@@ -4,11 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Withdrawal extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-
         $this->data['session_data'] = @$this->session->userdata('user_session');
         $this->data['user_permission'] = @$this->session->userdata('user_permission');
         $this->restaurant_id = $this->data['session_data']['restaurant_id'];  
-        
     }
 
 

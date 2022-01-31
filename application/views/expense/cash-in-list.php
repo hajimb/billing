@@ -15,7 +15,7 @@
                     <th>Reason</th>
                     <th>Amount</th>
                     <th>Date</th>
-                    <th><a href="<?php echo base_url('expense/create') ?>" class="btn btn-default">Add New</a></th>
+                    <th><a href="<?php echo base_url('cash/create') ?>" class="btn btn-default">Add New</a></th>
                 </tr>
             </thead>
             <form id="mainfrm" action="" method="post">
