@@ -28,3 +28,32 @@ $(document).on("click", ".saveChange", function(e) {
         }
     });
 })
+
+
+$(function () {
+    $(document).ready(function() {
+        $('#printTable').DataTable({
+            dom: 'lBfrtip',
+            "ordering": false,
+            buttons: {
+                buttons: [
+                {
+                    extend: "excelHtml5",
+                    className: "btn btn-primary",
+                    exportOptions: {
+                    columns: [0,1,2,3]
+                    },filename: "Indent List",
+                },
+                {
+                    extend: "csvHtml5",
+                    className: "btn btn-default",
+                    exportOptions: {
+                        columns: [0,1,2,3]
+                    },
+                    filename: "Indent List",
+                },
+                ],
+            },
+        });
+    });
+});

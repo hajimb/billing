@@ -2,7 +2,28 @@ var controller = "inventory";
 var rurl        = $('#rurl').val();
 $(function () {
     $(document).ready(function() {
-        $('#mainTable').DataTable();
+        $('#mainTable').DataTable({
+            dom: 'lBfrtip',
+            buttons: {
+                buttons: [
+                {
+                    extend: "excelHtml5",
+                    className: "btn btn-primary",
+                    exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7,8]
+                    },filename: "Purchase List",
+                },
+                {
+                    extend: "csvHtml5",
+                    className: "btn btn-default",
+                    exportOptions: {
+                        columns: [0,1,2,3,4,5,6,7,8]
+                    },
+                    filename: "Purchase List",
+                },
+                ],
+            },
+        });
         $("#mainGroupNav").addClass('active');
         $("#manageGroupNav").addClass('active');
     });
