@@ -202,7 +202,6 @@ class Upload extends REST_Controller {
         $this->db->select('*');
         $this->db->from('master_unit');
         $this->db->where('units',$unit);
-        $this->db->where('is_deleted',0);
         $query = $this->db->get();
         $rows = $query->num_rows(); 
         if($rows == 0){
@@ -211,7 +210,7 @@ class Upload extends REST_Controller {
             return $this->db->insert_id();
         }else{
             $result = $query->row();
-            return $result->rawmaterial_id;
+            return $result->id;
         }
     } 
 
@@ -271,13 +270,13 @@ class Upload extends REST_Controller {
                     $rawmaterial    = addslashes($data['values'][$key]['A']);
                     $unit	        = addslashes($data['values'][$key]['B']);
                     $cat_id         = $this->getUnitid($unit);
-                    $where          = array('rawmaterial'=> $rawmaterial, 'unit' => $unit, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
+                    $where          = array('rawmaterial'=> $rawmaterial, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
                     if(is_exists($where, 'rawmaterial', 0, 'rawmaterial_id') > 0 ){
                         $count++;
                     }else{
                         $insdata = array(
                             'rawmaterial'   => $rawmaterial,
-                            'unit'          => $unit,
+                            'unit'          => $cat_id,
                             'is_deleted'    => 0,
                             'restaurant_id' => $restaurant_id,
                             'created_by'    => $this->session->userdata('user_session')['user_id'],
