@@ -44,64 +44,71 @@ class Ordermodel extends CI_Model
 
     public function addOrderRequest($data)
     {
+        // print_r($data);
+        $result = array('msg' => 'Order Not Saved due to Error, Try Again','status' => false, 'data' => 0);
         $data["created_date"] = date('Y-m-d H:i:s');
         if($this->session->userdata('user_session')){
-           // echo $data["table_id"];
-            $user_session = $this->session->userdata('user_session');
-            $query = $this->db->query("SELECT max(Id) as max  FROM bill_head ");
-            $result = $query->row_array();
-            $totalitem = count($data["item_id"]);
-            $bill_data["restaurant_id"] = $user_session["restaurant_id"];
-            $bill_data["table_id"] = $data["table_id"];
-            $bill_data["bill_amt"] = $data["total_amount"];
-            $bill_data["total"] = $data["total_amount"];;
-            $bill_data["status"] = "OrderTaken";
-            $bill_data["invoice_no"] = date("ymd").($result["max"]+1);
-            $bill_data["created_date"] = date('Y-m-d H:i:s');
-            $bill_data["modified_date"] = date('Y-m-d H:i:s');
-            $bill_data["created_by"] = $user_session['user_id'];
-            $bill_data["modify_by"] = $user_session['user_id'];
-             $bill_data["bill_type"] = $data['order_type'];
-            // $bill_data["mobile"] = $data['mobile'];
-            // $bill_data["name"] = $data['name'];
-            $bill_data["items"] = $totalitem;
-            
-            // $query11 = $this->db->query("SELECT * FROM bill_head where table_id = '".$data["table_id"]."' and status != 'BillPaid' order by Id DESC limit 1");
-            // $result11 = $query11->row_array();
+            if(isset($data['item_id'])){
+            // echo $data["table_id"];
+                $user_session = $this->session->userdata('user_session');
+                $query = $this->db->query("SELECT max(Id) as max  FROM bill_head ");
+                $rs = $query->row_array();
+                $totalitem = count($data["item_id"]);
+                $bill_data["restaurant_id"] = $user_session["restaurant_id"];
+                $bill_data["table_id"] = $data["table_id"];
+                $bill_data["bill_amt"] = $data["total_amount"];
+                $bill_data["total"] = $data["total_amount"];;
+                $bill_data["status"] = "OrderTaken";
+                $bill_data["invoice_no"] = date("ymd").($rs["max"]+1);
+                $bill_data["created_date"] = date('Y-m-d H:i:s');
+                $bill_data["modified_date"] = date('Y-m-d H:i:s');
+                $bill_data["created_by"] = $user_session['user_id'];
+                $bill_data["modify_by"] = $user_session['user_id'];
+                $bill_data["bill_type"] = $data['order_type'];
+                // $bill_data["mobile"] = $data['mobile'];
+                // $bill_data["name"] = $data['name'];
+                $bill_data["items"] = $totalitem;
+                
+                // $query11 = $this->db->query("SELECT * FROM bill_head where table_id = '".$data["table_id"]."' and status != 'BillPaid' order by Id DESC limit 1");
+                // $result11 = $query11->row_array();
 
-            if($data["ord_id"] != ''){
-                $BillId = $data["ord_id"];
-                $bill_i["bill_id"] = $data["ord_id"];
-                $bill_data["bill_id"] = $data["ord_id"];
+                if($data["ord_id"] != ''){
+                    $BillId = $data["ord_id"];
+                    $bill_i["bill_id"] = $data["ord_id"];
+                    $bill_data["bill_id"] = $data["ord_id"];
+                }else{
+                    $bill = $this->db->insert($this->bill_head,$bill_data);
+                    $BillId = $this->db->insert_id();
+                    $bill_i["bill_id"] = $BillId;
+                    $bill_data["bill_id"] = $BillId;
+                    $this->orderstatuslog($BillId,'OrderTaken');
+                }
+                $bill_data['kot'] = $this->getnewKot();
+                $kot = $this->db->insert($this->kot_head,$bill_data);
+                $KOTId = $this->db->insert_id();
+                
+                $bill_i["kot_id"] = $KOTId;
+
+                $bill_ii = $this->db->insert($this->bill_item,$bill_i);
+                for($i=0;$i<$totalitem;$i++){
+                    $bill_item["kot_id"] = $KOTId;
+                    $bill_item["item_id"] = $data["item_id"][$i];
+                    $bill_item["price"] = $data["price"][$i];
+                    $bill_item["qty"] = $data["qty"][$i];
+                    $bill_item["instruction"] = $data["instruction"][$i];
+                    $bill_item["amount"] = $data["amount"][$i];
+                    $this->db->insert($this->kot_item,$bill_item);
+                }
+                $query = $this->db->query("UPDATE  tables set ord_status = 'OrderTaken' where table_id = '".$this->getTableidofbill($BillId)."'");
+                $result['status']   = true;
+                $result['data']     = $KOTId;
+                $result['msg']     = 'Order Saved Successfully';
             }else{
-                $bill = $this->db->insert($this->bill_head,$bill_data);
-                $BillId = $this->db->insert_id();
-                $bill_i["bill_id"] = $BillId;
-                $bill_data["bill_id"] = $BillId;
-                $this->orderstatuslog($BillId,'OrderTaken');
+                $result['msg']   = 'No Item Selected';
+                $result['data']  = 0;
             }
-            $bill_data['kot'] = $this->getnewKot();
-            $kot = $this->db->insert($this->kot_head,$bill_data);
-            $KOTId = $this->db->insert_id();
-            
-            $bill_i["kot_id"] = $KOTId;
-
-            $bill_ii = $this->db->insert($this->bill_item,$bill_i);
-            for($i=0;$i<$totalitem;$i++){
-                $bill_item["kot_id"] = $KOTId;
-                $bill_item["item_id"] = $data["item_id"][$i];
-                $bill_item["price"] = $data["price"][$i];
-                $bill_item["qty"] = $data["qty"][$i];
-                $bill_item["amount"] = $data["amount"][$i];
-                $this->db->insert($this->kot_item,$bill_item);
-            }
-            $query = $this->db->query("UPDATE  tables set ord_status = 'OrderTaken' where table_id = '".$this->getTableidofbill($BillId)."'");
-            return $KOTId;
-        }else{
-            return 0;
         }
-        
-
+        return $result;
     }    
     
     public function updateOrderRequest($data)
@@ -204,7 +211,7 @@ class Ordermodel extends CI_Model
     function getkottable($data)
     {   
 
-        $this->db->select("h.kot,h.created_date, i.item_id, i.qty, n.item_name, t.tablename, t.capacity, au.username");
+        $this->db->select("h.kot,h.created_date, i.item_id, i.qty, i.instruction, n.item_name, t.tablename, t.capacity, au.username");
         $this->db->from('kot_item i');
         $this->db->join("kot_head h", "h.Id = i.kot_id", "left");
         $this->db->join("items n", "n.item_id = i.item_id", "left");
@@ -430,7 +437,7 @@ class Ordermodel extends CI_Model
         // $cgst = $result1['cgst']/100*$tot;
 
         // $tax = $vat + $sgst + $cgst;
-            $query = $this->db->query("UPDATE  bill_head set discount_amt = '".$data['dis']."', total='".$data['g_total']."', tax_amt = '".$data['tax']."' where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  bill_head set discount_id = '".$data['dis_id']."', discount_amt = '".$data['dis']."', total='".$data['g_total']."', tax_amt = '".$data['tax']."' where Id = '".$data['id']."'");
         
         return $query;
     }

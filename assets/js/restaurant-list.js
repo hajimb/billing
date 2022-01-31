@@ -67,10 +67,16 @@ function View(id){
                     $("#div_gstin_no").hide();
                 }
                 if(message.photo_file != null && message.photo_file != ''){
-                    $("#photo_name").attr("src","assets/images/"+message.photo_file);
+                    $("#photo_name").attr("src","assets/images/logo/"+message.photo_file);
                     $("#div_logo").show();
                 }else{
                     $("#div_logo").hide();
+                }
+                if(message.qr_code != null && message.qr_code != ''){
+                    $("#qr_name").attr("src","assets/images/qr/"+message.qr_code);
+                    $("#div_qr").show();
+                }else{
+                    $("#div_qr").hide();
                 }
                 // $("#res_contact").html(message.contact_no);
                 $("#myModalView").modal('show');

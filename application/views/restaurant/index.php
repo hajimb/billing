@@ -110,9 +110,16 @@
               <div class="col-md-3">GSTIN No.</div>
               <div class="col-md-9"><div class="view-data" id="res_gstin_no"></div></div>
             </div>
-            <div class="row" id="div_logo">
-              <div class="col-md-3">Logo</div>
-              <div class="col-md-9"><img src="" class="img-fluid" id="photo_name" style="max-height: 100px;" /> </div>
+            <div class="row">
+              
+              <div class="col-md-6"  id="div_logo">
+                <div class="col-md-6">Logo</div>
+                <div class="col-md-6"><img src="" class="img-fluid" id="photo_name" style="max-height: 100px;" /> </div>
+              </div>
+              <div class="col-md-6"  id="div_qr">
+                <div class="col-md-6">QR Code</div>
+                <div class="col-md-6"><img src="" class="img-fluid" id="qr_name" style="max-height: 100px;" /> </div>
+              </div>
             </div>
         </div>
       </div>

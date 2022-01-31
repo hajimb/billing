@@ -159,12 +159,12 @@ background: blanchedalmond;
     display: inline-block;
     border: 1px solid #ddd;
     margin: 0px;
-    width: 40px;
-    /* height: 20px; */
+    width: 30px;
+    height: 40px;
     text-align: center;
     vertical-align: middle;
-    padding: 11px 0;
-    /* background: #eee; */
+    padding: 4px 0;
+    background: #d9d9d9;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -179,12 +179,12 @@ background: blanchedalmond;
   
   form #decrease {
     /* margin-right: -4px; */
-    border-radius: 8px ;
+    border-radius: 4px ;
   }
   
   form #increase {
     /* margin-left: -4px; */
-    border-radius:  8px ;
+    border-radius:  4px ;
   }
   
   form #input-wrap {
