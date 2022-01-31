@@ -1,5 +1,65 @@
 var controller = "order";
 
+$(document).on("click", "#save_kot", function(e) {
+    Sendkot(e, false);
+});
+
+$(document).on("click", "#kot_print", function(e) {
+    Sendkot(e, true);
+});
+
+function Sendkot(event, printkot){
+    event.preventDefault();
+    var form = $("#mainfrm").serialize();    //start_load()
+    // $.ajax({
+    //     type: "POST",
+    //     url:base_url+'Api/order/add',
+    //     data: form,
+    //     processData: false,  // Important!
+    //     contentType: false,
+    //     cache   : false,
+    //     dataType: "json",
+    //     success:function(resp){
+    //     }
+    // });
+
+    $.ajax({
+        type: "POST",
+        url: base_url + "Api/order/add",
+        data: form,
+        dataType: "json",
+        beforeSend: function() {
+            // $("#"+btnid).startLoading();
+        },
+        success: function(resData) {
+            console.log("resData " + JSON.stringify(resData));
+            var {status,validate,message, data} = resData;
+            if (validate === false) {
+                $.each(message, function(k, v) {
+                    if (v !== "") {
+                        toastr.error(v)
+                        $("#"+formId+" input[name='" + k + "']").focus();
+                        return false
+                    }
+                });
+            } else if (status === false) {
+                toastr.error(message)
+            } else {
+                toastr.success(message);
+                print_kot(data,printkot)
+                window.setTimeout(function() {
+                    window.location.href = base_url+"tableorder";
+                }, 1000);
+            }
+        }, error: function(){
+            // $("#"+btnid).stopLoading();
+        }, complete:function(data){
+            // $("#"+btnid).stopLoading();
+        }
+    });
+    return false;
+}
+
 $(document).on("click", "#searchtext", function(e) {
     var formId = "searchForm";
     var form = $("#"+formId).serialize();
@@ -120,9 +180,11 @@ function additem_table(idd) {
     tr.attr('data-id', data.item_id)
     tr.append('<td>' + data.item_id + '</td>')
     tr.append('<td>' + data.item_name + '</td>')
-    tr.append('<td><div><div class="value-button btn-minus" id="decrease" value="Decrease Value">-</div><input class="number" type="number" name="qty[]" id="number_'+idd+'" value="1" /><div class="value-button btn-plus" id="increase"  value="increase Value">+</div></div><input type="hidden" name="item_id[]" id="item_id_' + data.item_id + '" value="' + data.item_id + '"><input type="hidden" name="price[]" id="" value="' + data.price + '"><input type="hidden" name="amount[]" id="" value="' + data.price + '"></td>')
+    tr.append('<td><div><div class="value-button btn-minus" id="decrease" value="Decrease Value">-</div><input class="number" type="number" name="qty[]" id="number_'+idd+'" value="1" /><div class="value-button btn-plus" id="increase"  value="increase Value">+</div></div></td>')
     tr.append('<td>' + data.price + '</td>')
+    tr.append('<td><div><input class="text" type="text" name="instruction[]" id="instruction_'+idd+'" value="" /></div></td>')
     tr.append('<td><span class="btn btn-sm btn-danger btn-rem"><b><i class="fa fa-times text-white"></i></b></span></td>')
+    tr.append('<input type="hidden" name="item_id[]" id="item_id_' + data.item_id + '" value="' + data.item_id + '"><input type="hidden" name="price[]" id="" value="' + data.price + '"><input type="hidden" name="amount[]" id="" value="' + data.price + '">')
     $('#dinein tbody').append(tr)
     // qty_func()
     calc()
@@ -152,114 +214,3 @@ $(document).on("click", "#dinein .btn-rem", function(event) {
 })
 
 // }
-
-function calc() {
-    $('[name="qty[]"]').each(function() {
-        // $(this).change(function() {
-            var tr = $(this).closest('tr');
-            var qty = $(this).val();
-            var price = tr.find('[name="amount[]"]').val()
-            var amount = parseFloat(qty) * parseFloat(price);
-            tr.find('[name="price[]"]').val(amount)
-            tr.find('.amount').text(parseFloat(amount).toLocaleString("en-IN", {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }))
-
-        // })
-    })
-    var total = 0;
-    $('[name="price[]"]').each(function() {
-        total = parseFloat(total) + parseFloat($(this).val())
-    })
-    console.log(total)
-    var tax_vat = $('#tax_vat').val();
-    var vat = tax_vat / 100 * total;
-    $('#vat').text(parseFloat(vat).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-    var tax_cgst = $('#tax_cgst').val();
-    var cgst = tax_cgst / 100 * total;
-    $('#CGST').text(parseFloat(cgst).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-    var tax_sgst = $('#tax_sgst').val();
-    var sgst = tax_sgst / 100 * total;
-    $('#SGST').text(parseFloat(sgst).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-    var tax = vat + cgst + sgst;
-    $('#tax_amount').val(tax);
-    // total = total + tax;
-    console.log('dsfsfdfds');
-    if ($("#dis_per_val").val() != 0) {
-        $("#if_dis_val").show();
-        var dis = $("#dis_per_val").val() / 100;
-        var dis_val = total - (total * dis);
-        $('#final_dis').val(total * dis);
-        $('#discount_val').text($("#dis_per_val").val() + ' %');
-        $('#gtotal_amount').text(parseFloat(dis_val + tax).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }))
-        $('[name="g_total_amount"]').val(dis_val + tax);
-    } else if ($("#dis_fix_val").val() != 0) {
-        $("#if_dis_val").show();
-        var dis = $("#dis_fix_val").val();
-        var dis_val = total - dis;
-        $('#final_dis').val(dis);
-        $('#discount_val').html('<i class="fas fa-rupee-sign"></i><b> ' + parseFloat(dis).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }) + '</b>')
-        // $('#discount_val').text('<i class="fas fa-rupee-sign">'+parseFloat(dis).toLocaleString("en-IN",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}));
-        $('#gtotal_amount').text(parseFloat(dis_val + tax).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }));
-        $('[name="g_total_amount"]').val(dis_val + tax);
-
-    } else {
-        $('[name="g_total_amount"]').val(total + tax);
-        $('#gtotal_amount').text(parseFloat(total + tax).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }));
-    }
-    $('[name="total_amount"]').val(total);
-    $('#total_amount').text(parseFloat(total).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-
-}
-
-function cat_func() {
-    $('.cat-item').click(function() {
-        var id = $(this).attr('data-id')
-        console.log(id)
-        if (id == 'all') {
-            $('.prod-item').parent().toggle(true)
-        } else {
-            $('.prod-item').each(function() {
-                if ($(this).attr('data-category-id') == id) {
-                    $(this).parent().toggle(true)
-                } else {
-                    $(this).parent().toggle(false)
-                }
-            })
-        }
-    })
-}

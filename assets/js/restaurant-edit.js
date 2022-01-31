@@ -53,25 +53,28 @@ $(document).on("click", ".saveChange", function(e) {
 });
 
 function readURL(input) {
+    var inp_name = $(input).attr('data-id');
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            $('#photo_name').attr('src', e.target.result);
+            $('#'+inp_name).attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
     }else{
         // console.log('photo_url:'+photo_url);
-        $('#photo_name').attr('src', photo_url);
+        $('#'+inp_name).attr('src', photo_url[inp_name]);
     }
 }
 
-$(document).on('click',"#reset_img",function (event) { 
-    var $el = $('#photo_file');
+$(document).on('click',".reset_img",function (event) { 
+    var inp_name = $(this).attr('data-id');
+    var file_name = $(this).attr('data-file');
+    var $el = $('#'+file_name);
     $el.wrap('<form>').closest('form').get(0).reset();
     $el.unwrap();
-    $('#photo_name').attr('src', photo_url);
+    $('#'+inp_name).attr('src', photo_url[inp_name]);
 });
 
-$("#photo_file").change(function(){
+$(".fileinput").change(function(){
     readURL(this);
 });

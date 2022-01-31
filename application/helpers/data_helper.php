@@ -431,3 +431,17 @@ if (!function_exists('GetUserRoles')) {
     }
 }
 
+if (!function_exists('GetDiscount')) {
+    function GetDiscount($restaurant_id = 0, $id = 0){
+        $ci = &get_instance();
+        $ci->load->database();
+        $ci->db->select('*');
+        $ci->db->from('discount');
+        if($restaurant_id > 0 ) $ci->db->where('restaurant_id',$restaurant_id);
+        if($id > 0 ) $ci->db->where('discount_id',$id);
+        $query  = $ci->db->get();
+        $result = $query->row_array();
+        return $result;       
+    }
+}
+

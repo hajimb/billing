@@ -188,49 +188,6 @@
   $(function() {
  
    
-    $('#manage-order-dineein').submit(function(e){
-        e.preventDefault();
-        //start_load()
-        // if($('#ord_id').val() == ''){
-          $.ajax({
-            url:'<?php echo base_url() ?>order/add',
-            method:'POST',
-            data:$(this).serialize(),
-            dataType: 'json',
-            success:function(resp){
-                console.log(resp.msg)
-                if(resp.status == 1){
-                  print_kot(resp.data)
-                  Swal.fire({
-                    text: 'Order successfully saved',
-                    target: 'body',
-                    customClass: {
-                      container: 'position-absolute'
-                    },
-                    toast: true,
-                    position: 'bottom-right'
-                  }).then((result) => {
-                      window.location.href = base_url+"tableorder";
-                   
-                  })
-
-                 
-                }else{
-                  Swal.fire({
-                    text: resp.msg,
-                    target: '#custom-target',
-                    customClass: {
-                      container: 'position-absolute'
-                    },
-                    toast: true,
-                    position: 'bottom-right'
-                  })
-                }
-            }
-          })
-       
-       
-    })
     $(".kot_detail").click(function() {
       var id = $(this).attr('id');
       $.ajax({
@@ -544,7 +501,7 @@
       $("#dis_per_val").val(0);
       $("#dis_fix_val").val(0);
       if($("#discount_select").val() != 0){
-        console.log($("#discount_select").val());
+        console.log('discount_select:'+$("#discount_select").val());
        
         var id = $("#discount_select").val();
         $.ajax({
@@ -553,8 +510,8 @@
             data:{id:id},
             dataType: 'json',
             success:function(resp){
-              console.log(resp.data);
-              $("#dis_per_val").val(resp.data.discount);
+              console.log('Discount returned :'+resp);
+              $("#dis_per_val").val(resp.discount);
               calc();
             }
       })
@@ -565,7 +522,7 @@
         $("#dis_fix_val").val($("#dis_fix").val());
         calc();
       }
-      $("#collapseTwo").removeClass('show');
+      // $("#collapseTwo").removeClass('show');
     })
   });
   function datasource(){
@@ -602,10 +559,11 @@
     var dis = $('#final_dis').val();
     var g_total = $('#g_total_amount').val();
     var tax = $('#tax_amount').val();
+    var dis_id = $("#discount_select").val();
     $.ajax({
           url:'<?php echo base_url() ?>order/billdiscountupdate',
           method:'POST',
-          data:{id:bill_id, dis:dis,g_total:g_total,tax:tax},
+          data:{id:bill_id, dis:dis,g_total:g_total,tax:tax,dis_id:dis_id},
           dataType: 'json',
           success:function(resp){
             if(resp.status == 1){
@@ -791,17 +749,6 @@
             }
         })
    
-    }
-    function print_kot(id){
-      start_load()
-      var nw = window.open('<?php echo base_url() ?>receipt/kotprint?id='+id,"_blank","width=330,height=600")
-      setTimeout(function(){
-        nw.print()
-        // setTimeout(function(){
-        //   nw.close()
-        //   end_load()
-        // },500)
-      },500)
     }
     function getorderBilltable(id){
       $.ajax({

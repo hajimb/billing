@@ -207,6 +207,7 @@ class Order extends CI_Controller {
         }
         echo json_encode($return);
     }
+    
     public function add()
 	{		
         $post_data = $this->input->post();
