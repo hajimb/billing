@@ -295,7 +295,7 @@ if (!function_exists('getTableData')){
         $query  = $ci->db->get();
         $result = $query->result_array();
         foreach($result as $res){
-            if($res['ord_status'] != ''){
+            if($res['ord_status'] != '' && $res['ord_status'] != 'KitchenReject'){
                 $ci->db->select('*');
                 $ci->db->from('bill_head');
                 $ci->db->where('table_id',$res['table_id']);

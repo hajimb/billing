@@ -246,7 +246,7 @@ class Stockmodel extends CI_Model
         $this->db->set('paid_amount', 'paid_amount + '.$data["paid_amount"], false);    
         $this->db->set('modified_date', 'NOW()', false);        
         $this->db->set('modify_by', $this->created_by);
-        if($data['payment_type']){
+        if(isset($data['payment_type']) && $data['payment_type'] != ''){
             $this->db->set('payment_type', $data['payment_type']);
         }
         $this->db->update($this->table);

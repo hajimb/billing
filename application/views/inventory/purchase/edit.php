@@ -51,13 +51,13 @@
 							<div class="col-sm-3">
 								<div class="form-group">
 									<label for="total_amount">Total Amount</label>
-									<input type="text" id="total_amount" name="total_amount" autocomplete="off" class="form-control numberOnly"  value="<?= $data ['total_amount'] ?? '';?>">
+									<input type="text" id="total_amount" name="total_amount" autocomplete="off" class="form-control numberOnly"  value="<?= $data ['total_amount'] ?? '0';?>">
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<div class="form-group">
 									<label for="paid_amount">Paid Amount</label>
-									<input type="text" id="paid_amount" name="paid_amount" autocomplete="off" class="form-control numberOnly"  value="<?= $data ['paid_amount'] ?? '';?>">
+									<input type="text" id="paid_amount" name="paid_amount" autocomplete="off" class="form-control numberOnly"  value="<?= $data ['paid_amount'] ?? '0';?>">
 								</div>
 							</div>
 							<div class="col-sm-3">

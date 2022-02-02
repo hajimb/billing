@@ -75,7 +75,7 @@ $(document).on("keypress", ".numberOnly", function(event) {
 });
 
 $(document).ready(function(){
-    $("input").attr("autocomplete", "new-password");
+    // $("input").attr("autocomplete", "new-password");
     // $('form').disableAutoFill();
 });
 
@@ -98,6 +98,98 @@ function print_kot(id, flag){
 
 
   function calc() {
+    $('[name="qty[]"]').each(function() {
+        // $(this).change(function() {
+            var tr = $(this).closest('tr');
+            var qty = $(this).val();
+            var price = tr.find('[name="amount[]"]').val()
+            var amount = parseFloat(qty) * parseFloat(price);
+            tr.find('[name="price[]"]').val(amount)
+            tr.find('.amount').text(parseFloat(amount).toLocaleString("en-IN", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }))
+
+        // })
+    })
+    var total = 0;
+    $('[name="price[]"]').each(function() {
+        total = parseFloat(total) + parseFloat($(this).val())
+    })
+    console.log(total)
+    var tax_vat = $('#tax_vat').val();
+    var vat = tax_vat / 100 * total;
+    $('#vat').text(parseFloat(vat).toLocaleString("en-IN", {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }))
+    var tax_cgst = $('#tax_cgst').val();
+    var cgst = tax_cgst / 100 * total;
+    $('#CGST').text(parseFloat(cgst).toLocaleString("en-IN", {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }))
+    var tax_sgst = $('#tax_sgst').val();
+    var sgst = tax_sgst / 100 * total;
+    $('#SGST').text(parseFloat(sgst).toLocaleString("en-IN", {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }))
+    var tax = vat + cgst + sgst;
+    $('#tax_amount').val(tax);
+    // total = total + tax;
+    console.log('dsfsfdfds');
+    if ($("#dis_per_val").val() != 0) {
+        $("#if_dis_val").show();
+        var dis = $("#dis_per_val").val() / 100;
+        var dis_val = total - (total * dis);
+        $('#final_dis').val(total * dis);
+        $('#discount_val').text($("#dis_per_val").val() + ' %');
+        $('#gtotal_amount').text(parseFloat(dis_val + tax).toLocaleString("en-IN", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }))
+        $('[name="g_total_amount"]').val(dis_val + tax);
+    } else if ($("#dis_fix_val").val() != 0) {
+        $("#if_dis_val").show();
+        var dis = $("#dis_fix_val").val();
+        var dis_val = total - dis;
+        $('#final_dis').val(dis);
+        $('#discount_val').html('<i class="fas fa-rupee-sign"></i><b> ' + parseFloat(dis).toLocaleString("en-IN", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + '</b>')
+        // $('#discount_val').text('<i class="fas fa-rupee-sign">'+parseFloat(dis).toLocaleString("en-IN",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}));
+        $('#gtotal_amount').text(parseFloat(dis_val + tax).toLocaleString("en-IN", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+        $('[name="g_total_amount"]').val(dis_val + tax);
+
+    } else {
+        $('[name="g_total_amount"]').val(total + tax);
+        $('#gtotal_amount').text(parseFloat(total + tax).toLocaleString("en-IN", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+    }
+    $('[name="total_amount"]').val(total);
+    $('#total_amount').text(parseFloat(total).toLocaleString("en-IN", {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }))
+
+}
+  function calculate() {
     var sub_total           = 0;
     var total               = 0;
     var grand_total         = 0;

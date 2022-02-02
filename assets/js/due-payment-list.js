@@ -160,13 +160,13 @@ $(document).on("click", "#paynow", function (e) {
   return false; //stop the actual form post !important!
 });
 
-$(document).on("keyup", "#paidamount", function (e) {
+$(document).on("keyup", "#paid_amount", function (e) {
   var camount = $(this).val();
   var ramount = $("#ramount").val();
   var totalPayment = $("#totalPayment").text();
   var previouspaid = $("#previouspaid").text();
   if (parseFloat(camount) > parseFloat(ramount)) {
     toastr.warning(`Max Amount should be ${totalPayment - previouspaid}`);
-    $("#paidamount").val("").focus();
+    $("#paid_amount").val("").focus();
   }
 });

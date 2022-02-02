@@ -91,6 +91,18 @@ class Inventory extends REST_Controller {
             $data['total_amount']   = trim($this->input->post('total_amount'));
             $data['paid_amount']    = trim($this->input->post('paid_amount'));
             $data['payment_type']   = trim($this->input->post('payment_type'));
+            if($data['total_amount'] == $data['paid_amount']){
+                $data['payment_type'] = 1;
+            }else if($data['total_amount'] < $data['paid_amount']){
+                $verror['paid_amount'] = 'Paid Amount cannot be more then '.$data['total_amount'];
+                $this->response([
+                    'validate'   => FALSE,
+                    'status' => FALSE,
+                    'message' => $verror
+                ], REST_Controller::HTTP_OK);
+            }else{
+                $data['payment_type'] = 2;
+            }
             $data['restaurant_id']  = trim($this->input->post('restaurant_id'));
             $data['entry_type']     = trim($this->input->post('entry_type'));
             $data['oldstock']       = $this->input->post('oldstock') ?? 0;

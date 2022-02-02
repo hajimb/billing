@@ -51,3 +51,18 @@ $(document).on("click", ".saveChange", function(e) {
         }
     });
 });
+
+$(document).on("change", "#paid_amount, #total_amount", function (e) {
+    console.log('keyup');
+    var total_amount = $('#total_amount').val();
+    var paid_amount = $('#paid_amount').val();
+    if (parseFloat(total_amount) < parseFloat(paid_amount)) {
+      toastr.error(`Paid Amount cannot be more then ${total_amount}`);
+      $("#paid_amount").val("").focus();
+      $("#payment_type").val(0);
+    }else if(parseFloat(total_amount) == parseFloat(paid_amount)) {
+        $("#payment_type").val(1);
+    }else{
+        $("#payment_type").val(2);
+    }
+  });

@@ -12,9 +12,9 @@
     </div>
     <?php 
     // echo "<pre>";
-    // print_r($table);
-    // ?>
-    <!-- Main content -->
+    print_r($table);
+    ?>
+     <!-- Main content -->
     <section class="content">
       <form id="mainfrm" name="mainfrm" method="POST">
         <input type="hidden" id="main_id" name="main_id" value="">
@@ -84,7 +84,7 @@
                             </a>
                           </span>
                           <?php }?>
-                          <?php if(($table_s['ord_status'] != '')){?>
+                          <?php if(($table_s['ord_status'] != '' && $table_s['ord_status'] != 'KitchenReject')){?>
                             <span>
                               <a class="btn btn-app action-btn vieworder"  table_id="<?= $table_s['table_id']; ?>" bill_id="<?= $table_s['bill_id']; ?>">
                                 <i class="far fa-eye"></i> 
