@@ -272,7 +272,7 @@ function print_kot(id, flag){
     total = sub_total + tax_amt;
     
     console.log('Total :'+total);
-    console.log('Tax :'+tax);
+    console.log('Tax :'+tax_amt);
     
     $('#span_sub_total').val(sub_total);
     $('#span_total').val(total);

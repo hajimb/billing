@@ -21,12 +21,12 @@ class User extends REST_Controller {
         $groups = $this->post("groups");
         $data   = array('status' => false,'validate' => false, 'message' => array());
         $this->form_validation->set_rules('main_id', 'User ID', 'required|numeric|trim');
-        $this->form_validation->set_rules('username', 'Username', 'required|callback_whitespace|trim');
+        $this->form_validation->set_rules('user_name', 'Username', 'required|callback_whitespace|trim');
         $this->form_validation->set_rules('firstname', 'First Name', 'required|trim');
         $this->form_validation->set_rules('lastname', 'Last Name', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
         if($id == 0){
-            $this->form_validation->set_rules('password', 'Password', 'required|trim');
+            $this->form_validation->set_rules('pass_word', 'Password', 'required|trim');
             // $this->form_validation->set_rules('repassword', 'Invalid Confirm Password', 'trim|required|matches[password]');
         }
         $this->form_validation->set_rules('status', 'Status', 'required|trim');
@@ -39,16 +39,17 @@ class User extends REST_Controller {
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
             $updatedata['restaurant_id']    = $restaurant_id ;
-            $updatedata['username']         = $this->post("username") ;
+            $updatedata['username']         = $this->post("user_name") ;
             $updatedata['firstname']        = $this->post("firstname") ;
             $updatedata['lastname']         = $this->post("lastname") ;
             $updatedata['email']            = $this->post("email") ;
             $updatedata['status']           = $this->post("status") ;
             $updatedata['groups']           = $this->post("groups") ;
-            if($this->post("password") != ""){
-                $updatedata['password']     = md5($this->post("password")) ;
-                $updatedata['r_password']   = $this->post("password") ;
+            if($this->post("pass_word") != ""){
+                $updatedata['password']     = md5($this->post("pass_word")) ;
+                $updatedata['r_password']   = $this->post("pass_word") ;
             }
+
             $datareq = $this->Usermodel->save($updatedata,$id);
             $this->response([
                 'status'    => $datareq['status'],

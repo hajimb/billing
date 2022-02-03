@@ -13,32 +13,32 @@
                 <div class="row">
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label for="inputName">User Name</label>
-                      <input type="taxt" id="username" name="username" value="<?= ($userdata['username'] ?? '');?>" class="form-control" autocomplete="off" required/>          
+                      <label for="user_name">User Name</label>
+                      <input type="taxt" id="user_name" name="user_name" value="<?= ($userdata['username'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                     </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label for="inputName">First Name</label>
+                      <label for="firstname">First Name</label>
                       <input type="taxt" id="firstname" name="firstname" value="<?= ($userdata['firstname'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                     </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label for="inputName">Last Name</label>
+                      <label for="lastname">Last Name</label>
                      <input type="taxt" id="lastname" name="lastname" value="<?= ($userdata['lastname'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                     </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label for="inputName">Email</label>
+                      <label for="email">Email</label>
                       <input type="taxt" id="email" name="email" value="<?= ($userdata['email'] ?? '');?>" class="form-control" autocomplete="off" required/>          
                     </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label for="inputName">Password <span class="red-small">(only if you want to change)</span></label>
-                      <input type="password" id="password" name="password" class="form-control" value = "" autocomplete="off"/>          
+                      <label for="pass_word">Password <span class="red-small">(only if you want to change)</span></label>
+                      <input type="password" id="pass_word" name="pass_word" class="form-control" value = "" autocomplete="off"/>          
                     </div>
                   </div>
                   <div class="col-sm-3">
@@ -54,8 +54,8 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label for="inputMessage">Status</label>
-                      <select class="form-control custom-select" placeholder="" name="status" required>
+                      <label for="status">Status</label>
+                      <select class="form-control custom-select" placeholder="" name="status" id="status" required>
                         <option value="yes" <?php if(($userdata['status'] ?? 'yes') == "yes") { ?> selected <?php } ?>>Active</option>
                           <option value="no" <?php if(($userdata['status'] ?? 'yes') == "no") { ?> selected <?php } ?>>Non-Active</option>                                
                       </select>
@@ -64,7 +64,7 @@
                   <div class="col-sm-3">
                   <?php if($session_data['groups'] == 1){ ?>
                       <div class="form-group">
-                        <label for="groups">Restaurants</label>
+                        <label for="restaurant_id">Restaurants</label>
                         <select class="form-control" id="restaurant_id" name="restaurant_id">
                           <option value="0">Select Restaurants</option>
                             <?php foreach ($restaurants as $k => $v): ?>

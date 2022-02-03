@@ -1,9 +1,9 @@
 $(function () {
-    var inputFile = $('input[name=category]');
-    var uploadURI = base_url+"Api/upload/category";
     var progressBar = $('#progress-bar');
     var filename;
     $("#categoryForm").submit(function (event) {
+        var inputFile = $('input[name=category]');
+        var uploadURI = base_url+"Api/upload/category";
         toastr.remove();
         event.preventDefault();
         if(!$('#category').val()){
@@ -63,9 +63,9 @@ $(function () {
     });
 
 
-    var inputitemFile = $('input[name=items]');
-    var uploadItemURI = base_url+"Api/upload/items";
     $("#itemForm").submit(function (event) {
+        var inputitemFile = $('input[name=items]');
+        var uploadItemURI = base_url+"Api/upload/items";
         toastr.remove();
         event.preventDefault();
         if(!$('#items').val()){
@@ -126,9 +126,9 @@ $(function () {
     });
 
 
-    var inputitemFile = $('input[name=rawmaterials]');
-    var uploadItemURI = base_url+"Api/upload/rawmaterial";
     $("#RawmaterialForm").submit(function (event) {
+        var inputitemFile = $('input[name=rawmaterials]');
+        var uploadItemURI = base_url+"Api/upload/rawmaterial";
         toastr.remove();
         event.preventDefault();
         if(!$('#rawmaterials').val()){

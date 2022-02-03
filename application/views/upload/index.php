@@ -5,13 +5,13 @@
         <div class="card-header">
           <h3 class="card-title"><?= $page_title;?></h3>
         </div>
-        <div class="progress mb-30" style="display:none;">
-            <div id="progress-bar" class="progress-bar progress-bar-success progress-bar-striped " role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
-                20%
-            </div>
-        </div>
-        <form id="categoryForm" method="post" enctype="multipart/form-data">
-          <div class="card-body">
+        <div class="card-body">
+          <div class="progress mb-30" style="display:none;">
+              <div id="progress-bar" class="progress-bar progress-bar-success progress-bar-striped " role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+                  20%
+              </div>
+          </div>
+          <form id="categoryForm" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-2">
                     <div class="form-group">

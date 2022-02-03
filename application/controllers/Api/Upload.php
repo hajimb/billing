@@ -88,6 +88,7 @@ class Upload extends REST_Controller {
 
     public function items_post(){  
         $upload_path 			 = $this->config->item('upload_path');
+        // echo "upload_path: ". $upload_path;
         is_dir($upload_path);
         $config['upload_path']   =  $upload_path;
 	    $config['allowed_types'] = 'xlsx|xls';
@@ -101,7 +102,7 @@ class Upload extends REST_Controller {
             $this->response([
                 'validate' => TRUE,
                 'status' => FALSE,
-                'msg' => $this->upload->display_errors()
+                'msg' => 'Error:'.$this->upload->display_errors()
             ], REST_Controller::HTTP_OK);
 	    }else{
 	        $data     = array('upload_data' => $this->upload->data());
@@ -137,14 +138,14 @@ class Upload extends REST_Controller {
         $count=0;
 		foreach ($data['values'] as $key => $value){
 			if($key > 1){
-                if($data['values'][$key]['A'] != ''){
-                    $category       = addslashes($data['values'][$key]['A']);
+                if(trim($data['values'][$key]['A']) != ''){
+                    $category       = addslashes(($data['values'][$key]['A'] ?? ''));
                     $cat_id         = $this->getCatid($category, $restaurant_id);
-                    $item_name	    = addslashes($data['values'][$key]['B']);
-                    $short_code     = addslashes($data['values'][$key]['C']);
-                    $price          = addslashes($data['values'][$key]['D']);
-                    $favorite       = addslashes($data['values'][$key]['E']);
-                    $stock_status   = addslashes($data['values'][$key]['F']);
+                    $item_name	    = addslashes(($data['values'][$key]['B'] ?? ''));
+                    $short_code     = addslashes(($data['values'][$key]['C'] ?? ''));
+                    $price          = addslashes(($data['values'][$key]['D'] ?? '0'));
+                    $favorite       = addslashes(($data['values'][$key]['E'] ?? 'N'));
+                    $stock_status   = addslashes(($data['values'][$key]['F'] ?? 'N'));
                     if($favorite == 'Y'){
                         $favorite = 1;
                     }else{
@@ -155,23 +156,25 @@ class Upload extends REST_Controller {
                     }else{
                         $stock_status = 0;
                     }
-                    // $stock_status   = addslashes($data['values'][$key]['F']);
-                    $where          = array('item_name'=> $item_name, 'short_code' => $short_code, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
-                    if(is_exists($where, 'items', 0, 'item_id') > 0 ){
-                        $count++;
-                    }else{
-                        $insdata = array(
-                            'cat_id' 	    => $cat_id,
-                            'item_name'     => $item_name,
-                            'short_code'    => $short_code,
-                            'price' 	    => $price,
-                            'favorite' 	    => $favorite,
-                            'stock_status'  => $stock_status,
-                            'restaurant_id' => $restaurant_id,
-                            'created_by'    => $this->session->userdata('user_session')['user_id'],
-                            'created_date'  => date('Y-m-d H:i:s')
-                        );
-                        $this->db->insert('items', $insdata);
+                    if($item_name != ''){
+                        // $stock_status   = addslashes($data['values'][$key]['F']);
+                        $where          = array('item_name'=> $item_name, 'short_code' => $short_code, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
+                        if(is_exists($where, 'items', 0, 'item_id') > 0 ){
+                            $count++;
+                        }else{
+                            $insdata = array(
+                                'cat_id' 	    => $cat_id,
+                                'item_name'     => $item_name,
+                                'short_code'    => $short_code,
+                                'price' 	    => $price,
+                                'favorite' 	    => $favorite,
+                                'stock_status'  => $stock_status,
+                                'restaurant_id' => $restaurant_id,
+                                'created_by'    => $this->session->userdata('user_session')['user_id'],
+                                'created_date'  => date('Y-m-d H:i:s')
+                            );
+                            $this->db->insert('items', $insdata);
+                        }
                     }
                 }
             }
@@ -266,9 +269,9 @@ class Upload extends REST_Controller {
         $count=0;
 		foreach ($data['values'] as $key => $value){
 			if($key > 1){
-                if($data['values'][$key]['A'] != ''){
-                    $rawmaterial    = addslashes($data['values'][$key]['A']);
-                    $unit	        = addslashes($data['values'][$key]['B']);
+                if(trim($data['values'][$key]['A']) != ''){
+                    $rawmaterial    = addslashes(($data['values'][$key]['A'] ?? ''));
+                    $unit	        = addslashes(($data['values'][$key]['B'] ?? ''));
                     $cat_id         = $this->getUnitid($unit);
                     $where          = array('rawmaterial'=> $rawmaterial, 'restaurant_id'=> $restaurant_id, 'is_deleted'=> 0);
                     if(is_exists($where, 'rawmaterial', 0, 'rawmaterial_id') > 0 ){
