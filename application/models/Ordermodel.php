@@ -51,7 +51,7 @@ class Ordermodel extends CI_Model
             if(isset($data['item_id'])){
             // echo $data["table_id"];
                 $user_session = $this->session->userdata('user_session');
-                $query = $this->db->query("SELECT max(Id) as max  FROM bill_head ");
+                $query = $this->db->query("SELECT max(Id) as max  FROM ".$this->bill_head);
                 $rs = $query->row_array();
                 $totalitem = count($data["item_id"]);
                 $bill_data["restaurant_id"] = $user_session["restaurant_id"];
@@ -117,7 +117,7 @@ class Ordermodel extends CI_Model
         if($this->session->userdata('user_session')){
            // echo $data["table_id"];
             $user_session = $this->session->userdata('user_session');
-            $query = $this->db->query("SELECT max(Id) as max  FROM bill_head ");
+            $query = $this->db->query("SELECT max(Id) as max  FROM ".$this->bill_head);
             $result = $query->row_array();
             $totalitem = count($data["item_id"]);
             //$bill_data["restaurant_id"] = $user_session["restaurant_id"];
@@ -162,7 +162,7 @@ class Ordermodel extends CI_Model
             $user_session = $this->session->userdata('user_session');
             $restaurant_id = $user_session["restaurant_id"];
             $this->db->select("h.*, t.tablename");
-            $this->db->from('bill_head h');
+            $this->db->from($this->bill_head.' h');
             $this->db->join("tables t", "t.table_id = h.table_id", "left");
             $this->db->where("h.status != 'BillPaid'");
             $this->db->where("h.status != 'OrderTaken'");
@@ -181,7 +181,7 @@ class Ordermodel extends CI_Model
     }
     function getordersdataTaken()
     {        
-        $query = $this->db->query("SELECT h.*, t.tablename  FROM bill_head h, tables t  where t.table_id = h.table_id and h.status = 'OrderTaken'  ");
+        $query = $this->db->query("SELECT h.*, t.tablename  FROM ".$this->bill_head." h, tables t  where t.table_id = h.table_id and h.status = 'OrderTaken'  ");
         $result = $query->result_array();
         //print_r($result);
         $data = array();
@@ -196,7 +196,7 @@ class Ordermodel extends CI_Model
 
     function getComplateordersdata()
     {        
-        $query = $this->db->query("SELECT h.*, t.tablename  FROM bill_head h, tables t  where t.table_id = h.table_id and (h.status = 'Done' OR h.status = 'BillPaid' OR h.status = 'BillRaised')");
+        $query = $this->db->query("SELECT h.*, t.tablename  FROM ".$this->bill_head." h, tables t  where t.table_id = h.table_id and (h.status = 'Done' OR h.status = 'BillPaid' OR h.status = 'BillRaised')");
         $result = $query->result_array();
         return $result;
     }
@@ -241,7 +241,7 @@ class Ordermodel extends CI_Model
         $query = $this->db->query("SELECT i.item_id ,sum(i.qty) as qty, i.amount as amount, sum(i.price) as price,n.item_name, t.tablename, h.* FROM kot_item i, kot_head h, items n, tables t  WHERE h.Id = i.kot_id and n.item_id = i.item_id and t.table_id = h.table_id and h.bill_id = '".$data['id']."' GROUP BY i.item_id, h.bill_id ");
         $result = $query->result_array();
         $this->db->select('t.vat, t.sgst, t.cgst, bh.*');
-        $this->db->from('bill_head bh');
+        $this->db->from($this->bill_head.' bh');
         $this->db->join('tax t', 't.restaurant_id = bh.restaurant_id AND t.is_default = 1', 'left');
         $this->db->where('id',$data['id']);
         $query1 = $this->db->get();
@@ -263,14 +263,14 @@ class Ordermodel extends CI_Model
         return $result;
     }
     function getBillHead($bill_id){
-        $query = $this->db->query("SELECT * FROM bill_head where Id = '".$bill_id."'");
+        $query = $this->db->query("SELECT * FROM ".$this->bill_head." where Id = '".$bill_id."'");
         $result = $query->result_array();
         return $result;
     }
     function getBillHeadActiveTable($table_id,$type){
         $filter = '';
         if($type == 0) $filter = "and status != 'BillPaid'";
-        $query = $this->db->query("SELECT * FROM bill_head where table_id = '".$table_id."'".$filter." and is_active = 1 order by Id DESC limit 1");
+        $query = $this->db->query("SELECT * FROM ".$this->bill_head." where table_id = '".$table_id."'".$filter." and is_active = 1 order by Id DESC limit 1");
         $result = $query->result_array();
         return $result;
     }
@@ -375,15 +375,15 @@ class Ordermodel extends CI_Model
     function orderstatusupdate($data)
     {        
         //print_r($data);
-        //echo "SELECT h.*, i.*  FROM bill_head h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
+        //echo "SELECT h.*, i.*  FROM ".$this->bill_head." h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
         
         
         if($data['status'] == 'BillPaid'){
-            $query = $this->db->query("UPDATE  bill_head set status = '".$data['status']."' , payment_type = '".$data['Payment_type']."', is_active = 0 where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set status = '".$data['status']."' , payment_type = '".$data['Payment_type']."', is_active = 0 where Id = '".$data['id']."'");
             $query = $this->db->query("UPDATE  tables set ord_status = '' where table_id = '".$this->getTableidofbill($data['id'])."'");
             $this->orderstatuslog($data['id'],$data['status']);
         }else{
-            $query = $this->db->query("UPDATE  bill_head set status = '".$data['status']."' where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set status = '".$data['status']."' where Id = '".$data['id']."'");
             $query = $this->db->query("UPDATE  tables set ord_status = '".$data['status']."' where table_id = '".$this->getTableidofbill($data['id'])."'");
             $this->orderstatuslog($data['id'],$data['status']);
         }
@@ -399,12 +399,12 @@ class Ordermodel extends CI_Model
         
         
         if($data['status'] == 'BillPaid'){
-            $query = $this->db->query("UPDATE  bill_head set status = '".$data['status']."' , payment_type = '".$data['Payment_type']."', is_active = 0 where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set status = '".$data['status']."' , payment_type = '".$data['Payment_type']."', is_active = 0 where Id = '".$data['id']."'");
             $query = $this->db->query("UPDATE  tables set ord_status = '', status = '' where table_id = '".$this->getTableidofbill($data['id'])."'");
             // $query = $this->db->query("UPDATE  tables set status = '' where table_id = '".$this->getTableidofbill($data['id'])."'");
             $this->orderstatuslog($data['id'],$data['status']);
         }else{
-            $query = $this->db->query("UPDATE  bill_head set status = '".$data['status']."' where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set status = '".$data['status']."' where Id = '".$data['id']."'");
             $query = $this->db->query("UPDATE  tables set ord_status = '".$data['status']."' where table_id = '".$data['table_id']."'");
             $query = $this->db->query("UPDATE  kot_head set status = '".$data['status']."' where Id = '".$data['kot_id']."'");
             $this->orderstatuslog($data['id'],$data['status']);
@@ -437,16 +437,16 @@ class Ordermodel extends CI_Model
         // $cgst = $result1['cgst']/100*$tot;
 
         // $tax = $vat + $sgst + $cgst;
-            $query = $this->db->query("UPDATE  bill_head set discount_id = '".$data['dis_id']."', discount_amt = '".$data['dis']."', total='".$data['g_total']."', tax_amt = '".$data['tax']."' where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set discount_id = '".$data['dis_id']."', discount_amt = '".$data['dis']."', total='".$data['g_total']."', tax_amt = '".$data['tax']."' where Id = '".$data['id']."'");
         
         return $query;
     }
     function billstatusupdate($data)
     {        
         //print_r($data);
-        //echo "SELECT h.*, i.*  FROM bill_head h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
+        //echo "SELECT h.*, i.*  FROM ".$this->bill_head." h, bill_item i where h.Id = i.bill_id and h.Id = '".$data['id']."'";
         
-            $query = $this->db->query("UPDATE  bill_head set status = '".$data['status']."' where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set status = '".$data['status']."' where Id = '".$data['id']."'");
             $query = $this->db->query("UPDATE  tables set ord_status = '".$data['status']."' where table_id = '".$data['table_id']."'");
             $query = $this->db->query("UPDATE  kot_head set status = '".$data['status']."' where bill_id = '".$data['id']."' AND status != 'KitchenReject'");
             $this->orderstatuslog($data['id'],$data['status']);
@@ -457,7 +457,7 @@ class Ordermodel extends CI_Model
 
     function billpaiedupdate($data)
     {    
-            $query = $this->db->query("UPDATE  bill_head set status = 'BillPaid', payment_type = '".$data['type']."' where Id = '".$data['id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set status = 'BillPaid', payment_type = '".$data['type']."' where Id = '".$data['id']."'");
             $query = $this->db->query("UPDATE  tables set ord_status = 'BillPaid' where table_id = '".$data['table_id']."'");
             $query = $this->db->query("UPDATE  kot_head set status = 'BillPaid', payment_type = '".$data['type']."' where bill_id = '".$data['id']."'");
             $this->orderstatuslog($data['id'],'BillPaid');
@@ -473,7 +473,7 @@ class Ordermodel extends CI_Model
             $result1 = $query1->result_array();
             $res_data = $result1[0];
 
-            $query = $this->db->query("UPDATE  bill_head set status = '".$data['status']."' where Id = '".$res_data['bill_id']."'");
+            $query = $this->db->query("UPDATE  ".$this->bill_head." set status = '".$data['status']."' where Id = '".$res_data['bill_id']."'");
             $query = $this->db->query("UPDATE  tables set ord_status = '".$data['status']."' where table_id = '".$res_data['table_id']."'");
             $query = $this->db->query("UPDATE  kot_head set status = '".$data['status']."' where Id = '".$res_data['Id']."'");
             $this->orderstatuslog($res_data['bill_id'],$data['status']);
@@ -493,13 +493,13 @@ class Ordermodel extends CI_Model
         return $query;
     }
     function getTableidofbill($id){
-        $query = $this->db->query("SELECT table_id  FROM bill_head WHERE Id = '".$id."'");
+        $query = $this->db->query("SELECT table_id  FROM ".$this->bill_head." WHERE Id = '".$id."'");
         $result = $query->result_array();
         return $result[0]['table_id'];
     }
 
     function getBillId($table_id){
-        $query = $this->db->query("SELECT Id  FROM bill_head WHERE table_id = '".$table_id."'  order by Id DESC limit 1");
+        $query = $this->db->query("SELECT Id  FROM ".$this->bill_head." WHERE table_id = '".$table_id."'  order by Id DESC limit 1");
         $result = $query->result_array();
         return $result[0]['Id'];
     }
@@ -523,11 +523,20 @@ class Ordermodel extends CI_Model
         return $result;
     }
     
-    function dayenddata()
-    {        
-        $query = $this->db->query("SELECT count(id) as totalorders, sum(bill_amt) as totalamount, sum(discount_amt) as totaldiscount, sum(tax_amt) as totaltax FROM `bill_head` WHERE STATUS ='BillPaid'");
-        $result = $query->result_array();
-        return $result;
+    function dayenddata($restaurant_id)
+    {   
+        $this->db->select("*");
+        $this->db->from('day_end');
+        $this->db->where("restaurant_id",$restaurant_id);
+        $this->db->order_by("dayendtime",'DESC');
+        $this->db->limit(1);
+        $query      = $this->db->get();
+        $result = $query->row_array();
+        // echo $this->db->last_query();
+        return $result;     
+        // $query = $this->db->query("SELECT count(id) as totalorders, sum(bill_amt) as totalamount, sum(discount_amt) as totaldiscount, sum(tax_amt) as totaltax FROM `".$this->bill_head."-old` WHERE STATUS ='BillPaid'");
+        // $result = $query->result_array();
+        // return $result;
     }
 
     function delete_item($id)
@@ -538,5 +547,73 @@ class Ordermodel extends CI_Model
         $this->db->where('item_id', $id);
         $this->db->update($this->item_table, $data);
         return 1;
+    }
+
+    function generateDayEnd($data){
+        $this->db->trans_begin();
+        $returnData = array('msg' => 'Order Not Saved due to Error, Try Again','status' => false, 'data' => 0);
+        $dayendreport = array();
+        // SELECT count(total) as order_total_count, sum(total) as order_total_amount,sum(tax_amt) as order_tax,sum(discount_amt) as order_discount, min(invoice_no) as bill_start , max(invoice_no) as bill_end FROM `".$this->bill_head."-old` WHERE 1
+        $this->db->select("count(total) as order_total_count, sum(total) as order_total_amount,sum(tax_amt) as order_tax,sum(discount_amt) as order_discount, min(invoice_no) as bill_start , max(invoice_no) as bill_end");
+        $this->db->from($this->bill_head);
+        $this->db->where("restaurant_id",$data['restaurant_id']);
+        $this->db->where("status",'BillPaid');
+        $this->db->where("is_deleted",0);
+        if($data['dayendtime'] != '')
+        $this->db->where("dayendtime > '".$data['dayendtime']."'",null, false);
+        $query      = $this->db->get();
+        $result = $query->row_array();
+        $dayendreport['restaurant_id']      = $data['restaurant_id'];
+        $dayendreport['order_total_count']  = $result['order_total_count'];
+        $dayendreport['order_total_amount'] = ($result['order_total_amount'] - $result['order_tax'] + $result['order_discount']);
+        $dayendreport['order_tax']          = $result['order_tax'];
+        $dayendreport['order_discount']     = $result['order_discount'];
+        $dayendreport['order_final_amount'] = $result['order_total_amount'];
+        $dayendreport['order_bill_range']   = $result['bill_start'] .' - '. $result['bill_end'] ;
+        
+        $this->db->select("payment_type, sum(total) as total");
+        $this->db->from($this->bill_head);
+        $this->db->where("restaurant_id",$data['restaurant_id']);
+        $this->db->where("status",'BillPaid');
+        $this->db->where("is_deleted",0);
+        if($data['dayendtime'] != '')
+        $this->db->where("dayendtime > '".$data['dayendtime']."'",null, false);
+        $this->db->group_by('payment_type');
+        $query      = $this->db->get();
+        $result = $query->result_array();
+        foreach($result as $row){
+            // if($row['payment_type'] == '')
+            $dayendreport['payment_'.strtolower($row['payment_type'])]   = $row['total'];
+        }
+        
+        $this->db->select("bill_type, IF(is_deleted = 0,'success','cancel') as status, count(total) as cnt, sum(total) as total");
+        $this->db->from($this->bill_head);
+        $this->db->where("restaurant_id",$data['restaurant_id']);
+        $this->db->where("status",'BillPaid');
+        if($data['dayendtime'] != '')
+        $this->db->where("dayendtime > '".$data['dayendtime']."'",null, false);
+        $this->db->group_by('is_deleted , bill_type');
+        $query      = $this->db->get();
+        $result = $query->result_array();
+        // print_r($result);
+        foreach($result as $row){
+            // if($row['payment_type'] == '')
+            $dayendreport[strtolower($row['bill_type']).'_'.strtolower($row['status']).'_order_count']      = $row['cnt'];
+            $dayendreport[strtolower($row['bill_type']).'_'.strtolower($row['status']).'_order_amount']     = $row['total'];
+        }
+        $dayendreport["dayendtime"] = date('Y-m-d H:i:s');
+        $this->db->insert('day_end',$dayendreport);
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $returnData['msg'] = 'Error While Generating Day End Report';
+            $returnData['status'] = false;
+            
+        } else {
+            $this->db->trans_commit();
+            $returnData['msg'] = 'Day End Report Generated successfully';
+            $returnData['status'] = true;
+            $returnData['data'] = $dayendreport;
+        }
+        return $returnData;
     }
 }

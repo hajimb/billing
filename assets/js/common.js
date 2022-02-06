@@ -210,8 +210,12 @@ function print_kot(id, flag){
             var qty = $(this).val();
             var price = tr.find('[name="amount[]"]').val()
             var amount = parseFloat(qty) * parseFloat(price);
+            // console.log('qty:'+qty);
+            // console.log('price:'+price);
+            // console.log('amount:'+amount);
             tr.find('[name="price[]"]').val(amount)
             sub_total = parseFloat(sub_total) + parseFloat(amount)
+            // console.log('sub_total inside:'+sub_total);
             tr.find('.amount').text(parseFloat(amount).toLocaleString("en-IN", {
                 style: 'decimal',
                 minimumFractionDigits: 2,
@@ -224,58 +228,60 @@ function print_kot(id, flag){
     // $('[name="price[]"]').each(function() {
     //     total = parseFloat(total) + parseFloat($(this).val())
     // })
-    console.log('sub_total:'+sub_total)
+    // console.log('sub_total:'+sub_total)
 
     vat_percent = $('#vat_percent').val();
-    vat_amt = vat_percent / 100 * total;
-    $('#span_vat_percent').text(parseFloat(vat_percent).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-    $('#span_vat_amt, #vat_amt').text(parseFloat(vat_amt).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-
+    vat_amt = vat_percent / 100 * sub_total;
+    
+    vat_percent = ConvertToFloat(vat_percent);
+    vat_amt = ConvertToFloat(vat_amt);
+    
+    $('#span_vat_percent').text(vat_percent)
+    $('#span_vat_amt').text(vat_amt);
+    $('#vat_amt').val(vat_amt);
+    
     sgst_percent = $('#sgst_percent').val();
-    sgst_amt = sgst_percent / 100 * total;
-    $('#span_sgst_percent').text(parseFloat(sgst_percent).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-    $('#span_sgst_amt, #sgst_amt').text(parseFloat(sgst_amt).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-
+    sgst_amt = sgst_percent / 100 * sub_total;
+    
+    sgst_percent = ConvertToFloat(sgst_percent);
+    sgst_amt = ConvertToFloat(sgst_amt);
+    
+    $('#span_sgst_percent').text(sgst_percent);
+    $('#span_sgst_amt').text(sgst_amt);
+    $('#sgst_amt').val(sgst_amt);
+    
     cgst_percent = $('#cgst_percent').val();
-    cgst_amt = cgst_percent / 100 * total;
-    $('#span_cgst_percent').text(parseFloat(cgst_percent).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
-    $('#span_cgst_amt, #cgst_amt').text(parseFloat(cgst_amt).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
+    cgst_amt = cgst_percent / 100 * sub_total;
+    
+    cgst_percent = ConvertToFloat(cgst_percent);
+    cgst_amt = ConvertToFloat(cgst_amt);
+    
+    $('#span_cgst_percent').text(cgst_percent);
+    $('#span_cgst_amt').text(cgst_amt);
+    $('#cgst_amt').val(cgst_amt);
+    
+    console.log('sub_total:'+sub_total);
+    console.log('vat_percent:'+vat_percent);
+    console.log('vat_amt:'+vat_amt);
+    console.log('sgst_percent:'+sgst_percent);
+    console.log('sgst_amt:'+sgst_amt);
+    console.log('cgst_percent:'+cgst_percent);
+    console.log('cgst_amt:'+cgst_amt);
 
-    tax_amt = vat_amt + cgst_amt + sgst_amt;
+    tax_amt = parseFloat(vat_amt) + parseFloat(cgst_amt) + parseFloat(sgst_amt);
 
     $('#tax_amt').val(tax_amt);
     
-    total = sub_total + tax_amt;
+    total = parseFloat(sub_total) + parseFloat(tax_amt);
     
     console.log('Total :'+total);
     console.log('Tax :'+tax_amt);
     
-    $('#span_sub_total').val(sub_total);
-    $('#span_total').val(total);
+    $('#span_sub_total').text(ConvertToFloat(sub_total));
+    $('#span_total').text(ConvertToFloat(total));
+    $('#sub_total').val(sub_total);
+    $('#total').val(total);
+
     $('#span_discount_percent').hide();
     if ($("#discount_percent").val() != 0) {
         discount_percent = $("#discount_percent").val() / 100;
@@ -316,16 +322,16 @@ function print_kot(id, flag){
             maximumFractionDigits: 2
         }) + '</b>')
         // $('#discount_val').text('<i class="fas fa-rupee-sign">'+parseFloat(dis).toLocaleString("en-IN",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}));
-        $('#gtotal_amount').text(parseFloat(dis_val + tax).toLocaleString("en-IN", {
+        $('#gtotal_amount').text(parseFloat(dis_val + tax_amt).toLocaleString("en-IN", {
             style: 'decimal',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         }));
-        $('[name="g_total_amount"]').val(dis_val + tax);
+        $('[name="g_total_amount"]').val(dis_val + tax_amt);
 
     } else {
-        $('[name="g_total_amount"]').val(total + tax);
-        $('#gtotal_amount').text(parseFloat(total + tax).toLocaleString("en-IN", {
+        $('[name="g_total_amount"]').val(total + tax_amt);
+        $('#gtotal_amount').text(parseFloat(total + tax_amt).toLocaleString("en-IN", {
             style: 'decimal',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
@@ -356,4 +362,16 @@ function cat_func() {
             })
         }
     })
+}
+
+function ConvertToFloat(str){
+    var rtn = 0;
+    if(str != ''){
+    rtn = parseFloat(str).toLocaleString("en-IN", {
+           style: 'decimal',
+           minimumFractionDigits: 2,
+           maximumFractionDigits: 2
+       })
+   }
+   return rtn;
 }

@@ -114,6 +114,7 @@
 
                                                         <input type="hidden" name="tax_amt" id="tax_amt" value="<?= ($order['tax_amt'] ? $order['tax_amt'] : '0');?>">
 
+                                                        <input type="hidden" name="sub_total" id="sub_total" value="<?= ($order['sub_total'] ? $order['sub_total'] : '0.00'); ?>">
                                                         <input type="hidden" name="total" id="total" value="<?= ($order['total'] ? $order['total'] : '0.00'); ?>">
                                                         
                                                         <input type="hidden" name="discount_id" id="discount_id" value="<?= ($order['discount_id'] ? $order['discount_id'] : '0'); ?>">
@@ -127,7 +128,7 @@
                                                     <div class="col-lg-6 col-md-6">
                                                         <div class="form-check complimentary float-right text-right">
                                                             <span class="">
-                                                                <h4>Total <i class="fas fa-rupee-sign"></i> <b id="span_total"></b></h4>
+                                                                <h4>Sub Total <i class="fas fa-rupee-sign"></i> <b id="span_sub_total"></b></h4>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -147,7 +148,7 @@
                                                                     <h4>SGST (<span id="span_sgst_percent"></span> <i class="fas fa-rupee-sign"></i> <b id="span_sgst_amt"> </b></h4>
                                                                 </span>
                                                                 <span class="">
-                                                                    <h4>CGST (<span id="span_cgst_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span__cgst_amt"></b></h4>
+                                                                    <h4>CGST (<span id="span_cgst_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span_cgst_amt"></b></h4>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -161,7 +162,7 @@
                                                     <div class="col-lg-6 col-md-6">
                                                         <div class="form-check complimentary float-right text-right">
                                                             <span class="">
-                                                                <h4>Sub Total <i class="fas fa-rupee-sign"></i> <b id="span_sub_total"></b></h4>
+                                                                <h4>Total <i class="fas fa-rupee-sign"></i> <b id="span_total"></b></h4>
                                                             </span>
                                                             <span class="">
                                                                 <h4>Discount <span id="span_discount_percent" style="display:none;"></span> <i class="fas fa-rupee-sign"></i> <b id="span_discount_amt"></b></h4>
@@ -243,5 +244,3 @@
         </div>
     </section>
 </div>
-
-RamHanuman$5959$

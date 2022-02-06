@@ -15,8 +15,8 @@ class Order extends REST_Controller {
 
     public function search_post(){
         $verror = array();
-        print_r($_POST);
-        exit;
+        // print_r($_POST);
+        // exit;
         $this->form_validation->set_rules('search_text', 'Search Text', 'required|trim');
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
