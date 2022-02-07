@@ -56,12 +56,10 @@ class Wastagemodel extends CI_Model
                     "rawmaterial_id" => $postData['test'][$key]['rawmaterial_id'],
                     "restaurant_id"  => $postData['restaurant_id'],
                     "stock"          => $postData['test'][$key]['stock'],
-                    "invoice_date"   => $postData['test'][$key]['invoice_date'],
+                    "invoice_date"   => $postData['invoice_date'],
                 );
             }
-           
             $this->db->insert_batch($this->table, $insData);
-            // $id = $this->db->insert_id();
         }else{
             $data["modify_by"]      = $this->created_by;
             $data["modified_date"]  = $this->created_date;

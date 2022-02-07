@@ -43,7 +43,7 @@
                       <?php if ($row['ptype']== 'Fully Paid'){
                         echo "No Action";
                       }else{?>
-                      <button class="btn btn-success getdetail" data-id="<?= $row['stock_id']; ?>">Pay Now</button>
+                      <button class="btn btn-success getdetail" data-id="<?= $row['id']; ?>">Pay Now</button>
                         <button onClick="Edit(<?= $row['stock_id']; ?>)" class="btn btn-success"><i class="fa fa-edit"></i></button>
                         <button onClick="Delete(<?= $row['stock_id']; ?>)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       <?php }?>
@@ -130,7 +130,7 @@
               <div class="col-sm-8">
                   <input type="text" id="paid_amount" name="paid_amount" class="form-control" required/>          
                   <input type="hidden" id="ramount" name="ramount"/>          
-                  <input type="hidden" id="stock_id" name="stock_id"/>          
+                  <input type="hidden" id="stock_master_id" name="stock_master_id"/>          
                   <input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $restaurant_id;?>"/>          
               </div>
             </div>
