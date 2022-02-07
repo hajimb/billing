@@ -445,3 +445,23 @@ if (!function_exists('GetDiscount')) {
     }
 }
 
+
+if (!function_exists('GetLastBillNo')) {
+    function GetLastBillNo($restaurant_id = 0){
+        $result = 1;
+        $ci = &get_instance();
+        $ci->load->database();
+        $ci->db->select('last_bill_no');
+        $ci->db->from('restaurant');
+        $ci->db->where('restaurant_id',$restaurant_id);
+        $query  = $ci->db->get();
+        $rows   = $query->num_rows();
+        if($rows > 0){
+            $row = $query->row_array();
+            $result = $row['last_bill_no'];
+            $result = intval($result) + 1;
+        }
+        return $result;
+    }
+}
+

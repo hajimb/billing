@@ -1,3 +1,8 @@
+<?php  
+//echo "<pre>";
+//print_r($order); 
+// ec)ho (isset($order['vat_amt']) ? $order['vat_amt'] : '0');
+?>
     <div class="content-wrapper">
         <section class="content m-0">
             <div class="container-fluid m-0">
@@ -92,90 +97,91 @@
                                                 </tbody>
                                             </table>
                                             <div class="accordion " id="accordionExample">
-                                                <div class="card bg-gray">
-                                                    <button class="btn btn-link bg-white collapsed order-acc " type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                        <i class="fa fa-chevron-down"></i>
-                                                    </button>
-                                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                                        <div class="card-body">
+                                            <div class="card bg-gray">
+                                            <button class="btn btn-link bg-white collapsed order-acc " type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <i class="fa fa-chevron-down"></i>
+                                            </button>
+                                            <div class="card-header pb-0 pt-1 pl-1 pr-1 mt-1 mr-1 ml-1  " id="headingTwo">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                                        <a class="btn btn-sm btn-dark" href="javascript:void(0);" title="Add Discount" data-toggle="modal" data-target="#modal-default-2"><strong>Add Discount</strong></a>
+                                                       
+                                                                
+                                                        <input type="hidden" name="tax_id" id="tax_id" value="<?= (isset($tax['tax_id']) ? $tax['tax_id'] : '0');?>">
+                                                        <input type="hidden" name="vat_percent" id="vat_percent" value="<?= (isset($tax['vat']) ? $tax['vat'] : '0');?>">
+                                                        <input type="hidden" name="sgst_percent" id="sgst_percent" value="<?= (isset($tax['sgst']) ? $tax['sgst'] : '0');?>">
+                                                        <input type="hidden" name="cgst_percent" id="cgst_percent" value="<?= (isset($tax['cgst']) ? $tax['cgst'] : '0');?>">
+                                                        
+                                                        <input type="hidden" name="vat_amt" id="vat_amt" value="<?= (isset($order['vat_amt']) ? $order['vat_amt'] : '0');?>">
+                                                        <input type="hidden" name="sgst_amt" id="sgst_amt" value="<?= (isset($order['sgst_amt']) ? $order['sgst_amt'] : '0');?>">
+                                                        <input type="hidden" name="cgst_amt" id="cgst_amt" value="<?= (isset($order['cgst_amt']) ? $order['cgst_amt'] : '0');?>">
 
-                                                            <div class="row">
-                                                                <div class="col-lg-6 col-md-6 col-sm-12 ">
-                                                                    <a class="btn btn-sm btn-dark" href="javascript:void(0);" title="Add Discount" data-toggle="modal" data-target="#modal-default-2"><strong>Add Discount</strong></a>
-                                                                </div>
+                                                        <input type="hidden" name="tax_amt" id="tax_amt" value="<?= (isset($order['tax_amt']) ? $order['tax_amt'] : '0');?>">
 
-                                                                <div class="col-lg-6 col-md-6 col-sm-12 float-right text-right">
-                                                                    <span class="">
-                                                                        <h4>Vat (<?= $tax['vat'] ?> %) <i class="fas fa-rupee-sign"></i> <b id="vat"></b></h4>
-                                                                    </span>
-                                                                    <span class="">
-                                                                        <h4>SGST (<?= $tax['sgst'] ?> %) <i class="fas fa-rupee-sign"></i> <b id="SGST"> </b></h4>
-                                                                    </span>
-                                                                    <span class="">
-                                                                        <h4>CGST (<?= $tax['cgst'] ?> %) <i class="fas fa-rupee-sign"></i> <b id="CGST"></b></h4>
-                                                                    </span>
-                                                                    <input type="hidden" name="tax_vat" id="tax_vat" value="<?php if (isset($tax['vat'])) {
-                                                                                                                                echo $tax['vat'];
-                                                                                                                            } else {
-                                                                                                                                echo '0';
-                                                                                                                            } ?>">
-                                                                    <input type="hidden" name="tax_sgst" id="tax_sgst" value="<?php if (isset($tax['sgst'])) {
-                                                                                                                                    echo $tax['sgst'];
-                                                                                                                                } else {
-                                                                                                                                    echo '0';
-                                                                                                                                } ?>">
-                                                                    <input type="hidden" name="tax_cgst" id="tax_cgst" value="<?php if (isset($tax['cgst'])) {
-                                                                                                                                    echo $tax['cgst'];
-                                                                                                                                } else {
-                                                                                                                                    echo '0';
-                                                                                                                                } ?>">
-                                                                    <input type="hidden" name="tax_amount" id="tax_amount" value="<?php if (isset($tax['tax_amt'])) {
-                                                                                                                                        $order['tax_amt'];
-                                                                                                                                    } else {
-                                                                                                                                        echo '0';
-                                                                                                                                    } ?>">
-                                                                    <input type="hidden" name="total_amount" id="total_amount1" value="<?php if (isset($order['bill_amt'])) {
-                                                                                                                                            echo $order['bill_amt'];
-                                                                                                                                        } else { ?>0.00 <?php } ?>">
-                                                                    <input type="hidden" name="g_total_amount" id="g_total_amount" value="<?php if (isset($order['total'])) {
-                                                                                                                                                echo $order['total'];
-                                                                                                                                            } else { ?>0.00 <?php } ?>">
-                                                                    <input type="hidden" name="dis_per_val" id="dis_per_val" value="0">
-                                                                    <input type="hidden" name="dis_fix_val" id="dis_fix_val" value="<?php if (isset($order['discount_amt'])) {
-                                                                                                                                        echo $order['discount_amt'];
-                                                                                                                                    } else { ?>0.00 <?php } ?>">
-                                                                    <input type="hidden" name="final_dis" id="final_dis" value="<?php if (isset($order['discount_amt'])) {
-                                                                                                                                    echo $order['discount_amt'];
-                                                                                                                                } else { ?>0.00 <?php } ?>">
-                                                                    <input type="hidden" name="total_tendered" value="0">
-                                                                    <span class="">
-                                                                        <h4>Total <i class="fas fa-rupee-sign"></i> <b id="total_amount"> <?php if (isset($order['bill_amt'])) {
-                                                                                                                                                if (count($order) > 0) {
-                                                                                                                                                    echo number_format($order['bill_amt'], 2);
-                                                                                                                                                }
-                                                                                                                                            } else { ?>0.00 <?php } ?></b></h4>
-                                                                    </span>
-                                                                    <div id="if_dis_val">
-                                                                        <span class="">
-                                                                            <h4>Discount <b id="discount_val"> <?php if (isset($order['discount_amt']) && ($order['discount_amt'] != 0)) { ?><i class="fas fa-rupee-sign"></i> <?php } ?> <?php if (isset($order)) {
-                                                                                                                                                                                                                                                if (count($order) > 0) {
-                                                                                                                                                                                                                                                    echo number_format($order['discount_amt'], 2);
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            } else { ?>0.00 <?php } ?></b></h4>
-                                                                        </span>
-                                                                        <span class="">
-                                                                            <h4>Grant Total <i class="fas fa-rupee-sign"></i> <b id="gtotal_amount"> <?php if (isset($order)) {
-                                                                                                                                                            if (count($order) > 0) {
-                                                                                                                                                                echo number_format($order['total'], 2);
-                                                                                                                                                            }
-                                                                                                                                                        } else { ?>0.00 <?php } ?></b></h4>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
+                                                        <input type="hidden" name="sub_total" id="sub_total" value="<?= (isset($order['sub_total']) ? $order['sub_total'] : '0.00'); ?>">
+                                                        <input type="hidden" name="total" id="total" value="<?= (isset($order['total']) ? $order['total'] : '0.00'); ?>">
+                                                        
+                                                        <input type="hidden" name="discount_id" id="discount_id" value="<?= (isset($order['discount_id']) ? $order['discount_id'] : '0'); ?>">
+                                                        <input type="hidden" name="discount_percent" id="discount_percent" value="<?= (isset($order['discount_percent']) ? $order['discount_percent'] : '0'); ?>">
+                                                        <input type="hidden" name="discount_amt" id="discount_amt" value="<?= (isset($order['discount_amt']) ? $order['discount_amt'] : '0'); ?>">
+                                                        
+                                                        <input type="hidden" name="grand_total" id="grand_total" value="<?= (isset($order['grand_total']) ? $order['grand_total'] : '0.00'); ?>">
+                                                        <input type="hidden" name="dis_per_val" id="dis_per_val" value="<?= (isset($order['discount_percent']) ? $order['discount_percent'] : '0'); ?>">
+                                                        <input type="hidden" name="dis_fix_val" id="dis_fix_val" value="<?= (isset($order['discount_amt']) ? $order['discount_amt'] : '0'); ?>">
+                                                        <input type="hidden" name="totalitem"   id="totalitem" value="<?= (isset($order['items']) ? $order['items'] : '0'); ?>">
+                                                        <input type="hidden" name="prev_sub_total" id="prev_sub_total" value="<?= (isset($order['sub_total']) ? $order['sub_total'] : '0.00'); ?>">
+                                                        <input type="hidden" name="prev_totalitem"   id="prev_totalitem" value="<?= (isset($order['items']) ? $order['items'] : '0'); ?>">
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <div class="form-check complimentary float-right text-right">
+                                                            <span class="">
+                                                                <h4>Sub Total <i class="fas fa-rupee-sign"></i> <b id="span_sub_total"></b></h4>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <div class="form-check complimentary float-right text-right">
+                                                                <span class="">
+                                                                    <h4>Vat (<span id="span_vat_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span_vat_amt"></b></h4>
+                                                                </span>
+                                                                <span class="">
+                                                                    <h4>SGST (<span id="span_sgst_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span_sgst_amt"> </b></h4>
+                                                                </span>
+                                                                <span class="">
+                                                                    <h4>CGST (<span id="span_cgst_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span_cgst_amt"></b></h4>
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="card-header pb-0 pt-1 pl-1 pr-1 mt-1 mr-1 ml-1  " id="headingTwo">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <div class="form-check complimentary float-right text-right">
+                                                            <span class="">
+                                                                <h4>Total <i class="fas fa-rupee-sign"></i> <b id="span_total"></b></h4>
+                                                            </span>
+                                                            <span class="">
+                                                                <h4>Discount <span id="span_discount_percent" style="display:none;"></span> <i class="fas fa-rupee-sign"></i> <b id="span_discount_amt"></b></h4>
+                                                            </span>
+                                                            <span class="">
+                                                                <h4>Grant Total <i class="fas fa-rupee-sign"></i> <b id="span_grand_total"></b></h4>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                                 <div class="card pt-2 pb-2">
                                                     <div class="col-lg-12 col-md-12 col-sm-12">
                                                         <button class="btn btn-sm btn-danger" id="save_kot"><strong>KOT</strong></button>

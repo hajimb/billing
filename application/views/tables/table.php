@@ -12,7 +12,7 @@
     </div>
     <?php 
     // echo "<pre>";
-    print_r($table);
+    // print_r($table);
     ?>
      <!-- Main content -->
     <section class="content">

@@ -1,4 +1,7 @@
 var controller = "order";
+$(document).ready(function() {
+    calculate(true)
+});
 
 $(document).on("click", "#save_kot", function(e) {
     Sendkot(e, false);
@@ -166,14 +169,14 @@ function getitems(id) {
 function additem_table(idd) {
     console.log(idd)
     var data = $('#additem_' + idd).parent('span').attr('data-json')
-
+    
     data = JSON.parse(data)
     if ($('#dinein tr[data-id="' + data.item_id + '"]').length > 0) {
         var tr = $('#dinein tr[data-id="' + data.item_id + '"]')
         var qty = tr.find('[name="qty[]"]').val();
         qty = parseInt(qty) + 1;
-        qty = tr.find('[name="qty[]"]').val(qty).trigger('change')
-        calc()
+        qty = tr.find('[name="qty[]"]').val(qty);
+        calculate(false)
         return false;
     }
     var tr = $('<tr class="o-item"></tr>')
@@ -187,7 +190,7 @@ function additem_table(idd) {
     tr.append('<input type="hidden" name="item_id[]" id="item_id_' + data.item_id + '" value="' + data.item_id + '"><input type="hidden" name="price[]" id="" value="' + data.price + '"><input type="hidden" name="amount[]" id="" value="' + data.price + '">')
     $('#dinein tbody').append(tr)
     // qty_func()
-    calc()
+    calculate(false)
 }
 
 $(document).on("click", "#dinein .btn-minus", function(event) {
@@ -197,7 +200,7 @@ $(document).on("click", "#dinein .btn-minus", function(event) {
     qty = qty > 1 ? parseInt(qty) - 1 : 1;
     console.log('Minus After:'+qty);
     $(this).siblings('input').val(qty)
-    calc()
+    calculate(false)
 })
 $(document).on("click", "#dinein .btn-plus", function(event) {
         var qty = $(this).siblings('input').val()
@@ -206,11 +209,11 @@ $(document).on("click", "#dinein .btn-plus", function(event) {
         qty = parseInt(qty) + 1;
         console.log('Plus After:'+qty);
         $(this).siblings('input').val(qty)
-        calc()
+        calculate(false)
     })
 $(document).on("click", "#dinein .btn-rem", function(event) {
     $(this).closest('tr').remove()
-    calc()
+    calculate(false)
 })
 
 // }

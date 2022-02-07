@@ -497,33 +497,6 @@
         })
     })
 
-    $("#add_discount").click(function(){
-      $("#dis_per_val").val(0);
-      $("#dis_fix_val").val(0);
-      if($("#discount_select").val() != 0){
-        console.log('discount_select:'+$("#discount_select").val());
-       
-        var id = $("#discount_select").val();
-        $.ajax({
-            url:'<?php echo base_url() ?>discount/getdiscount',
-            method:'POST',
-            data:{id:id},
-            dataType: 'json',
-            success:function(resp){
-              console.log('Discount returned :'+resp);
-              $("#dis_per_val").val(resp.discount);
-              calc();
-            }
-      })
-      }else if($("#dis_per").val() != ''){
-        $("#dis_per_val").val($("#dis_per").val());
-        calc();
-      }else if($("#dis_fix").val() != ''){
-        $("#dis_fix_val").val($("#dis_fix").val());
-        calc();
-      }
-      // $("#collapseTwo").removeClass('show');
-    })
   });
   function datasource(){
     $.ajax({

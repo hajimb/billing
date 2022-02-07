@@ -45,46 +45,64 @@ class Ordermodel extends CI_Model
     public function addOrderRequest($data)
     {
         // print_r($data);
+        // exit;
         $result = array('msg' => 'Order Not Saved due to Error, Try Again','status' => false, 'data' => 0);
         $data["created_date"] = date('Y-m-d H:i:s');
         if($this->session->userdata('user_session')){
             if(isset($data['item_id'])){
             // echo $data["table_id"];
                 $user_session = $this->session->userdata('user_session');
-                $query = $this->db->query("SELECT max(Id) as max  FROM ".$this->bill_head);
-                $rs = $query->row_array();
+                $invoice_no = GetLastBillNo($user_session["restaurant_id"]);
                 $totalitem = count($data["item_id"]);
-                $bill_data["restaurant_id"] = $user_session["restaurant_id"];
-                $bill_data["table_id"] = $data["table_id"];
-                $bill_data["bill_amt"] = $data["total_amount"];
-                $bill_data["total"] = $data["total_amount"];;
-                $bill_data["status"] = "OrderTaken";
-                $bill_data["invoice_no"] = date("ymd").($rs["max"]+1);
-                $bill_data["created_date"] = date('Y-m-d H:i:s');
-                $bill_data["modified_date"] = date('Y-m-d H:i:s');
-                $bill_data["created_by"] = $user_session['user_id'];
-                $bill_data["modify_by"] = $user_session['user_id'];
-                $bill_data["bill_type"] = $data['order_type'];
+                $bill_id                        = $data["ord_id"];
+                $bill_data["restaurant_id"]     = $user_session["restaurant_id"];
+                $bill_data["table_id"]          = $data["table_id"];
+                $bill_data["items"]             = $data["totalitem"];;
+                $bill_data['sub_total']         = $data['sub_total'];
+                $bill_data["tax_id"]            = $data["tax_id"];
+                $bill_data['vat_percent']       = $data['vat_percent'];
+                $bill_data['sgst_percent']      = $data['sgst_percent'];
+                $bill_data['cgst_percent']      = $data['cgst_percent'];
+                $bill_data['vat_amt']           = $data['vat_amt'];
+                $bill_data['sgst_amt']          = $data['sgst_amt'];
+                $bill_data['cgst_amt']          = $data['cgst_amt'];
+                $bill_data['tax_amt']           = $data['tax_amt'];
+                $bill_data['total']             = $data['total'];
+                $bill_data['discount_id']       = $data['discount_id'];
+                $bill_data['discount_percent']  = $data['discount_percent'];
+                $bill_data['discount_amt']      = $data['discount_amt'];
+                $bill_data['grand_total']       = $data['grand_total'];
+                $bill_data["status"]            = "OrderTaken";
+                $bill_data["invoice_no"]        = $invoice_no;
+                $bill_data["created_date"]      = date('Y-m-d H:i:s');
+                $bill_data["modified_date"]     = date('Y-m-d H:i:s');
+                $bill_data["created_by"]        = $user_session['user_id'];
+                $bill_data["modify_by"]         = $user_session['user_id'];
+                $bill_data["bill_type"]         = $data['order_type'];
+                
+                $kot_head_data["restaurant_id"]     = $user_session["restaurant_id"];
+                $kot_head_data["table_id"]          = $data["table_id"];
+                $kot_head_data["status"]            = "OrderTaken";
                 // $bill_data["mobile"] = $data['mobile'];
                 // $bill_data["name"] = $data['name'];
-                $bill_data["items"] = $totalitem;
                 
                 // $query11 = $this->db->query("SELECT * FROM bill_head where table_id = '".$data["table_id"]."' and status != 'BillPaid' order by Id DESC limit 1");
                 // $result11 = $query11->row_array();
 
-                if($data["ord_id"] != ''){
-                    $BillId = $data["ord_id"];
-                    $bill_i["bill_id"] = $data["ord_id"];
-                    $bill_data["bill_id"] = $data["ord_id"];
+                if($bill_id != ''){
+                    $bill_i["bill_id"]      = $bill_id;
+                    $kot_head_data["bill_id"]   = $bill_id;
+                    $this->db->where('id',$bill_id);
+                    $bill                   = $this->db->update($this->bill_head,$bill_data);
                 }else{
-                    $bill = $this->db->insert($this->bill_head,$bill_data);
-                    $BillId = $this->db->insert_id();
-                    $bill_i["bill_id"] = $BillId;
-                    $bill_data["bill_id"] = $BillId;
-                    $this->orderstatuslog($BillId,'OrderTaken');
+                    $bill                   = $this->db->insert($this->bill_head,$bill_data);
+                    $bill_id                = $this->db->insert_id();
+                    $bill_i["bill_id"]      = $bill_id;
+                    $kot_head_data["bill_id"]   = $bill_id;
+                    $this->orderstatuslog($bill_id,'OrderTaken');
                 }
-                $bill_data['kot'] = $this->getnewKot();
-                $kot = $this->db->insert($this->kot_head,$bill_data);
+                $kot_head_data['kot']   = $this->getnewKot();
+                $kot = $this->db->insert($this->kot_head,$kot_head_data);
                 $KOTId = $this->db->insert_id();
                 
                 $bill_i["kot_id"] = $KOTId;
@@ -99,7 +117,7 @@ class Ordermodel extends CI_Model
                     $bill_item["amount"] = $data["amount"][$i];
                     $this->db->insert($this->kot_item,$bill_item);
                 }
-                $query = $this->db->query("UPDATE  tables set ord_status = 'OrderTaken' where table_id = '".$this->getTableidofbill($BillId)."'");
+                $query = $this->db->query("UPDATE  tables set ord_status = 'OrderTaken' where table_id = '".$this->getTableidofbill($bill_id)."'");
                 $result['status']   = true;
                 $result['data']     = $KOTId;
                 $result['msg']     = 'Order Saved Successfully';
@@ -200,6 +218,7 @@ class Ordermodel extends CI_Model
         $result = $query->result_array();
         return $result;
     }
+ 
     function getnewKot(){
         $query = $this->db->query("SELECT max(kot) as kot FROM `kot_head` WHERE DATE(created_date) = CURDATE()");
         $result = $query->row_array();
@@ -414,10 +433,11 @@ class Ordermodel extends CI_Model
         return $query;
     }
 
-    function getactivetax(){
+    function getactivetax($restaurant_id){
         $this->db->select("*");
         $this->db->from('tax');
         $this->db->where("is_default",1);
+        $this->db->where("restaurant_id",$restaurant_id);
         $this->db->limit(1);
         $query      = $this->db->get();
         $result = $query->row_array();

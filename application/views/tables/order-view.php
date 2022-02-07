@@ -74,7 +74,7 @@
                                                             <td>
                                                                 <div>
                                                                 <!-- <div class="value-button btn-minus" id="decrease"  value="Decrease Value">-</div> -->
-                                                                <input type="number" name="qty[]" class="number" readonly value="<?=$ord['qty']?>">
+                                                                <input type="number" name="qty1[]" class="number" readonly value="<?=$ord['qty']?>">
                                                                 <!-- <div class="value-button btn-plus" id="increase"  value="Increase Value">+</div> -->
                                                                 </div>
                                                                 <input type="hidden" name="item_id[]" id="item_id_6" value="<?=$ord['item_id']?>">
@@ -103,27 +103,30 @@
                                                     <div class="col-lg-6 col-md-6 col-sm-12 ">
                                                         <a class="btn btn-sm btn-dark" href="javascript:void(0);" title="Add Discount" data-toggle="modal" data-target="#modal-default-2"><strong>Add Discount</strong></a>
                                                                 
-                                                        <input type="hidden" name="tax_id" id="tax_id" value="<?= ($tax['tax_id'] ? $tax['tax_id'] : '0');?>">
-                                                        <input type="hidden" name="vat_percent" id="vat_percent" value="<?= ($tax['vat'] ? $tax['vat'] : '0');?>">
-                                                        <input type="hidden" name="sgst_percent" id="sgst_percent" value="<?= ($tax['sgst'] ? $tax['sgst'] : '0');?>">
-                                                        <input type="hidden" name="cgst_percent" id="cgst_percent" value="<?= ($tax['cgst'] ? $tax['cgst'] : '0');?>">
+                                                        <input type="hidden" name="tax_id" id="tax_id" value="<?= (isset($tax['tax_id']) ? $tax['tax_id'] : '0');?>">
+                                                        <input type="hidden" name="vat_percent" id="vat_percent" value="<?= (isset($tax['vat']) ? $tax['vat'] : '0');?>">
+                                                        <input type="hidden" name="sgst_percent" id="sgst_percent" value="<?= (isset($tax['sgst']) ? $tax['sgst'] : '0');?>">
+                                                        <input type="hidden" name="cgst_percent" id="cgst_percent" value="<?= (isset($tax['cgst']) ? $tax['cgst'] : '0');?>">
                                                         
-                                                        <input type="hidden" name="vat_amt" id="vat_amt" value="<?= ($order['vat_amt'] ? $order['vat_amt'] : '0');?>">
-                                                        <input type="hidden" name="sgst_amt" id="sgst_amt" value="<?= ($order['sgst_amt'] ? $order['sgst_amt'] : '0');?>">
-                                                        <input type="hidden" name="cgst_amt" id="cgst_amt" value="<?= ($order['cgst_amt'] ? $order['cgst_amt'] : '0');?>">
+                                                        <input type="hidden" name="vat_amt" id="vat_amt" value="<?= (isset($order['vat_amt']) ? $order['vat_amt'] : '0');?>">
+                                                        <input type="hidden" name="sgst_amt" id="sgst_amt" value="<?= (isset($order['sgst_amt']) ? $order['sgst_amt'] : '0');?>">
+                                                        <input type="hidden" name="cgst_amt" id="cgst_amt" value="<?= (isset($order['cgst_amt']) ? $order['cgst_amt'] : '0');?>">
 
-                                                        <input type="hidden" name="tax_amt" id="tax_amt" value="<?= ($order['tax_amt'] ? $order['tax_amt'] : '0');?>">
+                                                        <input type="hidden" name="tax_amt" id="tax_amt" value="<?= (isset($order['tax_amt']) ? $order['tax_amt'] : '0');?>">
 
-                                                        <input type="hidden" name="sub_total" id="sub_total" value="<?= ($order['sub_total'] ? $order['sub_total'] : '0.00'); ?>">
-                                                        <input type="hidden" name="total" id="total" value="<?= ($order['total'] ? $order['total'] : '0.00'); ?>">
+                                                        <input type="hidden" name="sub_total" id="sub_total" value="<?= (isset($order['sub_total']) ? $order['sub_total'] : '0.00'); ?>">
+                                                        <input type="hidden" name="total" id="total" value="<?= (isset($order['total']) ? $order['total'] : '0.00'); ?>">
                                                         
-                                                        <input type="hidden" name="discount_id" id="discount_id" value="<?= ($order['discount_id'] ? $order['discount_id'] : '0'); ?>">
-                                                        <input type="hidden" name="discount_percent" id="discount_percent" value="<?= ($order['discount_percent'] ? $order['discount_percent'] : '0'); ?>">
-                                                        <input type="hidden" name="discount_amt" id="discount_amt" value="<?= ($order['discount_amt'] ? $order['discount_amt'] : '0'); ?>">
-
-                                                        <input type="hidden" name="grand_total" id="grand_total" value="<?= ($order['grand_total'] ? $order['grand_total'] : '0.00'); ?>">
-                                                        <input type="hidden" name="dis_fix_val" id="dis_fix_val" value="0">
-                                                        <input type="hidden" name="dis_fix_val" id="dis_fix_val" value="0">
+                                                        <input type="hidden" name="discount_id" id="discount_id" value="<?= (isset($order['discount_id']) ? $order['discount_id'] : '0'); ?>">
+                                                        <input type="hidden" name="discount_percent" id="discount_percent" value="<?= (isset($order['discount_percent']) ? $order['discount_percent'] : '0'); ?>">
+                                                        <input type="hidden" name="discount_amt" id="discount_amt" value="<?= (isset($order['discount_amt']) ? $order['discount_amt'] : '0'); ?>">
+                                                        
+                                                        <input type="hidden" name="grand_total" id="grand_total" value="<?= (isset($order['grand_total']) ? $order['grand_total'] : '0.00'); ?>">
+                                                        <input type="hidden" name="dis_per_val" id="dis_per_val" value="<?= (isset($order['discount_percent']) ? $order['discount_percent'] : '0'); ?>">
+                                                        <input type="hidden" name="dis_fix_val" id="dis_fix_val" value="<?= (isset($order['discount_amt']) ? $order['discount_amt'] : '0'); ?>">
+                                                        <input type="hidden" name="totalitem"   id="totalitem" value="<?= (isset($order['items']) ? $order['items'] : '0'); ?>">
+                                                        <input type="hidden" name="prev_sub_total" id="prev_sub_total" value="<?= (isset($order['sub_total']) ? $order['sub_total'] : '0.00'); ?>">
+                                                        <input type="hidden" name="prev_totalitem"   id="prev_totalitem" value="<?= (isset($order['items']) ? $order['items'] : '0'); ?>">
                                                     </div>
                                                     <div class="col-lg-6 col-md-6">
                                                         <div class="form-check complimentary float-right text-right">
@@ -145,7 +148,7 @@
                                                                     <h4>Vat (<span id="span_vat_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span_vat_amt"></b></h4>
                                                                 </span>
                                                                 <span class="">
-                                                                    <h4>SGST (<span id="span_sgst_percent"></span> <i class="fas fa-rupee-sign"></i> <b id="span_sgst_amt"> </b></h4>
+                                                                    <h4>SGST (<span id="span_sgst_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span_sgst_amt"> </b></h4>
                                                                 </span>
                                                                 <span class="">
                                                                     <h4>CGST (<span id="span_cgst_percent"></span> %) <i class="fas fa-rupee-sign"></i> <b id="span_cgst_amt"></b></h4>

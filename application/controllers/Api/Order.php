@@ -50,7 +50,6 @@ class Order extends REST_Controller {
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
             $result = $this->Ordermodel->addOrderRequest($_POST);
-
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],

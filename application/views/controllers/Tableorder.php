@@ -41,7 +41,7 @@ class Tableorder extends CI_Controller {
             $this->data['order'] = $this->Ordermodel->getorderdata($table_id,0);
             
         }
-        $this->data['tax']      = $this->Ordermodel->getactivetax();
+        $this->data['tax']      = $this->Ordermodel->getactivetax($this->restaurant_id);
         // $this->data['customer'] = getData('customer', $this->restaurant_id,"customer_id");
         $this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
@@ -73,7 +73,7 @@ class Tableorder extends CI_Controller {
             // $this->data['order'] = getTableOrderData($bill_id);
             
         }
-        $this->data['tax']      = $this->Ordermodel->getactivetax();
+        $this->data['tax']      = $this->Ordermodel->getactivetax($this->restaurant_id);
         // $this->data['customer'] = getData('customer', $this->restaurant_id,"customer_id");
         $this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);

@@ -189,7 +189,7 @@ function print_kot(id, flag){
     }))
 
 }
-  function calculate() {
+  function calculate(flag) {
     var sub_total           = 0;
     var total               = 0;
     var grand_total         = 0;
@@ -203,33 +203,23 @@ function print_kot(id, flag){
     
     var discount_percent    = 0;
     var discount_amt        = 0;
-
-    $('[name="qty[]"]').each(function() {
-        // $(this).change(function() {
-            var tr = $(this).closest('tr');
-            var qty = $(this).val();
-            var price = tr.find('[name="amount[]"]').val()
-            var amount = parseFloat(qty) * parseFloat(price);
-            // console.log('qty:'+qty);
-            // console.log('price:'+price);
-            // console.log('amount:'+amount);
-            tr.find('[name="price[]"]').val(amount)
-            sub_total = parseFloat(sub_total) + parseFloat(amount)
-            // console.log('sub_total inside:'+sub_total);
-            tr.find('.amount').text(parseFloat(amount).toLocaleString("en-IN", {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }))
-
-        // })
-    })
-
-    // $('[name="price[]"]').each(function() {
-    //     total = parseFloat(total) + parseFloat($(this).val())
-    // })
-    // console.log('sub_total:'+sub_total)
-
+    var totalitem           = 0;
+    sub_total               = $('#prev_sub_total').val();
+    totalitem               = $('#prev_totalitem').val();
+    if(flag == false){
+        $('[name="qty[]"]').each(function() {
+                var tr      = $(this).closest('tr');
+                var qty     = $(this).val();
+                var price   = tr.find('[name="amount[]"]').val()
+                var amount  = parseFloat(qty) * parseFloat(price);
+                sub_total   = parseFloat(sub_total) + parseFloat(amount)
+                tr.find('[name="price[]"]').val(amount)
+                tr.find('.amount').text(ConvertToFloat(amount));
+                totalitem++;
+            // })
+        })
+    }
+    $('#totalitem').val(totalitem);
     vat_percent = $('#vat_percent').val();
     vat_amt = vat_percent / 100 * sub_total;
     
@@ -283,66 +273,25 @@ function print_kot(id, flag){
     $('#total').val(total);
 
     $('#span_discount_percent').hide();
-    if ($("#discount_percent").val() != 0) {
-        discount_percent = $("#discount_percent").val() / 100;
-        discount_amt    = (sub_total * discount_percent);
-        grand_total     = sub_total - discount_amt;
-        $('#span_discount_percent').val("("+discount_percent+" %)");
-        $('#span_discount_percent').show();
-
-        $('#span_discount_amt').val(discount_amt);
-
-        $('#span_grand_total').text(parseFloat(grand_total).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }))
-    } else if ($("#dis_fix_val").val() != 0) {
-
-        discount_amt    = (sub_total * discount_percent);
-        grand_total     = sub_total - discount_amt;
-        $('#span_discount_percent').val("("+discount_percent+" %)");
-        $('#span_discount_percent').show();
-
-        $('#span_discount_amt').val(discount_amt);
-
-        $('#span_grand_total').text(parseFloat(grand_total).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }))
-
-        $("#if_dis_val").show();
-        var dis = $("#dis_fix_val").val();
-        var dis_val = total - dis;
-        $('#final_dis').val(dis);
-        $('#discount_val').html('<i class="fas fa-rupee-sign"></i><b> ' + parseFloat(dis).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }) + '</b>')
-        // $('#discount_val').text('<i class="fas fa-rupee-sign">'+parseFloat(dis).toLocaleString("en-IN",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}));
-        $('#gtotal_amount').text(parseFloat(dis_val + tax_amt).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }));
-        $('[name="g_total_amount"]').val(dis_val + tax_amt);
-
-    } else {
-        $('[name="g_total_amount"]').val(total + tax_amt);
-        $('#gtotal_amount').text(parseFloat(total + tax_amt).toLocaleString("en-IN", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }));
+ 
+    if (parseFloat($("#dis_per_val").val()) > 0) {
+        discount_percent = $("#dis_per_val").val();
+        discount_amt    = (parseFloat(total) * (parseFloat(discount_percent)/100));
+        $('#discount_percent').val(discount_percent);
+    }else if($("#dis_fix_val").val() != 0){
+        discount_amt    = $("#dis_fix_val").val();
     }
-    $('[name="total_amount"]').val(total);
-    $('#total_amount').text(parseFloat(total).toLocaleString("en-IN", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }))
+    grand_total     = parseFloat(total) - parseFloat(discount_amt);
+    if(discount_percent > 0){
+        $('#span_discount_percent').text("("+discount_percent+" %)");
+        $('#span_discount_percent').show();
+    }
+    if(discount_amt > 0){
+        $('#span_discount_amt').text(ConvertToFloat(discount_amt));
+        $('#discount_amt').val(discount_amt);
+    }
+    $('#span_grand_total').text(ConvertToFloat(grand_total));
+    $('#grand_total').val(grand_total);
 
 }
 
@@ -375,3 +324,33 @@ function ConvertToFloat(str){
    }
    return rtn;
 }
+
+// Add Discount
+$("#add_discount").click(function(){
+    if($("#discount_select").val() != 0){
+        console.log('discount_select:'+$("#discount_select").val());
+      var id = $("#discount_select").val();
+      $.ajax({
+          url:base_url+'discount/getdiscount',
+          method:'POST',
+          data:{id:id},
+          dataType: 'json',
+          success:function(resp){
+              console.log('Discount returned :'+resp);
+              $("#discount_id").val(resp.discount_id);
+              $("#dis_per_val").val(resp.discount);
+              $("#dis_fix_val").val(0);
+              calculate(false);
+            }
+        })
+    }else if($("#dis_per").val() != ''){
+        $("#dis_fix_val").val(0);
+        $("#dis_per_val").val($("#dis_per").val());
+        calculate(false);
+    }else if($("#dis_fix").val() != ''){
+        $("#dis_per_val").val(0);
+        $("#dis_fix_val").val($("#dis_fix").val());
+        calculate(false);
+    }
+    // $("#collapseTwo").removeClass('show');
+  })
