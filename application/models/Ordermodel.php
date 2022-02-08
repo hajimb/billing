@@ -42,6 +42,54 @@ class Ordermodel extends CI_Model
         return $result;
     }
 
+    public function GetBill($data){
+        $returnData = array('msg' => 'No Record Found','status' => false, 'data' => array());
+        $data['billHead'] = GetBillHead($data['bill_id']); 
+        if(count($data['billHead']) > 0){
+            $data['billItems']  =  GetBillItems($data['bill_id']);
+            $returnData['status']   = TRUE;
+            $returnData['data']     = $data;
+        }
+        return $returnData;
+
+    
+    }
+    public function UpdateBill($data){
+
+        $returnData = array('msg' => 'No Record Found','status' => false, 'data' => array());
+        $this->db->trans_begin();
+
+        $updateData['discount_id']      = $data['discount_id'];
+        $updateData['discount_percent'] = $data['discount_percent'];
+        $updateData['discount_amt']     = $data['discount_amt'];
+        $updateData['grand_total']      = $data['grand_total'];
+        if($data['status']!='') {
+            $updateData['status']           = $data['status'];
+        }
+        if($data['status'] == 'BillPaid') {
+            $updateData['payment_type']     = $data['payment_type'];
+        }
+        $this->db->where('id',$data['ord_id']);
+        $this->db->update($this->bill_head,$updateData);
+        
+        if($data['status']!='') {
+            $query = $this->db->query("UPDATE tables set ord_status = '".$data['status']."' where table_id = '".$data['table_id']."'");
+            $query = $this->db->query("UPDATE kot_head set status = '".$data['status']."' where bill_id = '".$data['ord_id']."' AND status != 'KitchenReject'");
+            $this->orderstatuslog($data['ord_id'],$data['status']);
+        }
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $returnData['msg'] = 'Error While Updating Bill';
+            $returnData['status'] = false;
+            
+        } else {
+            $this->db->trans_commit();
+            $returnData['msg'] = 'Bill Updated successfully';
+            $returnData['status'] = true;
+        }
+        return $returnData;
+    }
+
     public function addOrderRequest($data)
     {
         // print_r($data);
@@ -97,13 +145,17 @@ class Ordermodel extends CI_Model
                 }else{
                     $bill                   = $this->db->insert($this->bill_head,$bill_data);
                     $bill_id                = $this->db->insert_id();
+                    UpdateLastBillNo($user_session["restaurant_id"], $invoice_no);
                     $bill_i["bill_id"]      = $bill_id;
                     $kot_head_data["bill_id"]   = $bill_id;
                     $this->orderstatuslog($bill_id,'OrderTaken');
+
                 }
-                $kot_head_data['kot']   = $this->getnewKot();
+                $kot_no  = GetLastKOTNo($user_session["restaurant_id"]);
+                $kot_head_data['kot']  = $kot_no;
                 $kot = $this->db->insert($this->kot_head,$kot_head_data);
                 $KOTId = $this->db->insert_id();
+                UpdateLastKOTNo($user_session["restaurant_id"],$kot_no);
                 
                 $bill_i["kot_id"] = $KOTId;
 
@@ -219,8 +271,8 @@ class Ordermodel extends CI_Model
         return $result;
     }
  
-    function getnewKot(){
-        $query = $this->db->query("SELECT max(kot) as kot FROM `kot_head` WHERE DATE(created_date) = CURDATE()");
+    function getnewKot($restaurant_id){
+        $query = $this->db->query("SELECT max(kot) as kot FROM `kot_head` WHERE DATE(created_date) = CURDATE() AND restaurant_id = ".$restaurant_id);
         $result = $query->row_array();
         //print_r($result);
         return $result['kot']+1;

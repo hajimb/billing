@@ -5,7 +5,7 @@
 // print_r($order); 
 ?>
 <?php $i = 0; ?>
-<?php // print_r($order);?>
+<?php //echo "<pre>"; print_r($order);?>
 <div class="content-wrapper">
     <section class="content m-0">
         <div class="container-fluid m-0">
@@ -31,6 +31,11 @@
                         <form role="form" method="post" name="mainfrm" id="mainfrm">      
                         <!-- <form action="" id="manage-order-dineein"> -->
                             <input type="hidden" name="order_type" value="dinein">
+                            <?php  if(isset($order) && count($order)>0){?>
+                            <input type="hidden" name="ord_id" id="ord_id" value="<?=$order['Id']?>">
+                            <?php }else{ ?>
+                            <input type="hidden" name="ord_id" id="ord_id" value="">
+                            <?php } ?>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -100,8 +105,6 @@
                                                     <?php if($order['status'] != 'BillRaised' && $order['status'] != 'BillPaid'){ ?>
                                                         <a class="btn btn-sm btn-dark" href="javascript:void(0);" title="Add Discount" data-toggle="modal" data-target="#modal-default-2"><strong>Add Discount</strong></a>
                                                     <?php } ?>           
-                                                        <input type="hidden" name="ord_id" id="ord_id" value="<?= (isset($order['Id']) ? $order['Id'] : ''); ?>">
-                                                        <input type="hidden" name="table_id" id="table_id" value="<?= (isset($order['table_id']) ? $order['table_id'] : '0'); ?>">
                                                         <input type="hidden" name="tax_id" id="tax_id" value="<?= (isset($tax['tax_id']) ? $tax['tax_id'] : '0');?>">
                                                         <input type="hidden" name="vat_percent" id="vat_percent" value="<?= (isset($tax['vat']) ? $tax['vat'] : '0');?>">
                                                         <input type="hidden" name="sgst_percent" id="sgst_percent" value="<?= (isset($tax['sgst']) ? $tax['sgst'] : '0');?>">
@@ -180,7 +183,7 @@
                                                     <div class="col-lg-1 col-md-1"></div>
                                                     <div class="col-lg-2 col-md-2">
                                                         <div class="form-check complimentary">
-                                                        <input class="form-check-input form-control-md payment_type" <?php if($order['payment_type'] == "Cash"){ echo "checked"; } ?> name="payment_type" type="radio" value="Cash"
+                                                        <input class="form-check-input form-control-md payment_type"  name="payment_type" type="radio" value="Cash"
                                                             id="flexCheckDefault4" checked>
                                                         <label class="form-check-label" for="flexCheckDefault4">
                                                             Cash
@@ -189,7 +192,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-md-2">
                                                         <div class="form-check complimentary">
-                                                        <input class="form-check-input form-control-md payment_type" <?php if($order['payment_type'] == "Card"){ echo "checked"; } ?> name="payment_type" type="radio" value="Card"
+                                                        <input class="form-check-input form-control-md payment_type" name="payment_type" type="radio" value="Card"
                                                             id="flexCheckDefault3">
                                                         <label class="form-check-label" for="flexCheckDefault3">
                                                             Card
@@ -198,7 +201,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-md-2">
                                                         <div class="form-check complimentary">
-                                                        <input class="form-check-input form-control-md payment_type" <?php if($order['payment_type'] == "Online"){ echo "checked"; } ?> name="payment_type" type="radio" value="Online"
+                                                        <input class="form-check-input form-control-md payment_type" name="payment_type" type="radio" value="Online"
                                                             id="flexCheckDefault2">
                                                         <label class="form-check-label" for="flexCheckDefault2">
                                                         Online
@@ -207,7 +210,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-md-2">
                                                         <div class="form-check complimentary">
-                                                        <input class="form-check-input form-control-md payment_type" <?php if($order['payment_type'] == "UPI"){ echo "checked"; } ?> name="payment_type" type="radio" value="UPI"
+                                                        <input class="form-check-input form-control-md payment_type" name="payment_type" type="radio" value="UPI"
                                                             id="flexCheckDefault1">
                                                         <label class="form-check-label" for="flexCheckDefault1">
                                                             UPI
@@ -224,14 +227,15 @@
                                         <div class="card pt-2 pb-2">
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                             <?php if($order['status'] != 'BillRaised' && $order['status'] != 'BillPaid'){ ?>
-                                                <button class="btn btn-sm btn-danger" id="RaiseBill"><strong>Raise Bill</strong></button>
-                                                <?php } ?>
-                                                <button class="btn btn-sm btn-dark" id="PrintBill" data-id="<?=$order['Id']?>"><strong>Print Bill</strong></button>
-                                                <a class="btn btn-sm btn-dark" href="javascript:void(0);" onclick="bill_preview(<?=$order['Id']?>);" title="Bill Print" data-toggle="modal" data-target="#modal-default-1"><strong>Bill Print</strong></a>
-                                                <!-- <button class="btn btn-sm btn-danger" id="save_kot"><strong>KOT</strong></button>
-                                                <button class="btn btn-sm btn-dark" id="kot_print"><strong>KOT & Print</strong></button> -->
+                                                <a class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="RaiseBill(<?=$order['Id']?>,<?=$order['table_id']?>,'BillRaised');" title="Bill Raise">
+                                                <strong>Bill Raise</strong></a>
+                                            <?php } ?>
+                                            <a class="btn btn-sm btn-dark" href="javascript:void(0);" onclick="bill_preview(<?=$order['Id']?>);" title="Bill Print" data-toggle="modal" data-target="#modal-default-1"><strong>Bill Print</strong></a>
+                                            <!-- <button class="btn btn-sm btn-danger" id="save_kot"><strong>KOT</strong></button>
+                                            <button class="btn btn-sm btn-dark" id="kot_print"><strong>KOT & Print</strong></button> -->
                                             <?php if($order['status'] != 'BillPaid'){ ?>
-                                                <button class="btn btn-sm btn-danger  float-right" id="PayBill"><strong>Pay Bill</strong></button>
+                                                <a class="btn btn-sm btn-danger float-right"" href="javascript:void(0);" onclick="billpaiedupdate(<?=$order['Id']?>,<?=$order['table_id']?>);" title="Bill pay">
+                                                <strong>Bill pay</strong></a>
                                             <?php } ?>
                                             </div>
                                         </div>

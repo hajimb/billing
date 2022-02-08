@@ -98,9 +98,9 @@ class Kotmodel extends CI_Model
 
     }  
 
-    function getkotdata()
+    function getkotdata($restaurant_id)
     {        
-        $query = $this->db->query("SELECT h.*, t.tablename  FROM kot_head h, tables t  where t.table_id = h.table_id and h.status != 'Paid' and h.status != 'OrderTaken'");
+        $query = $this->db->query("SELECT h.*, t.tablename  FROM kot_head h, tables t  where t.table_id = h.table_id and h.status != 'Paid' and h.status != 'OrderTaken' AND t.restaurant_id = ".$restaurant_id );
         $result = $query->result_array();
         $data = array();
         foreach($result as $res){
@@ -113,9 +113,9 @@ class Kotmodel extends CI_Model
         // print_r($data);
         return $data;
     }
-    function getkotdataTaken()
+    function getkotdataTaken($restaurant_id)
     {        
-        $query = $this->db->query("SELECT h.*, t.tablename  FROM kot_head h, tables t  where t.table_id = h.table_id and h.status = 'OrderTaken'  ");
+        $query = $this->db->query("SELECT h.*, t.tablename  FROM kot_head h, tables t  where t.table_id = h.table_id and h.status = 'OrderTaken' AND t.restaurant_id = ".$restaurant_id);
         $result = $query->result_array();
         //print_r($result);
         $data = array();

@@ -465,3 +465,79 @@ if (!function_exists('GetLastBillNo')) {
     }
 }
 
+if (!function_exists('UpdateLastBillNo')) {
+    function UpdateLastBillNo($restaurant_id,$bill_id){
+        $ci = &get_instance();
+        $ci->load->database();
+        $data['last_bill_no'] = $bill_id;
+        $ci->db->where('restaurant_id',$restaurant_id);
+        $ci->db->update('restaurant',$data);
+    }
+}
+
+if (!function_exists('GetLastKOTNo')) {
+    function GetLastKOTNo($restaurant_id = 0){
+        $result = 1;
+        $ci = &get_instance();
+        $ci->load->database();
+        $ci->db->select('last_kot_no');
+        $ci->db->from('restaurant');
+        $ci->db->where('restaurant_id',$restaurant_id);
+        $query  = $ci->db->get();
+        $rows   = $query->num_rows();
+        if($rows > 0){
+            $row = $query->row_array();
+            $result = $row['last_kot_no'];
+            $result = intval($result) + 1;
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('UpdateLastKOTNo')) {
+    function UpdateLastKOTNo($restaurant_id,$kot_no){
+        $ci = &get_instance();
+        $ci->load->database();
+        $data['last_kot_no'] = $kot_no;
+        $ci->db->where('restaurant_id',$restaurant_id);
+        $ci->db->update('restaurant',$data);
+    }
+}
+
+if (!function_exists('GetBillHead')) {
+    function GetBillHead($bill_id = 0){
+        $result = array();
+        $ci = &get_instance();
+        $ci->load->database();
+        $ci->db->select('*');
+        $ci->db->from('bill_head');
+        $ci->db->where('id',$bill_id);
+        $query  = $ci->db->get();
+        $rows   = $query->num_rows();
+        if($rows > 0){
+            $result = $query->row_array();
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('GetBillItems')) {
+    function GetBillItems($bill_id = 0){
+        $result = array();
+        $ci = &get_instance();
+        $ci->load->database();
+        // SELECT ki.*, im.item_name FROM kot_item ki left join kot_head kh on kh.id = ki.kot_id left join items im on ki.item_id = im.item_id WHERE kh.bill_id = 1
+        $ci->db->select('ki.*, im.item_name');
+        $ci->db->from('kot_item ki');
+        $ci->db->join('kot_head kh','kh.id = ki.kot_id', 'left');
+        $ci->db->join('items im','ki.item_id = im.item_id', 'left');
+        $ci->db->where('kh.bill_id',$bill_id);
+        $query  = $ci->db->get();
+        $rows   = $query->num_rows();
+        if($rows > 0){
+            $result = $query->row_array();
+        }
+        return $result;
+    }
+}
+
