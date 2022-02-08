@@ -8,27 +8,28 @@ class Stockmodel extends CI_Model
     {
         $this->table        = 'stock';
         $this->current_stock= 'current_stock';
+        $this->stock_master = 'stock_master';
         $this->created_by   = $this->session->userdata('user_session')['user_id'];
         $this->created_date = date('Y-m-d H:i:s');
     }
 
     public function getData($id, $restaurant_id, $payment_type=''){
-        $this->db->select("s.stock_id, s.invoice_no, s.restaurant_id, s.rawmaterial_id, s.stock, s.supplier_name, s.invoice_date, re.restaurant_name, s.total_amount, s.paid_amount, s.payment_type, r.rawmaterial, mp.ptype, mu.units");
+        $this->db->select("ms.id, s.stock_id, ms.invoice_no, s.restaurant_id, s.rawmaterial_id, s.stock, ms.supplier_name, ms.invoice_date, re.restaurant_name, ms.total_amount, ms.paid_amount, ms.payment_type, r.rawmaterial, mp.ptype, mu.units");
         $this->db->from($this->table.' s');
         $this->db->join('rawmaterial r','s.rawmaterial_id = r.rawmaterial_id AND r.restaurant_id = '.$restaurant_id, 'left');
         $this->db->join('master_unit mu','r.unit = mu.id', 'left');
         $this->db->join('restaurant re','s.restaurant_id = re.restaurant_id AND re.restaurant_id = '.$restaurant_id, 'left');
-        // $this->db->join('category c','s.restaurant_id = c.restaurant_id AND c.restaurant_id = '.$restaurant_id, 'left');
-        $this->db->join('master_payment_type mp','s.payment_type = mp.id', 'left');
+        $this->db->join('stock_master ms','ms.id = s.ms_id', 'left');
+        $this->db->join('master_payment_type mp','ms.payment_type = mp.id', 'left');
         if($id){
             $this->db->where('s.stock_id', $id);
         }
         $this->db->where('s.restaurant_id', $restaurant_id);
         $this->db->where('s.is_deleted', 0);
         $this->db->where('r.is_deleted', 0);
-        $this->db->where('s.entry_type', 'P');
+        $this->db->where('ms.entry_type', 'P');
         if($payment_type){
-            $this->db->where('s.payment_type', $payment_type);
+            $this->db->where('ms.payment_type', $payment_type);
         }
         $this->db->group_by('s.stock_id');
         $query = $this->db->get();
@@ -46,7 +47,186 @@ class Stockmodel extends CI_Model
         }
     }
     
-    public function save($data, $id, $ip)
+
+    public function save($postData, $id, $ip)
+    {   
+        // print_r($postData);exit;
+        if($id == 0) {
+            if($postData['total_amount'] == $postData['paid_amount']){
+                $payment_type = 1;
+            }else{
+                $payment_type = 2;
+            }
+
+            $stock_master = array(
+                "created_by"     => $this->created_by,
+                "modified_by"    => $this->created_by,
+                "created_date"   => $this->created_date,
+                "modified_date"  => $this->created_date,
+                'invoice_date'   => $postData['invoice_date'],
+                'supplier_name'  => $postData['supplier_name'],
+                'invoice_no'     => $postData['invoice_no'],
+                'total_amount'   => $postData['total_amount'],
+                'paid_amount'    => $postData['paid_amount'],
+                'payment_type'   => $payment_type,
+                'restaurant_id'  => $postData['restaurant_id'],
+                'entry_type'     => $postData['entry_type'],
+            );
+            $this->db->insert($this->stock_master, $stock_master);
+
+            $id = $this->db->insert_id();
+
+            $insData = array();
+            foreach($postData['purchase'] as $key => $val){
+                $insData[] = array(
+                    "created_by"     => $this->created_by,
+                    "modify_by"      => $this->created_by,
+                    "created_date"   => $this->created_date,
+                    "modified_date"  => $this->created_date,
+                    "ms_id"          => $id,
+                    'rawmaterial_id' => $postData['purchase'][$key]['rawmaterial_id'],
+                    'stock'          => $postData['purchase'][$key]['stock'],
+                    'restaurant_id'  => $postData['restaurant_id'],
+                );
+            }
+            $this->db->insert_batch($this->table, $insData);
+           
+            $cashflow['reason']         = "Raw Material Purchase";
+            $cashflow['restaurant_id']  = $postData['restaurant_id'];
+            $cashflow['cash_type ']     = "O";
+            $cashflow["created_by"]     = $this->created_by;
+            $cashflow["created_date"]   = $this->created_date;
+            $cashflow["cash_date"]      = $postData['invoice_date'];
+            $cashflow["amount"]         = $postData['paid_amount'];
+            $cashflow["user_id"]        = $this->created_by;
+            $cashflow["pid"]            = $id;
+            $this->db->insert('cash_flow', $cashflow);
+        }else{
+            $data["modify_by"]      = $this->created_by;
+            $data["modified_date"]  = $this->created_date;
+            $data['rawmaterial_id'] = $postData['rawmaterial_id'];
+            $data['stock']          = $postData['stock'];
+            // $data['invoice_date']   = $postData['invoice_date'];
+            // $data['supplier_name']  = $postData['supplier_name'];
+            // $data['invoice_no']     = $postData['invoice_no'];
+            // $data['total_amount']   = $postData['total_amount'];
+            // $data['paid_amount']    = $postData['paid_amount'];
+            // $data['payment_type']   = $postData['payment_type'];
+            // $data['entry_type']     = $postData['entry_type'];
+            // $data['restaurant_id']  = $postData['restaurant_id'];
+
+            $this->db->where('stock_id', $id);
+            $this->db->update($this->table, $data);
+
+            // $cashflow["modify_by"]      = $this->created_by;
+            // $cashflow["modified_date"]  = $this->created_date;
+            // $cashflow["amount"]         = $postData['paid_amount'];
+            // $cashflow["user_id"]        = $this->created_by;
+            // $cashflow["cash_date"]      = $postData['invoice_date'];
+
+            // $this->db->where('pid', $id);
+            // $this->db->update('cash_flow', $cashflow);
+        }
+        if($id==0){
+            foreach($postData['purchase'] as $key => $val){
+                $oldstock = $postData['purchase'][$key]['oldstock'];
+                if($oldstock == ''){
+                    $oldstock = 0;
+                }
+                // print_r($postData);
+                $checkData['restaurant_id']  = $postData['restaurant_id'];
+                $checkData['rawmaterial_id'] = $postData['purchase'][$key]['rawmaterial_id'];
+                $current_stock_id = getId($checkData);
+                if( $current_stock_id == 0){
+                    $currentStock = array(
+                        'created_by'        => $this->created_by, 
+                        'created_date'      => $this->created_date, 
+                        'modified_by'       => $this->created_by, 
+                        'modified_date'     => $this->created_date, 
+                        'restaurant_id'     => $postData['restaurant_id'], 
+                        'rawmaterial_id'    => $postData['purchase'][$key]['rawmaterial_id'], 
+                        'current_stock'     => $postData['purchase'][$key]['stock'], 
+                        'ip'                => $ip, 
+                    );
+                    $this->db->insert($this->current_stock, $currentStock);
+                }else{
+                    $newStock = $postData['purchase'][$key]['stock'];
+                    if($oldstock > 0){
+                        $newStock = $newStock - $oldstock ;
+                    }
+                    $where = array(
+                        'restaurant_id'  => $postData['restaurant_id'], 
+                        'rawmaterial_id' => $postData['purchase'][$key]['rawmaterial_id'], 
+                        'id'             => $current_stock_id
+                    );
+                    if($newStock >= 0){
+                        $this->db->set('current_stock', 'current_stock + '.$newStock, false);        
+                    }else{
+                        $this->db->set('current_stock', 'current_stock '.$newStock, false);
+                    }
+                    $this->db->set('modified_date', 'NOW()', false);        
+                    $this->db->set('modified_by', $this->created_by);        
+                    $this->db->set('ip', $ip);        
+                    $this->db->where($where);
+                    $this->db->update($this->current_stock);
+                }
+            }
+        }else{
+            $oldstock = $postData['oldstock'];
+            if($oldstock == ''){
+                $oldstock = 0;
+            }
+            // print_r($postData);
+            $checkData['restaurant_id']  = $postData['restaurant_id'];
+            $checkData['rawmaterial_id'] = $postData['rawmaterial_id'];
+            $current_stock_id = getId($checkData);
+            if( $current_stock_id == 0){
+                $currentStock = array(
+                    'created_by'        => $this->created_by, 
+                    'created_date'      => $this->created_date, 
+                    'modified_by'       => $this->created_by, 
+                    'modified_date'     => $this->created_date, 
+                    'restaurant_id'     => $postData['restaurant_id'], 
+                    'rawmaterial_id'    => $postData['rawmaterial_id'], 
+                    'current_stock'     => $postData['stock'], 
+                    'ip'                => $ip, 
+                );
+                $this->db->insert($this->current_stock, $currentStock);
+            }else{
+                $newStock = $postData['stock'];
+                if($oldstock > 0){
+                    $newStock = $newStock - $oldstock ;
+                }
+                $where = array(
+                    'restaurant_id'  => $postData['restaurant_id'], 
+                    'rawmaterial_id' => $postData['rawmaterial_id'], 
+                    'id'             => $current_stock_id
+                );
+                if($newStock >= 0){
+                    $this->db->set('current_stock', 'current_stock + '.$newStock, false);        
+                }else{
+                    $this->db->set('current_stock', 'current_stock '.$newStock, false);
+                }
+                $this->db->set('modified_date', 'NOW()', false);        
+                $this->db->set('modified_by', $this->created_by);        
+                $this->db->set('ip', $ip);        
+                $this->db->where($where);
+                $this->db->update($this->current_stock);
+            }
+        }
+        
+        
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $result = array('msg' => 'Error While Updating Details','status' => false);
+        } else {
+            $this->db->trans_commit();
+            $result = array('msg' => 'Details Updated successfully','status' => true);
+        }
+        return $result;
+    }
+
+    /*public function save($data, $id, $ip)
     {   
         $this->db->trans_begin();
         $oldstock = $data['oldstock'];
@@ -102,7 +282,7 @@ class Stockmodel extends CI_Model
         }else{
             $newStock = $data['stock'];
             if($oldstock > 0){
-                $newStock =  $newStock - $oldstock ;
+                $newStock = $newStock - $oldstock ;
             }
             $where = array(
                 'restaurant_id'  => $data['restaurant_id'], 
@@ -129,7 +309,7 @@ class Stockmodel extends CI_Model
             $result = array('msg' => 'Purchase Details Updated successfully','status' => true);
         }
         return $result;
-    }
+    }*/
 
     public function delete($id)
     { 
@@ -207,25 +387,26 @@ class Stockmodel extends CI_Model
     }
 
     public function getDuepayment($pid){
-        $this->db->select('SUM(amount) As amount');
-        $this->db->from('cash_flow');
-        $this->db->where('pid', $pid);
+        $this->db->select('total_amount, paid_amount AS amount');
+        $this->db->from('stock_master');
+        $this->db->where('id', $pid);
         $query = $this->db->get();
+        // print $this->db->last_query();
         return $query->row();
     }
     
-    public function gettotal($pid){
-        $this->db->select('total_amount');
-        $this->db->from('stock');
-        $this->db->where('stock_id', $pid);
-        $query = $this->db->get();
-        return $query->row();
-    }
+    // public function gettotal($pid){
+    //     $this->db->select('total_amount');
+    //     $this->db->from('stock');
+    //     $this->db->where('stock_id', $pid);
+    //     $query = $this->db->get();
+    //     return $query->row();
+    // }
 
     public function paydueamount($data, $main_id, $ip){
         $this->db->trans_begin();
         $cashflow['reason']         = "Raw Material Purchase";
-        $cashflow['restaurant_id']  = "Raw Material Purchase";
+        $cashflow['restaurant_id']  = $data['restaurant_id'];
         $cashflow['cash_type ']     = "O";
         $cashflow["created_by"]     = $this->created_by;
         $cashflow["created_date"]   = $this->created_date;
@@ -236,8 +417,8 @@ class Stockmodel extends CI_Model
         $this->db->insert('cash_flow', $cashflow);
 
         $where = array(
-            'restaurant_id'  => $data['restaurant_id'], 
-            'stock_id'       => $main_id
+            // 'restaurant_id'  => $data['restaurant_id'], 
+            'id'       => $main_id
         );
 
         $data["modify_by"]      = $this->created_by;
@@ -245,11 +426,11 @@ class Stockmodel extends CI_Model
         $this->db->where($where);
         $this->db->set('paid_amount', 'paid_amount + '.$data["paid_amount"], false);    
         $this->db->set('modified_date', 'NOW()', false);        
-        $this->db->set('modify_by', $this->created_by);
+        $this->db->set('modified_by', $this->created_by);
         if(isset($data['payment_type']) && $data['payment_type'] != ''){
             $this->db->set('payment_type', $data['payment_type']);
         }
-        $this->db->update($this->table);
+        $this->db->update($this->stock_master);
 
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();

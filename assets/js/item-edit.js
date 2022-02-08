@@ -1,5 +1,12 @@
 'use strict';
 var controller = "item";
+var mainid =$('#main_id').val();
+$(document).on("change", ".rawmaterial_id", function(e) {
+    var id = $(this).attr('id');
+    var myArray = id.split("_");
+    var unit = $('option:selected', this).attr('data-id');
+    $( ".lblunits" ).eq(myArray[1]).html(unit);
+});
 
 $(document).on("click", ".saveChange", function(e) {
     e.preventDefault();
@@ -41,4 +48,8 @@ $(document).on("click", ".saveChange", function(e) {
             $("#"+btnid).stopLoading();
         }
     });
+});
+
+$("#repeater").createRepeater({
+    showFirstItemToDefault: true,
 });

@@ -70,44 +70,45 @@ class Inventory extends REST_Controller {
     }
 
     public function purchase_save_post(){
+        // echo "<pre>";
+        // print_r($_POST);exit;
         $Return = array('status' => false,'validate' => false, 'message' => array());
-        $this->form_validation->set_rules('rawmaterial_id', 'Select Raw Material', 'required|numeric|trim');
-        $this->form_validation->set_rules('stock', 'Stock', 'required|trim');
+        // $this->form_validation->set_rules('rawmaterial_id', 'Select Raw Material', 'required|numeric|trim');
+        // $this->form_validation->set_rules('stock', 'Stock', 'required|trim');
         $this->form_validation->set_rules('supplier_name', 'Supplier Name', 'required|trim');
         $this->form_validation->set_rules('invoice_no', 'Invoice Number', 'required|trim');
         $this->form_validation->set_rules('invoice_date', 'Invoice Date', 'required|trim');
         $this->form_validation->set_rules('total_amount', 'Total Amount', 'required|trim');
         $this->form_validation->set_rules('paid_amount', 'Paid Amount', 'required|trim');
         $this->form_validation->set_rules('payment_type', 'Payment Type', 'required|numeric|trim');
+        $main_id = $this->post('main_id');
+        if($main_id ==0){
+            $purchase = $this->post('purchase');
+            foreach($purchase as $key => $value){
+                $this->form_validation->set_rules("purchase[$key][rawmaterial_id]", 'Raw Material', 'required|numeric|trim');
+                $this->form_validation->set_rules("purchase[$key][stock]", 'Stock', 'required|trim');
+            }
+        }
+        
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-            $main_id = $this->post('main_id');
-            $data['rawmaterial_id'] = trim($this->input->post('rawmaterial_id'));
-            $data['stock']          = trim($this->input->post('stock'));
-            $data['invoice_date']   = trim($this->input->post('invoice_date'));
-            $data['supplier_name']  = $this->input->post('supplier_name');
-            $data['invoice_no']     = $this->input->post('invoice_no');
-            $data['total_amount']   = trim($this->input->post('total_amount'));
-            $data['paid_amount']    = trim($this->input->post('paid_amount'));
-            $data['payment_type']   = trim($this->input->post('payment_type'));
-            if($data['total_amount'] == $data['paid_amount']){
-                $data['payment_type'] = 1;
-            }else if($data['total_amount'] < $data['paid_amount']){
-                $verror['paid_amount'] = 'Paid Amount cannot be more then '.$data['total_amount'];
+            if($this->input->post('total_amount') < $this->input->post('paid_amount')){
+                $verror['paid_amount'] = 'Paid Amount cannot be more then '.$this->input->post('total_amount');
                 $this->response([
                     'validate'   => FALSE,
                     'status' => FALSE,
                     'message' => $verror
                 ], REST_Controller::HTTP_OK);
-            }else{
+            }
+/*            if($data['total_amount'] == $data['paid_amount']){
+                $data['payment_type'] = 1;
+            }else else{
                 $data['payment_type'] = 2;
             }
-            $data['restaurant_id']  = trim($this->input->post('restaurant_id'));
-            $data['entry_type']     = trim($this->input->post('entry_type'));
-            $data['oldstock']       = $this->input->post('oldstock') ?? 0;
+*/
             $ip                     = $this->input->ip_address();
-            $result                 = $this->Stockmodel->save($data, $main_id, $ip);
+            $result                 = $this->Stockmodel->save($_POST, $main_id, $ip);
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],
@@ -153,30 +154,28 @@ class Inventory extends REST_Controller {
     }
 
     public function wastage_used_save_post(){
-        // print_r($_POST);
-        
         $Return = array('status' => false,'validate' => false, 'message' => array());
-        // $this->form_validation->set_rules('rawmaterial_id', 'Raw Material', 'required|numeric|trim');
-        // $this->form_validation->set_rules('stock', 'Quantity', 'required|trim');
-        // $this->form_validation->set_rules('invoice_date', 'Date', 'required|trim');
-        // $this->form_validation->set_error_delimiters('', '');
-        // $this->form_validation->set_message('required', 'Enter %s');
-        // if ($this->form_validation->run()) {
-            $main_id = $this->post('main_id');
-            $data['restaurant_id']  = $this->post("restaurant_id") ;
-            // $data['rawmaterial_id'] = $this->input->post("rawmaterial_id");
-            // $data['stock']          = $this->input->post("stock");
-            // $data['oldstock']       = $this->input->post('oldstock') ?? 0;
-            $data['entry_type']     = $this->input->post('entry_type');
-            $data['invoice_date']   = $this->input->post('invoice_date');
+        $this->form_validation->set_rules('entry_type', 'Select Type', 'required|trim');
+        $this->form_validation->set_rules('invoice_date', 'Date', 'required|trim');
+        $main_id = $this->post('main_id');
+        if($main_id == 0){
+            $purchase = $this->post('test');
+            foreach($purchase as $key => $value){
+                $this->form_validation->set_rules("test[$key][rawmaterial_id]", 'Raw Material', 'required|numeric|trim');
+                $this->form_validation->set_rules("test[$key][stock]", 'Stock', 'required|trim');
+            }
+        }
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_message('required', 'Enter %s');
+        if ($this->form_validation->run()) {
+            
             $result                 = $this->Wastagemodel->save($_POST, $main_id);
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],
                 'message' => $result['msg']
             ], REST_Controller::HTTP_OK);
-            
-       /* } else {
+        } else {
             foreach ($this->input->post() as $key => $value) {
                 $verror[$key] = form_error($key);
             }
@@ -186,18 +185,17 @@ class Inventory extends REST_Controller {
                 'status' => FALSE,
                 'message' => $verror
             ], REST_Controller::HTTP_OK);
-        }*/
+        }
     }
 
     public function getdetail_post() {
         $id = $this->post('id');
         $result = $this->Stockmodel->getDuepayment($id);
-        $total = $this->Stockmodel->gettotal($id);
-
+        // $total = $this->Stockmodel->gettotal($id);
         if(!empty($result)){
             $data['status'] = TRUE;
             $data['amount'] = $result->amount;
-            $data['total']  = $total->total_amount;
+            $data['total']  = $result->total_amount;
             $this->response($data, REST_Controller::HTTP_OK);
         }else{
             //set the response and exit
@@ -213,22 +211,23 @@ class Inventory extends REST_Controller {
     public function paydueamount_post(){
         // print_r($_POST);exit;
         $Return = array('status' => false,'validate' => false, 'message' => array());
-        $this->form_validation->set_rules('stock_id', 'Stock Id Missing', 'required|numeric|trim');
+        $this->form_validation->set_rules('stock_master_id', 'Stock Id Missing', 'required|numeric|trim');
         $this->form_validation->set_rules('restaurant_id', 'Restaurant Id Missing', 'required|numeric|trim');
         $this->form_validation->set_rules('paid_amount', 'Paid Amount', 'required|trim');
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-           
-            $main_id = $this->post('stock_id');
+            $main_id = $this->post('stock_master_id');
             $data['paid_amount']    = $this->post('paid_amount');
             $data['restaurant_id']  = $this->post('restaurant_id');
             $ramount                = $this->post('ramount');
             $ip                     = $this->input->ip_address();
             if($ramount == $data['paid_amount']){
                 $data['payment_type'] = 1;
+            }else{
+                $data['payment_type'] = 2;
             }
-            $result                 = $this->Stockmodel->paydueamount($data, $main_id, $ip);
+            $result = $this->Stockmodel->paydueamount($data, $main_id, $ip);
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],

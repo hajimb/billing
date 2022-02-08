@@ -54,8 +54,10 @@ class Item extends CI_Controller {
         $this->data["main_id"]      = $id;
 		$this->data["todo"]         = $todo;
         $this->data['restaurant']   = getRestaurant();
+		$this->data["rawmaterial"]  = getRawmaterial($this->restaurant_id);
         $this->data['category']     = getCategory($this->restaurant_id);
-        $this->data["data"]         = getData('items', $this->restaurant_id,"item_id", $id);	
+        $this->data["data"]         = getData('items', $this->restaurant_id, "item_id", $id);
+        $this->data["item_rawm"]    = $this->Itemmodel->getitemRaw($this->restaurant_id, $id);
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);		
         $this->load->view('common/breadcrumb',$this->data);		

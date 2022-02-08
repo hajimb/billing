@@ -5,9 +5,11 @@ class Itemmodel extends CI_Model
     public function __construct()
     {
         $this->table = 'items';
+        $this->created_by   = $this->session->userdata('user_session')['user_id'];
+        $this->created_date = date('Y-m-d H:i:s');
     }
 
-    public function save($data,$id)
+    public function save($data, $postData, $id)
     {   
         $this->db->trans_begin();
         $where = array('item_name'=> $data['item_name'], 'restaurant_id'=> $data['restaurant_id'], 'is_deleted'=> 0);
@@ -21,17 +23,59 @@ class Itemmodel extends CI_Model
             return $result;
         }
         if($id == 0) {
-            $data["created_by"]   = $this->session->userdata('user_session')['user_id'];
+            $data["created_by"]   = $this->created_by;
             $data["created_date"] = date('Y-m-d H:i:s');
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }else{
-            $data["modify_by"]   = $this->session->userdata('user_session')['user_id'];
+            $data["modify_by"]     = $this->created_by;
             $data["modified_date"] = date('Y-m-d H:i:s');
             $this->db->where('item_id', $id);
             $this->db->update($this->table, $data);
-        }
 
+            $insData = array();
+            foreach($postData as $key => $val){
+                $insData[] = array(
+                    'restaurant_id'  => $data['restaurant_id'],
+                    'rawmaterial_id' => $postData[$key]['rawmaterial_id'],
+                    "item_id"        => $id,
+                    'quantity'       => $postData[$key]['quantity'],
+                    "created_by"     => $this->created_by,
+                    "modified_by"    => $this->created_by,
+                    "created_date"   => $this->created_date,
+                    "modified_date"  => $this->created_date,
+                    "ip"             => $this->input->ip_address(),
+                );
+            }
+            
+
+            // 1st get Old Value
+            $old_value = $this->getitemRaw($data['restaurant_id'], $id);
+            $count     = count($old_value);
+            
+            // print $this->db->last_query();exit();
+            // exit();
+            if($count > 0){
+                $this->db->delete('item_rawmaterial', array('item_id' => $id));
+                print $this->db->last_query();
+                $this->db->insert_batch('item_rawmaterial', $insData);
+                print $this->db->last_query();exit();
+
+                $logData['old_value'] = serialize($old_value);
+                $logData['new_value'] = serialize($insData);
+                $logData['msg']       = "Update raw material";
+                $logData['operation'] = "U";
+                $this->db->insert('item_rawmaterial_logs', $logData);
+            }else{
+                $logData['new_value'] = serialize($insData);
+                $logData['msg']       = "Insert new raw material";
+                $logData['operation'] = "I";
+                $this->db->insert_batch('item_rawmaterial', $insData);
+                $this->db->insert('item_rawmaterial_logs', $logData);
+            }
+            // print $this->db->last_query();exit();
+        }
+        // exit();
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
             $result = array('msg' => 'Error While Updating Item Details','status' => false);
@@ -73,4 +117,20 @@ class Itemmodel extends CI_Model
 		$result['data'] = $query->row_array();		
 		return $result;
 	}
+
+    public function getitemRaw($restaurant_id, $item_id){
+
+        $this->db->select('*');
+        $this->db->from('item_rawmaterial');
+        $this->db->where('is_deleted', 0);
+        if($restaurant_id > 0){
+            $this->db->where('restaurant_id', $restaurant_id);
+        }
+        if($item_id > 0){
+            $this->db->where('item_id', $item_id);
+        }
+        $queryone = $this->db->get();
+        $result   = $queryone->result_array();
+        return $result;
+    }   
 }

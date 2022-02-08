@@ -919,6 +919,16 @@
             });
         </script>
 
+<script src="<?php echo base_url();?>assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url();?>assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?php echo base_url();?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?php echo base_url();?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/jszip.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/pdfmake.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/vfs_fonts.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script> 
+<script src="<?php echo base_url(); ?>assets/js/buttons.print.min.js"></script>
 <?php
  if(isset($js)){
   load_js($js);
@@ -935,39 +945,4 @@ if(isset($pagename)){
     }
   }
 ?>
-<script>
-
-var _arr = {};
-function loadScript(e, t) {
-    if (_arr[e]) t && t();
-    else {
-        _arr[e] = !0;
-        var a = document.getElementsByTagName("body")[0],
-            r = document.createElement("script");
-        (r.type = "text/javascript"), (r.src = e), (r.onload = t), a.appendChild(r);
-    }
-}
-var plugin_path = "<?= base_url();?>assets/js/";
-if($('#mainTable').length > 0){
-  console.log('inside');
-    loadScript(plugin_path + "dataTables.buttons.min.js", function(){ 
-        loadScript(plugin_path + "jszip.min.js", function(){ 
-            loadScript(plugin_path + "pdfmake.min.js", function(){ 
-                loadScript(plugin_path + "vfs_fonts.js", function(){ 
-                    loadScript(plugin_path + "buttons.html5.min.js", function(){ 
-                        loadScript(plugin_path + "buttons.print.min.js", function(){ })
-                    })
-                })
-            })
-        })
-    });
-}
-
-</script>
-<!-- <script src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script> 
-<script src="<?php echo base_url(); ?>assets/js/jszip.min.js"></script> 
-<script src="<?php echo base_url(); ?>assets/js/pdfmake.min.js"></script> 
-<script src="<?php echo base_url(); ?>assets/js/vfs_fonts.js"></script> 
-<script src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script> 
-<script src="<?php echo base_url(); ?>assets/js/buttons.print.min.js"></script> -->
 </html>

@@ -1,10 +1,12 @@
 'use strict';
 var controller = "inventory";
-var rurl        = $('#rurl').val();
+var rurl       = $('#rurl').val();
 
-$(document).on("change", "#rawmaterial_id", function(e) {
+$(document).on("change", ".rawmaterial_id", function(e) {
+    var id = $(this).attr('id');
+    var myArray = id.split("_");
     var unit = $('option:selected', this).attr('data-id');
-    $("#lblunits").html(unit);
+    $( ".lblunits" ).eq(myArray[1]).html(unit);
 });
 
 
@@ -14,7 +16,7 @@ $(document).on("click", ".saveChange", function(e) {
     var btnid = $(this).attr('id');
     var formId = $(this).data('form');
     var form = $("#"+formId).serialize();
-    console.log("resData " + form);
+    // console.log("resData " + form);
     $.ajax({
         type: "POST",
         url: base_url + "Api/"+controller+"/"+rurl+"_save",
@@ -24,7 +26,7 @@ $(document).on("click", ".saveChange", function(e) {
             $("#"+btnid).startLoading();
         },
         success: function(resData) {
-            console.log("resData " + JSON.stringify(resData));
+            // console.log("resData " + JSON.stringify(resData));
             var {status,validate,message} = resData;
             if (validate === false) {
                 $.each(message, function(k, v) {
@@ -66,3 +68,8 @@ $(document).on("change", "#paid_amount, #total_amount", function (e) {
         $("#payment_type").val(2);
     }
   });
+
+
+$("#repeater").createRepeater({
+    showFirstItemToDefault: true,
+});

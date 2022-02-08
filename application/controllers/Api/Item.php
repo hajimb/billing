@@ -22,7 +22,7 @@ class Item extends REST_Controller {
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_message('required', 'Enter %s');
         if ($this->form_validation->run()) {
-            $main_id = $this->post('main_id');
+            $main_id                    = $this->post('main_id');
             $data['restaurant_id']      = $this->post("restaurant_id") ;
             $data['cat_id']             = $this->post("cat_id") ;
             $data['item_name']          = $this->post("item_name") ;
@@ -30,7 +30,12 @@ class Item extends REST_Controller {
             $data['price']              = $this->input->post("price");
             $data['stock_status']       = $this->input->post("stock_status");
             $data['favorite']           = $this->input->post("favorite") ?? 0;
-            $result                     = $this->Itemmodel->save($data, $main_id);
+            if($main_id > 0){
+                $postData = $_POST['rawmaterial'];
+            }else{
+                $postData = array();
+            }
+            $result                     = $this->Itemmodel->save($data, $postData, $main_id);
             $this->response([
                 'validate' => TRUE,
                 'status' => $result['status'],
