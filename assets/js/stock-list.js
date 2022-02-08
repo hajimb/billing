@@ -89,7 +89,7 @@ $(document).on("click", "#confirmdelete", function(e) {
 $(document).on("click", ".getdetail", function (e) {
     var id = $(this).data("id");
     $("#totalPayment,#previouspaid").html(0);
-    $("#stock_id,#ramount").val(0);
+    $("#stock_master_id,#ramount").val(0);
     e.preventDefault();
     toastr.remove();
     $.ajax({
@@ -105,7 +105,7 @@ $(document).on("click", ".getdetail", function (e) {
           $("#totalPayment").html(total);
           $("#previouspaid").html(amount);
           $("#ramount").val(parseFloat(total)-parseFloat(amount));
-          $("#stock_id").val(id);
+          $("#stock_master_id").val(id);
         } else if (status == false) {
           toastr.warning(message);
           return false;
@@ -113,7 +113,7 @@ $(document).on("click", ".getdetail", function (e) {
       },
       error: function (err) {
         $("#totalPayment,#previouspaid").html(0);
-        $("#stock_id,#ramount").val(0);
+        $("#stock_master_id,#ramount").val(0);
         console.log(JSON.stringify(err));
       },
     });
@@ -121,7 +121,7 @@ $(document).on("click", ".getdetail", function (e) {
   });
   
   $(document).on("click", "#paynow", function (e) {
-    var stock_id = $("#stock_id").val();
+    var stock_master_id = $("#stock_master_id").val();
     var paid_amount = $("#paid_amount").val();
     var restaurant_id = $("#restaurant_id").val();
     var ramount = $("#ramount").val();
@@ -132,7 +132,7 @@ $(document).on("click", ".getdetail", function (e) {
       type: "POST",
       url: base_url + "Api/inventory/paydueamount",
       data: {
-        stock_id: stock_id,
+        stock_master_id: stock_master_id,
         paid_amount: paid_amount,
         restaurant_id: restaurant_id,
         ramount: ramount,

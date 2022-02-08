@@ -5,9 +5,8 @@ var rurl        = $('#rurl').val();
 $(document).on("change", ".rawmaterial_id", function(e) {
     var id = $(this).attr('id');
     var myArray = id.split("_");
-
     var unit = $('option:selected', this).attr('data-id');
-    $("#lblunits").html(unit);
+    $( ".lblunits" ).eq(myArray[1]).html(unit);
 });
 
 $(document).on("click", ".saveChange", function(e) {

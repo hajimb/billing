@@ -43,7 +43,7 @@
                     <td><?php echo $row['total_amount'] - $row['paid_amount'];?></td>
                     <td><?php echo $row['invoice_date'];?></td>
                     <td nowrap>
-                        <button class="btn btn-success getdetail" data-id="<?= $row['stock_id']; ?>">Pay Now</button>
+                        <button class="btn btn-success getdetail" data-id="<?= $row['id']; ?>">Pay Now</button>
                     </td>
                   </tr>
                   <?php $i++; }  ?>
@@ -103,7 +103,7 @@
               <div class="col-sm-8">
                   <input type="text" id="paid_amount" name="paid_amount" class="form-control" required/>          
                   <input type="hidden" id="ramount" name="ramount"/>          
-                  <input type="hidden" id="stock_id" name="stock_id"/>          
+                  <input type="hidden" id="stock_master_id" name="stock_master_id"/>          
                   <input type="hidden" name="restaurant_id" id="restaurant_id" value="<?= $restaurant_id;?>"/>          
               </div>
             </div>

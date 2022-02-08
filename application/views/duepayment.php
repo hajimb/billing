@@ -35,8 +35,6 @@
                                 <input type="text" name="" class="form-control form-control-sm" placeholder="">
                             </div>
                         </div>
-                        
-                        
                     </div>
                         <!-- text input -->   
                 </div>
