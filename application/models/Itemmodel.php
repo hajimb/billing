@@ -47,14 +47,19 @@ class Itemmodel extends CI_Model
                     "ip"             => $this->input->ip_address(),
                 );
             }
-            $this->db->insert_batch('item_rawmaterial', $insData);
+            
 
             // 1st get Old Value
             $old_value = $this->getitemRaw($data['restaurant_id'], $id);
             $count     = count($old_value);
             // print $this->db->last_query();exit();
+            // exit();
             if($count > 0){
                 $this->db->delete('item_rawmaterial', array('item_id' => $id));
+                print $this->db->last_query();
+                $this->db->insert_batch('item_rawmaterial', $insData);
+                print $this->db->last_query();exit();
+
                 $logData['old_value'] = serialize($old_value);
                 $logData['new_value'] = serialize($insData);
                 $logData['msg']       = "Update raw material";
@@ -64,11 +69,12 @@ class Itemmodel extends CI_Model
                 $logData['new_value'] = serialize($insData);
                 $logData['msg']       = "Insert new raw material";
                 $logData['operation'] = "I";
+                $this->db->insert_batch('item_rawmaterial', $insData);
                 $this->db->insert('item_rawmaterial_logs', $logData);
             }
             // print $this->db->last_query();exit();
         }
-
+        // exit();
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
             $result = array('msg' => 'Error While Updating Item Details','status' => false);
