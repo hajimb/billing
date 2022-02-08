@@ -57,10 +57,7 @@ class Itemmodel extends CI_Model
             // exit();
             if($count > 0){
                 $this->db->delete('item_rawmaterial', array('item_id' => $id));
-                print $this->db->last_query();
                 $this->db->insert_batch('item_rawmaterial', $insData);
-                print $this->db->last_query();exit();
-
                 $logData['old_value'] = serialize($old_value);
                 $logData['new_value'] = serialize($insData);
                 $logData['msg']       = "Update raw material";
