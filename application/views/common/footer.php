@@ -1,4 +1,26 @@
   </div>
+  <div class="modal fade" id="modal-print-bill">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Print Bill</h4>
+        </div>
+        <div class="modal-body" id="div_print_bill">
+          <p>Loading Bill, Please Wait</p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id = "reprint">print</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
   <!-- /.content-wrapper -->
   <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
@@ -32,7 +54,7 @@
           </button>
         </div>
         <div class="modal-body" id="kot_item_detail_reprint">
-          <p>One fine body&hellip;</p>
+          <p>Loading Bill, Please Wait</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -582,7 +604,9 @@
     // var id = $("#ord_table_id").val();
     // var status = $("#ord_status").val();
     if(status == 'BillRaised'){
-      billdiscountupdate(bill_id);
+      UpdateDiscount();
+      return false;
+      // billdiscountupdate(bill_id);
     }
     $.ajax({
           url:'<?php echo base_url() ?>order/billstatusupdate',
@@ -598,6 +622,7 @@
           }
     })
   }
+
   function billpaiedupdate(bill_id, table_id){
     //alert();
     // var id = $("#ord_table_id").val();
@@ -660,7 +685,8 @@
       })
     }
     function bill_preview(id){
-      billdiscountupdate(id);
+      UpdateBill(false);
+      // billdiscountupdate(id);
       $.ajax({
             url:'<?php echo base_url() ?>order/getordertable',
             method:'POST',

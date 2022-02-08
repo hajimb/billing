@@ -354,3 +354,65 @@ $("#add_discount").click(function(){
     }
     // $("#collapseTwo").removeClass('show');
   })
+
+    $(document).on("click", "#RaiseBill", function(event) {
+        event.preventDefault();
+        $("#status").val('BillRaised');
+        UpdateBill(true);
+    });
+  
+    $(document).on("click", "#PayBill", function(event) {
+        event.preventDefault();
+        $("#status").val('BillPaid');
+        UpdateBill(true);
+    });
+
+  //Update Discount in Order View
+  function UpdateBill(flag){
+    var status = $("#status").val();
+    var form = $("#mainfrm").serialize();
+    // var dis = $('#final_dis').val();
+    // var g_total = $('#g_total_amount').val();
+    // var tax = $('#tax_amount').val();
+    // var dis_id = $("#discount_select").val();
+    $.ajax({
+          url: base_url +'Api/order/update_bill',
+          method:'POST',
+          data:form,
+          dataType: 'json',
+          async : true,
+          success:function(resp){
+            if(resp.status == true){
+                if(flag){
+                    toastr.success(resp.message);
+                    if(status == "BillRaised") setTimeout(function(){location.reload();},1000)            
+                    if(status == "BillPaid") setTimeout(function(){ window.location.href= base_url + "tableorder";},1000)            
+                }
+            }else{
+                toastr.error(resp.message);
+            }
+        }
+    })
+  }
+
+  $(document).on("click", "#PrintBill", function(event) {
+    event.preventDefault();
+    var bill_id = $(this).attr('data-id');
+    console.log(bill_id);
+    $.ajax({
+        url: base_url +'Api/order/get_bill',
+        method:'POST',
+        data:{bill_id},
+        dataType: 'json',
+        success:function(resp){
+            console.log(JSON.stringify(resp));
+            if(resp.status == true){
+                $('#div_print_bill').html(resp.data);
+                $("#modal-print-bill").modal('show');
+            }else{
+                toastr.error(resp.message);
+            }
+      }
+    })
+    return false;
+});

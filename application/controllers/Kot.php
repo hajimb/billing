@@ -25,8 +25,8 @@ class Kot extends CI_Controller {
 		$this->load->view('common/header',$this->data);
         $this->load->view('common/sidebar',$this->data);
         
-        $this->data['order'] = $this->Kotmodel->getkotdata();
-        $this->data['order_new'] = $this->Kotmodel->getkotdataTaken();
+        $this->data['order'] = $this->Kotmodel->getkotdata($this->restaurant_id);
+        $this->data['order_new'] = $this->Kotmodel->getkotdataTaken($this->restaurant_id);
 		$this->load->view('kot',$this->data);
 		$this->load->view('common/footer');
 	}

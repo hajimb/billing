@@ -79,8 +79,9 @@
                     
                       
                     <?php foreach($order_dd['ord'] as $ord){?>
-                      <div class="col-md-9 col-sm-9"><span><?= $ord['item_name']?></span></div>
-                      <div class="col-md-3 col-sm-3 text-right"><span><?= $ord['qty']?></span></div>
+                      <div class="col-md-4 col-sm-4"><span><?= $ord['item_name']?></span></div>
+                      <div class="col-md-2 col-sm-2 text-center"><span><?= $ord['qty']?></span></div>
+                      <div class="col-md-6 col-sm-6 text-right"><span><?= $ord['instruction']?></span></div>
                     <?php }?>
                     </div>
                     <div> <span>&nbsp;<?php //echo $table_s['diff']?></span></div>
@@ -145,8 +146,10 @@
                     
                       
                     <?php foreach($order_d['ord'] as $ord){?>
-                      <div class="col-md-9 col-sm-9"><span><?= $ord['item_name']?></span></div>
-                      <div class="col-md-3 col-sm-3 text-right"><span><?= $ord['qty']?></span></div>
+                      <div class="col-md-4 col-sm-4"><span><?= $ord['item_name']?></span></div>
+                      <div class="col-md-2 col-sm-2 text-center"><span><?= $ord['qty']?></span></div>
+                      <div class="col-md-6 col-sm-6 text-right"><span><?= $ord['instruction']?></span></div>
+
                     <?php }?>
                     </div>
                     <div> <span>&nbsp;<?php //echo $table_s['diff']?></span></div>
@@ -206,8 +209,9 @@
                     
                       
                     <?php foreach($order_d['ord'] as $ord){?>
-                      <div class="col-md-9 col-sm-9"><span><?= $ord['item_name']?></span></div>
-                      <div class="col-md-3 col-sm-3 text-right"><span><?= $ord['qty']?></span></div>
+                      <div class="col-md-4 col-sm-4"><span><?= $ord['item_name']?></span></div>
+                      <div class="col-md-2 col-sm-2 text-center"><span><?= $ord['qty']?></span></div>
+                      <div class="col-md-6 col-sm-6 text-right"><span><?= $ord['instruction']?></span></div>
                     <?php }?>
                     </div>
                     <div> <span>&nbsp;<?php //echo $table_s['diff']?></span></div>

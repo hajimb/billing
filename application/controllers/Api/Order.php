@@ -69,4 +69,64 @@ class Order extends REST_Controller {
         }
     }
 
+    public function update_bill_post(){
+        // print_r($_POST);
+        // exit;
+        $verror = array();
+        $this->form_validation->set_rules('table_id', 'Table', 'required|trim');
+        $this->form_validation->set_rules('ord_id', 'Order', 'required|trim');
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_message('required', 'Enter %s');
+        if ($this->form_validation->run()) {
+            $result = $this->Ordermodel->UpdateBill($_POST);
+            $this->response([
+                'validate' => TRUE,
+                'status' => $result['status'],
+                'data' => $result['data'],
+                'message' => $result['msg']
+            ], REST_Controller::HTTP_OK);
+            
+        } else {
+            foreach ($this->input->post() as $key => $value) {
+                $verror[$key] = form_error($key);
+            }
+            $this->response([
+                'validate'   => FALSE,
+                'status' => FALSE,
+                'message' => $verror
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+    public function get_bill_post(){
+        // print_r($_POST);
+        // exit;
+        $verror = array();
+        $this->form_validation->set_rules('bill_id', 'Bill ID', 'required|trim');
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_message('required', 'Enter %s');
+        if ($this->form_validation->run()) {
+            $result = $this->Ordermodel->GetBill($_POST);
+            $html = '';
+            if($result['status'] == true){
+                $html       = $this->load->view('bill',$result['data'],true);
+            }
+            $this->response([
+                'validate'  => TRUE,
+                'status'    => $result['status'],
+                'data'      => $html,
+                'message'   => $result['msg']
+            ], REST_Controller::HTTP_OK);
+            
+        } else {
+            foreach ($this->input->post() as $key => $value) {
+                $verror[$key] = form_error($key);
+            }
+            $this->response([
+                'validate'   => FALSE,
+                'status' => FALSE,
+                'message' => $verror
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
 }

@@ -12,7 +12,7 @@
     </div>
     <?php 
     // echo "<pre>";
-    // print_r($table);
+    print_r($table);
     ?>
      <!-- Main content -->
     <section class="content">
@@ -79,7 +79,7 @@
                         <?php } ?>
                         <?php if(($table_s['ord_status'] == 'BillPaid') || ($table_s['ord_status'] == 'BillRaised')){?>
                           <span>
-                            <a class="btn btn-app action-btn" href="javascript:void(0);" onclick="getorderBilltable(<?=$table_s['table_id']?>);" data-toggle="modal" data-target="#modal-default-1" >
+                            <a class="btn btn-app action-btn" href="javascript:void(0);" onclick="bill_preview(<?=$table_s['bill_id']?>);" data-toggle="modal" data-target="#modal-default-1" >
                               <i class="fas fa-print"></i>
                             </a>
                           </span>
