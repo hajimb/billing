@@ -72,16 +72,56 @@ if($main_id > 0){
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
-										<div class="custom-control custom-checkbox">
+										<div class="custom-control custom-checkbox" style="margin-top: 35px;">
 											<input class="custom-control-input permission" type="checkbox" name="favorite"  id="favorite" value="1" <?php if($favorite == 1){ echo 'checked';}?>/>
 											<label for="favorite" class="custom-control-label">Favorite</label>
 										</div>
 									</div>
 								</div>
-								<?php if($main_id>0){?>
-
-									<div class="items" data-group="test" style="padding: 15px">
-								        <div class="item-content">
+								<?php if($main_id>0){									
+									$count = count($item_rawm);
+									// print_r($item_rawm);
+									if($count > 0){
+										foreach($item_rawm as $key =>$val){
+								?>
+									<div class="items" data-group="rawmaterial">
+								        <div class="item-content" style="padding: 0 20px;">
+											<div class="row">
+												<div class="col-sm-3">
+													<div class="form-group">
+														<label for="rawmaterial">Raw Material</label>
+														<?php 
+															$js = 'id="rawmaterial_id" class="form-control rawmaterial_id" data-name="rawmaterial_id"';
+															echo form_dropdown('rawmaterial_id', $rawmaterial, $item_rawm[$key]['rawmaterial_id'],$js, true);
+														?>
+													</div>
+												</div>
+												<div class="col-sm-3">
+													<div class="form-group">
+														<label for="quantity">Quantity</label>
+														<div class="input-group mb-3">
+															<input type="text" id="quantity" name="quantity" data-name="quantity" class="form-control" value="<?= $item_rawm[$key]['quantity'];?>">
+															<div class="input-group-append">
+																<span class="input-group-text lblunits"><?= $data['units'] ?? '';?></span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-3" style="margin-top: 30px;">
+													<div class="pull-right repeater-remove-btn">
+											            <button class="btn btn-danger remove-btn">
+											                Remove
+											            </button>
+											        </div>
+												</div>
+											</div>
+								        </div>
+								    </div>	
+								<?php	
+									}}else{
+								?>
+									<div class="items" data-group="rawmaterial">
+								        <div class="item-content" style="padding: 0 20px;">
 											<div class="row">
 												<div class="col-sm-3">
 													<div class="form-group">
@@ -94,10 +134,9 @@ if($main_id > 0){
 												</div>
 												<div class="col-sm-3">
 													<div class="form-group">
-														<label for="stock">Stock</label>
+														<label for="quantity">Quantity</label>
 														<div class="input-group mb-3">
-															<input type="hidden" id="oldstock" data-name="oldstock" name="oldstock" value="<?= $data['stock'] ?? '0';?>">
-															<input type="text" id="stock" name="stock" data-name="stock" autocomplete="off" class="form-control numberOnly" value="<?= $data ['stock'] ?? '';?>">
+															<input type="text" id="quantity" name="quantity" data-name="quantity" autocomplete="off" class="form-control numberOnly" value="<?= $data ['quantity'] ?? '';?>">
 															<div class="input-group-append">
 																<span class="input-group-text lblunits"><?= $data ['units'] ?? '';?></span>
 															</div>
@@ -114,7 +153,7 @@ if($main_id > 0){
 											</div>
 								        </div>
 								    </div>	
-								<?php }?>
+								<?php }}?>
 							</div>
 						</div>
 					</div>
