@@ -31,9 +31,9 @@ jQuery.fn.extend({
                         $(el).attr("name", attrName);
                     }
                 }
-                if (fresh == true) {
-                    $(el).attr('value', '');
-                }
+                // if (fresh == true) {
+                //     $(el).attr('value', '');
+                // }
 
                 $(el).attr('id', generateId($(el).attr('name')));
                 $(el).parent().find('label').attr('for', generateId($(el).attr('name')));
