@@ -48,12 +48,10 @@ class Itemmodel extends CI_Model
                 );
             }
             
-
             // 1st get Old Value
             $old_value = $this->getitemRaw($data['restaurant_id'], $id);
             $count     = count($old_value);
             
-            // print $this->db->last_query();exit();
             // exit();
             if($count > 0){
                 $this->db->delete('item_rawmaterial', array('item_id' => $id));
@@ -70,9 +68,7 @@ class Itemmodel extends CI_Model
                 $this->db->insert_batch('item_rawmaterial', $insData);
                 $this->db->insert('item_rawmaterial_logs', $logData);
             }
-            // print $this->db->last_query();exit();
         }
-        // exit();
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
             $result = array('msg' => 'Error While Updating Item Details','status' => false);
