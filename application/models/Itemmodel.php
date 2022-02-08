@@ -52,6 +52,7 @@ class Itemmodel extends CI_Model
             // 1st get Old Value
             $old_value = $this->getitemRaw($data['restaurant_id'], $id);
             $count     = count($old_value);
+            
             // print $this->db->last_query();exit();
             // exit();
             if($count > 0){
