@@ -395,7 +395,7 @@ $("#add_discount").click(function(){
     })
   }
 
-  $(document).on("click", "#PrintBill", function(event) {
+  $(document).on("click", ".PrintBill", function(event) {
     event.preventDefault();
     var bill_id = $(this).attr('data-id');
     console.log(bill_id);

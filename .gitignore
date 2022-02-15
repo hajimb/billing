@@ -12,5 +12,5 @@ application/views/receipt-old.php
 truncate_table.sql
 application/config/database.php
 assets/images/
-database_update .sql
 updates.txt
+database_update.sql

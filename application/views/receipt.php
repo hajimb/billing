@@ -1,4 +1,5 @@
 <?php 
+// echo "<pre>";
 // print_r($bill);
 // $order = $this->db->query("SELECT * FROM bill_head where Id = {$_GET['id']}");
 // foreach($order->fetch_array() as $k => $v){
@@ -43,9 +44,9 @@
 		</tr>
 		<tr>
 			<td>
-				Date : <?php echo date("d/m/Y h:i:s",strtotime($bill['bill']['created_date'])) ?> <br />
+				Date : <?php echo date("d/m/Y h:i:s",strtotime($bill['billHead']['created_date'])) ?> <br />
 				Cashier : CASHIER <br />
-				Bill No : <?php echo $bill['bill']['invoice_no'] ?>
+				Bill No : <?php echo $bill['billHead']['invoice_no'] ?>
 			</td> 
 		</tr>
 		<tr>
@@ -58,67 +59,52 @@
 						<td width="20%" class="text-right">Amount</td> 
 					</tr>
 					<?php 
-						$b = count($bill);
-						$i = 1;
 						$qnty = 0;
-						$bill_amount  = 0;
-						foreach($bill as $billd){
-							if($i != $b){
-								$qnty 			= intval($qnty) + intval($billd['qty']); 
-								$item_price 	= intval($billd['amount']);
-								$qty 			= intval($billd['qty']);
-								$item_amount 	= $item_price * $qty;
-								$bill_amount 	= intval($bill_amount) + intval($item_amount); 
+						foreach($bill['billItems'] as $billd){
+							$qnty 			= intval($qnty) + intval($billd['qty']); 
 						?>
 					<tr>
 						<td><?= $billd['item_name'] ?></td> 
-						<td class="text-center"><?= $qty;  ?></td> 
-						<td class="text-right"><?= number_format($item_price,2) ?></td> 
-						<td class="text-right"><?= number_format($item_amount,2) ?></td> 
+						<td class="text-center"><?= $billd['qty'] ?></td> 
+						<td class="text-right"><?= number_format($billd['amount'],2) ?></td> 
+						<td class="text-right"><?= number_format($billd['price'],2) ?></td> 
 					</tr>
-						<?php 
-							$i++;
-							} 
-						} ?>
+					<?php } ?>
 					<tr class="border-top">
 						<td class="text-right">Total Qty : <?= $qnty; ?></td> 
 						<td colspan = 2 class="text-right">Sub Total</td> 
-						<td class="text-right"><?= number_format($bill_amount,2) ?></td> 
+						<td class="text-right"><?= number_format($bill['billHead']['sub_total'],2) ?></td> 
 					</tr>
-					<?php if(isset($bill['bill']['sgst']) && $bill['bill']['sgst'] >0){ ?>
+					<?php if(isset($bill['billHead']['tax_amt']) && $bill['billHead']['tax_amt'] >0){ ?>
 					<tr>
-						<td class="text-right"><?= number_format($bill_amount,2) ?> @ SGST</td> 
-						<td colspan = 2 class="text-right"><?= $bill['bill']['sgst'] ;?>%</td> 
-						<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['sgst'] / 100),2); ?></td> 
+						<td class="text-right"><?= number_format($bill['billHead']['sub_total'],2) ?> @ SGST</td> 
+						<td colspan = 2 class="text-right"><?= $bill['billHead']['sgst_percent'] ;?>%</td> 
+						<td class="text-right"><?= number_format(($bill['billHead']['sgst_amt']),2); ?></td> 
 					</tr>
-					<?php } ?>
-					<?php if(isset($bill['bill']['cgst']) && $bill['bill']['cgst'] >0){ ?>
 					<tr>
-						<td class="text-right"><?= number_format($bill_amount,2) ?> @ CGST</td> 
-						<td colspan = 2 class="text-right"><?= $bill['bill']['cgst'] ;?>%</td> 
-						<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['cgst'] / 100),2); ?></td> 
+						<td class="text-right"><?= number_format($bill['billHead']['sub_total'],2) ?> @ CGST</td> 
+						<td colspan = 2 class="text-right"><?= $bill['billHead']['cgst_percent'] ;?>%</td> 
+						<td class="text-right"><?= number_format(($bill['billHead']['cgst_amt'] ),2); ?></td> 
+					</tr>
+					<tr>
+						<td class="text-right"><?= number_format($bill['billHead']['sub_total'],2) ?> @ VAT</td> 
+						<td colspan = 2 class="text-right"><?= $bill['billHead']['vat_percant'] ;?>%</td> 
+						<td class="text-right"><?= number_format(($bill['billHead']['vat_amt']),2); ?></td> 
 					</tr>
 					<?php } ?>
-					<?php if(isset($bill['bill']['vat']) && $bill['bill']['vat'] >0){ ?>
-						<tr>
-							<td class="text-right"><?= number_format($bill_amount,2) ?> @ VAT</td> 
-							<td colspan = 2 class="text-right"><?= $bill['bill']['vat'] ;?>%</td> 
-							<td class="text-right"><?= number_format(($bill_amount * $bill['bill']['vat'] / 100),2); ?></td> 
-						</tr>
-					<?php } ?>
-					<?php if(isset($bill['bill']['discount_amt']) && $bill['bill']['discount_amt'] >0){ ?>
+					<?php if(isset($bill['billHead']['discount_amt']) && $bill['billHead']['discount_amt'] >0){ ?>
 						<tr class="border-top border-bottom">
 							<td colspan = 2 class="text-right">Total</td> 
-							<td colspan = 2 class="text-right"><?= number_format(($bill['bill']['total'] + $bill['bill']['discount_amt']),2); ?></td> 
+							<td colspan = 2 class="text-right"><?= number_format(($bill['billHead']['total']),2); ?></td> 
 						</tr>
 						<tr class="border-top border-bottom">
 							<td colspan = 2 class="text-right">Discount</td> 
-							<td colspan = 2 class="text-right"><?= number_format($bill['bill']['discount_amt'],2); ?></td> 
+							<td colspan = 2 class="text-right"><?= number_format($bill['billHead']['discount_amt'],2); ?></td> 
 						</tr>
 					<?php } ?>
 						<tr class="border-top border-bottom">
 							<td colspan = 2 class="text-right">Grand Total</td> 
-							<td colspan = 2 class="text-right"><?= number_format($bill['bill']['total'],2); ?></td> 
+							<td colspan = 2 class="text-right"><?= number_format($bill['billHead']['grand_total'],2); ?></td> 
 						</tr>
 					<?php if(false) { ?>
 					<tr class="border-top">

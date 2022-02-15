@@ -509,9 +509,11 @@ if (!function_exists('GetBillHead')) {
         $result = array();
         $ci = &get_instance();
         $ci->load->database();
-        $ci->db->select('*');
-        $ci->db->from('bill_head');
-        $ci->db->where('id',$bill_id);
+        $ci->db->select('bh.*,t.tablename, concat(u.firstname,u.lastname) as username');
+        $ci->db->from('bill_head bh');
+        $ci->db->join('tables t','bh.table_id = t.table_id','left');
+        $ci->db->join('admin_users u','u.id = bh.modify_by','left');
+        $ci->db->where('bh.id',$bill_id);
         $query  = $ci->db->get();
         $rows   = $query->num_rows();
         if($rows > 0){
@@ -535,7 +537,7 @@ if (!function_exists('GetBillItems')) {
         $query  = $ci->db->get();
         $rows   = $query->num_rows();
         if($rows > 0){
-            $result = $query->row_array();
+            $result = $query->result_array();
         }
         return $result;
     }

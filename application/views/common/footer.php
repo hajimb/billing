@@ -13,7 +13,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id = "reprint">print</button>
+          <button type="button" class="btn btn-primary" data-id="" id = "reprint">print</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -447,7 +447,7 @@
       var status = 'Paid';
       var Payment_type = $("#Payment_type").val();
       start_load()
-      var nw = window.open('<?php echo base_url() ?>receipt?id='+id,"_blank","width=330,height=600")
+      var nw = window.open('<?php echo base_url() ?>receipt?bill_id='+id,"_blank","width=330,height=600")
       setTimeout(function(){
         nw.print()
         // setTimeout(function(){

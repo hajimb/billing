@@ -79,7 +79,7 @@
                         <?php } ?>
                         <?php if(($table_s['ord_status'] == 'BillPaid') || ($table_s['ord_status'] == 'BillRaised')){?>
                           <span>
-                            <a class="btn btn-app action-btn" href="javascript:void(0);" onclick="bill_preview(<?=$table_s['bill_id']?>);" data-toggle="modal" data-target="#modal-default-1" >
+                            <a class="btn btn-app action-btn PrintBill" data-id="<?=$table_s['bill_id']?>" href="javascript:void(0);">
                               <i class="fas fa-print"></i>
                             </a>
                           </span>

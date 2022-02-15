@@ -5,7 +5,7 @@
 // print_r($order); 
 ?>
 <?php $i = 0; ?>
-<?php // print_r($order);?>
+<?php  print_r($order);?>
 <div class="content-wrapper">
     <section class="content m-0">
         <div class="container-fluid m-0">
@@ -226,8 +226,8 @@
                                             <?php if($order['status'] != 'BillRaised' && $order['status'] != 'BillPaid'){ ?>
                                                 <button class="btn btn-sm btn-danger" id="RaiseBill"><strong>Raise Bill</strong></button>
                                                 <?php } ?>
-                                                <button class="btn btn-sm btn-dark" id="PrintBill" data-id="<?=$order['Id']?>"><strong>Print Bill</strong></button>
-                                                <a class="btn btn-sm btn-dark" href="javascript:void(0);" onclick="bill_preview(<?=$order['Id']?>);" title="Bill Print" data-toggle="modal" data-target="#modal-default-1"><strong>Bill Print</strong></a>
+                                                <button class="btn btn-sm btn-dark PrintBill" data-id="<?=$order['Id']?>"><strong>Print Bill</strong></button>
+                                                <!-- <a class="btn btn-sm btn-dark" href="javascript:void(0);" onclick="bill_preview(<?=$order['Id']?>);" title="Bill Print" data-toggle="modal" data-target="#modal-default-1"><strong>Bill Print</strong></a> -->
                                                 <!-- <button class="btn btn-sm btn-danger" id="save_kot"><strong>KOT</strong></button>
                                                 <button class="btn btn-sm btn-dark" id="kot_print"><strong>KOT & Print</strong></button> -->
                                             <?php if($order['status'] != 'BillPaid'){ ?>

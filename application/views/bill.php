@@ -1,8 +1,10 @@
+<!-- <?php print_r($billHead); ?> -->
 <table class="table data-table" id="8">
     <thead>
         <tr>
-            <th colspan="2">Table: Table No.1</th>
-            <th colspan="2">Invoice No: 1</th>
+            <th colspan="2">Table: <?= $billHead['tablename']; ?></th>
+            <th colspan="2" class="text-right">Invoice No: <?= $billHead['invoice_no']; ?></th>
+            <input type="hidden" name="bill_print_id" id="bill_print_id" value="<?= $billHead['Id'];?>">
         </tr>
         <tr>
             <th>Item Name</th>
@@ -12,34 +14,39 @@
         </tr>
     </thead>
     <tbody>
+    <?php 
+    foreach($billItems as $item){ ?>
         <tr>
-            <td>Paneer Crispy</td>
-            <td>1</td>
-            <td class="text-right">160</td>
-            <td class="text-right">160</td>
+            <td><?= $item['item_name']; ?></td>
+            <td><?= $item['qty']; ?></td>
+            <td class="text-right"><?= number_format($item['amount'],2); ?></td>
+            <td class="text-right"><?= number_format($item['price'],2); ?></td>
         </tr>
-        <tr>
-            <td>Veg Crispy</td>
-            <td>1</td>
-            <td class="text-right">150</td>
-            <td class="text-right">150</td>
-        </tr>
-        <tr>
-            <td>Idli</td>
-            <td>1</td>
-            <td class="text-right">90</td>
-            <td class="text-right">90</td>
-        </tr>
+
+    <?php } ?>
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="4" style="text-align:right">Total: 400</th>
+            <th colspan="3" class="text-right">Sub Total: </th>
+            <th class="text-right"><?= $billHead['sub_total']; ?></th>
+        </tr>
+<?php if($billHead['tax_amt'] > 0) {?>
+        <tr>
+            <th colspan="3" class="text-right">Tax: </th>
+            <th class="text-right"><?= $billHead['tax_amt']; ?></th>
         </tr>
         <tr>
-            <th colspan="4" style="text-align:right">Discount: 0.00</th>
+            <th colspan="3" class="text-right">Total: </th>
+            <th class="text-right"><?= $billHead['total']; ?></th>
+        </tr>
+<?php } ?>
+        <tr>
+            <th colspan="3" class="text-right">Discount: </th>
+            <th class="text-right"><?= $billHead['discount_amt']; ?></th>
         </tr>
         <tr>
-            <th colspan="4" style="text-align:right">Grant Total: 400.00</th>
+            <th colspan="3" style="text-align:right">Grand Total: </th>
+            <th class="text-right"><?= $billHead['grand_total']; ?></th>
         </tr>
     </tfoot>
 </table>

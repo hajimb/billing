@@ -626,21 +626,23 @@ class Ordermodel extends CI_Model
         $returnData = array('msg' => 'Order Not Saved due to Error, Try Again','status' => false, 'data' => 0);
         $dayendreport = array();
         // SELECT count(total) as order_total_count, sum(total) as order_total_amount,sum(tax_amt) as order_tax,sum(discount_amt) as order_discount, min(invoice_no) as bill_start , max(invoice_no) as bill_end FROM `".$this->bill_head."-old` WHERE 1
-        $this->db->select("count(total) as order_total_count, sum(total) as order_total_amount,sum(tax_amt) as order_tax,sum(discount_amt) as order_discount, min(invoice_no) as bill_start , max(invoice_no) as bill_end");
+        // $this->db->select("count(total) as order_total_count, sum(total) as order_total_amount,sum(tax_amt) as order_tax,sum(discount_amt) as order_discount, min(invoice_no) as bill_start , max(invoice_no) as bill_end");
+        $this->db->select("count(total) as order_total_count, sum(sub_total) as order_total_amount,sum(grand_total) as order_final_amount,sum(tax_amt) as order_tax,sum(discount_amt) as order_discount, min(invoice_no) as bill_start , max(invoice_no) as bill_end");
         $this->db->from($this->bill_head);
         $this->db->where("restaurant_id",$data['restaurant_id']);
         $this->db->where("status",'BillPaid');
         $this->db->where("is_deleted",0);
         if($data['dayendtime'] != '')
-        $this->db->where("dayendtime > '".$data['dayendtime']."'",null, false);
+        $this->db->where("modified_date > '".$data['dayendtime']."'",null, false);
         $query      = $this->db->get();
         $result = $query->row_array();
         $dayendreport['restaurant_id']      = $data['restaurant_id'];
         $dayendreport['order_total_count']  = $result['order_total_count'];
-        $dayendreport['order_total_amount'] = ($result['order_total_amount'] - $result['order_tax'] + $result['order_discount']);
+        $dayendreport['order_total_amount'] = $result['order_total_amount'];
+        // $dayendreport['order_total_amount'] = ($result['order_total_amount'] - $result['order_tax'] + $result['order_discount']);
         $dayendreport['order_tax']          = $result['order_tax'];
         $dayendreport['order_discount']     = $result['order_discount'];
-        $dayendreport['order_final_amount'] = $result['order_total_amount'];
+        $dayendreport['order_final_amount'] = $result['order_final_amount'];
         $dayendreport['order_bill_range']   = $result['bill_start'] .' - '. $result['bill_end'] ;
         
         $this->db->select("payment_type, sum(total) as total");
@@ -649,7 +651,7 @@ class Ordermodel extends CI_Model
         $this->db->where("status",'BillPaid');
         $this->db->where("is_deleted",0);
         if($data['dayendtime'] != '')
-        $this->db->where("dayendtime > '".$data['dayendtime']."'",null, false);
+        $this->db->where("modified_date > '".$data['dayendtime']."'",null, false);
         $this->db->group_by('payment_type');
         $query      = $this->db->get();
         $result = $query->result_array();
@@ -663,7 +665,7 @@ class Ordermodel extends CI_Model
         $this->db->where("restaurant_id",$data['restaurant_id']);
         $this->db->where("status",'BillPaid');
         if($data['dayendtime'] != '')
-        $this->db->where("dayendtime > '".$data['dayendtime']."'",null, false);
+        $this->db->where("modified_date > '".$data['dayendtime']."'",null, false);
         $this->db->group_by('is_deleted , bill_type');
         $query      = $this->db->get();
         $result = $query->result_array();

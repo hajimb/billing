@@ -186,7 +186,7 @@ if($dayendtime != ''){
                       <h5>Order Payment Details</h5> 
                     </div>
                     <div class="col-md-6 text-right">
-                      Total (<i class="fas fa-rupee-sign"></i>) <?= round($dayend["order_final_amount"],2) ?> <i class="fas fa-plus rotate-icon" style="float: right ;margin-left:10px;"></i>
+                      Total (<i class="fas fa-rupee-sign"></i>) <?= round($dayend["order_total_amount"],2) ?> <i class="fas fa-plus rotate-icon" style="float: right ;margin-left:10px;"></i>
                     </div>
                   </div>
                 </a>
@@ -228,7 +228,7 @@ if($dayendtime != ''){
                       <h5>Payment Information</h5> 
                     </div>
                     <div class="col-md-6 text-right">
-                      Total (<i class="fas fa-rupee-sign"></i>) <?= round($dayend["order_final_amount"],2) ?> <i class="fas fa-plus rotate-icon" style="float: right ;margin-left:10px;"></i>
+                      Total (<i class="fas fa-rupee-sign"></i>) <?= round($dayend["order_total_amount"],2) ?> <i class="fas fa-plus rotate-icon" style="float: right ;margin-left:10px;"></i>
                     </div>
                   </div>
                 </a>
