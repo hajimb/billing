@@ -164,6 +164,47 @@ class Item extends REST_Controller {
     }
 
     public function take_post(){
+        $selected_items    = $this->post('selected_items');
+        $html  = '<style>
+                    @media print {
+                        @page {
+                            size: 80mm auto;
+                        }
+                    }
+                    body.receipt { 
+                        width: 80mm ;
+                        height:100%;
+                        margin: 5mm;
+                    }
+                    body.receipt .sheet { width: 80mm; height:100%}  
+                    @media print { body.receipt { width: 80mm; height:100% } }
+                </style>
+                <body class="receipt">
+                <section class="sheet">';
+        $html .= '<table style="width: 100%; border-collapse:collapse; font-family:verdana" border=1 cellpadding="5" cellspacing="5">
+                  <thead>
+                    <tr>
+                      <th align="left">Sr No</th>
+                      <th align="left">Raw Material</th>
+                      <th align="left">Stock</th>
+                      <th align="left">Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+            $i=1;
+            foreach($selected_items as $val){
+                if($val['stock']!='0.00' && $val['stock'] != ''){
+                    $html .= '<tr><td align="left">'.$i.'</td><td align="left">'.$val['rawmaterial'].'</td><td align="left">'.$val['stock'].'</td><td align="left">'.$val['unit'].'</td></tr>';
+                    $i++;
+                }
+            }
+            $html .='</tbody></table></section></body>';
+            echo $html;
+    }
+    public function take_post1(){
+        print_r($_POST);
+        // exit;
+        $selected_items    = $this->post('selected_items');
         $rawmaterial    = $this->post('rawmaterial');
         $stock          = $this->post('stock');
         $unit           = $this->post('unit');

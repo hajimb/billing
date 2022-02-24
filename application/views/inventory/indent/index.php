@@ -27,14 +27,14 @@
                           <th scope="row"><?php echo $i;?></th>
                           <td>
                             <?php echo $row['rawmaterial'];?>
-                              <input type="hidden" name="rawmaterial[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['rawmaterial'];?>">
+                              <input type="hidden" class="rawmaterial" name="rawmaterial[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['rawmaterial'];?>">
                           </td>
                           <td>
-                              <input type="text" name="stock[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['stock'];?>" class="form-control" style="border:none">
+                              <input type="text" name="stock[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['stock'];?>" class="form-control stock" style="border:none">
                           </td>
                           <td>
                             <?php echo $row['units'];?>
-                            <input type="hidden" name="unit[<?= $row['rawmaterial_id'];?>]" value="<?php echo $row['units'];?>"></td>
+                            <input type="hidden" name="unit[<?= $row['rawmaterial_id'];?>]" class="unit" value="<?php echo $row['units'];?>"></td>
                         </tr>
                         <?php $i++; }  ?>
                     <?php endif; ?>

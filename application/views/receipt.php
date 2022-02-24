@@ -65,9 +65,9 @@
 						?>
 					<tr>
 						<td><?= $billd['item_name'] ?></td> 
-						<td class="text-center"><?= $billd['qty'] ?></td> 
+						<td class="text-center"><?= $billd['total_qty'] ?></td> 
 						<td class="text-right"><?= number_format($billd['amount'],2) ?></td> 
-						<td class="text-right"><?= number_format($billd['price'],2) ?></td> 
+						<td class="text-right"><?= number_format($billd['total_price'],2) ?></td> 
 					</tr>
 					<?php } ?>
 					<tr class="border-top">

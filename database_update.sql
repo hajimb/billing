@@ -27,5 +27,4 @@ ALTER TABLE `bill_head` ADD `sub_total` DECIMAL(10,2) NOT NULL DEFAULT '0' AFTER
 
 ALTER TABLE `restaurant` ADD `last_bill_no` INT(11) NOT NULL DEFAULT '0' AFTER `qr_code`, ADD `bill_reset_type` CHAR(1) NOT NULL DEFAULT 'Y' AFTER `last_bill_no`, ADD `bill_reset_to` INT(11) NOT NULL DEFAULT '0' AFTER `bill_reset_type`, ADD `last_kot_no` INT NOT NULL DEFAULT '0' AFTER `bill_reset_to`, ADD `kot_reset_to` INT NOT NULL DEFAULT '0' AFTER `last_kot_no`;
 
-
 INSERT INTO `bill_head-old`(`restaurant_id`, `table_id`, `items`, `sub_total`, `tax_id`, `vat_percent`, `sgst_percent`, `cgst_percent`, `vat_amt`, `sgst_amt`, `cgst_amt`, `tax_amt`, `total`, `discount_id`, `discount_percent`, `discount_amt`, `grand_total`, `status`, `invoice_no`, `created_date`, `modified_date`, `created_by`, `modify_by`, `is_deleted`, `bill_type`, `payment_type`, `is_active`) VALUES (select restaurant_id, table_id, items,(total + discount_amt - tax_amt), tax_id, 0, 0, 0, 0, 0, 0, tax_amt, (total + discount_amt), discount_id, 0, discount_amt, total, `status`, invoice_no, created_date, modified_date, created_by, modify_by, is_deleted, bill_type, payment_type, is_active from bill_head)
