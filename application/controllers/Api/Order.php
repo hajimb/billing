@@ -128,5 +128,54 @@ class Order extends REST_Controller {
             ], REST_Controller::HTTP_OK);
         }
     }
+    public function gettabledetails_post(){
+        $verror = array();
+        $this->form_validation->set_rules('restaurant_id', 'Restautant ID', 'required|trim');
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_message('required', 'Enter %s');
+        if ($this->form_validation->run()) {
+            $result = getTableData($this->input->post('restaurant_id'),0);
+            $this->response([
+                'validate'  => TRUE,
+                'status'    => true,
+                'data'   => $result
+            ], REST_Controller::HTTP_OK);
+            
+        } else {
+            foreach ($this->input->post() as $key => $value) {
+                $verror[$key] = form_error($key);
+            }
+            $this->response([
+                'validate'   => FALSE,
+                'status' => FALSE,
+                'message' => $verror
+            ], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function getkotdetails_post(){
+        $verror = array();
+        $this->form_validation->set_rules('restaurant_id', 'Restautant ID', 'required|trim');
+        $this->form_validation->set_error_delimiters('', '');
+        $this->form_validation->set_message('required', 'Enter %s');
+        if ($this->form_validation->run()) {
+            $result = GetKOTItems($this->input->post('restaurant_id'),0);
+            $this->response([
+                'validate'  => TRUE,
+                'status'    => true,
+                'data'   => $result
+            ], REST_Controller::HTTP_OK);
+            
+        } else {
+            foreach ($this->input->post() as $key => $value) {
+                $verror[$key] = form_error($key);
+            }
+            $this->response([
+                'validate'   => FALSE,
+                'status' => FALSE,
+                'message' => $verror
+            ], REST_Controller::HTTP_OK);
+        }
+    }
 
 }

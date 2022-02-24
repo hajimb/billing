@@ -39,7 +39,7 @@
 		</tr>
 		<tr class="border-top border-bottom">
 			<td>
-				Name : Sagar sir (M : 9819878685)
+				Name : 
 			</td> 
 		</tr>
 		<tr>
@@ -88,7 +88,7 @@
 					</tr>
 					<tr>
 						<td class="text-right"><?= number_format($bill['billHead']['sub_total'],2) ?> @ VAT</td> 
-						<td colspan = 2 class="text-right"><?= $bill['billHead']['vat_percant'] ;?>%</td> 
+						<td colspan = 2 class="text-right"><?= $bill['billHead']['vat_percent'] ;?>%</td> 
 						<td class="text-right"><?= number_format(($bill['billHead']['vat_amt']),2); ?></td> 
 					</tr>
 					<?php } ?>

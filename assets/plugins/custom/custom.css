@@ -22,7 +22,7 @@
 }
 .hotel-tab-kot{
     border-radius: 10px;
-    width: 80%;
+    /* width: 80%; */
     border: 1px black dashed !important;
 }
 .hotel-table:hover{

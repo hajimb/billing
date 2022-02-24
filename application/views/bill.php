@@ -1,4 +1,3 @@
-<!-- <?php print_r($billHead); ?> -->
 <table class="table data-table" id="8">
     <thead>
         <tr>
@@ -18,9 +17,9 @@
     foreach($billItems as $item){ ?>
         <tr>
             <td><?= $item['item_name']; ?></td>
-            <td><?= $item['qty']; ?></td>
+            <td><?= $item['total_qty']; ?></td>
             <td class="text-right"><?= number_format($item['amount'],2); ?></td>
-            <td class="text-right"><?= number_format($item['price'],2); ?></td>
+            <td class="text-right"><?= number_format($item['total_price'],2); ?></td>
         </tr>
 
     <?php } ?>

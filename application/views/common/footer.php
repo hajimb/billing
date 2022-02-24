@@ -532,24 +532,7 @@
           }
         });
   }
-  function orderstatusupdate(bill_id, table_id, kot_id, status){
-    //alert();
-    // var id = $("#ord_table_id").val();
-    // var status = $("#ord_status").val();
-    $.ajax({
-          url:'<?php echo base_url() ?>order/orderstatusupdatenew',
-          method:'POST',
-          data:{id:bill_id, status:status, kot_id:kot_id, table_id:table_id},
-          dataType: 'json',
-          success:function(resp){
-            if(resp.status == 1){
-              location.reload();
-            }else{
-
-            }
-          }
-    })
-  }
+  
   function billdiscountupdate(bill_id){
     var dis = $('#final_dis').val();
     var g_total = $('#g_total_amount').val();
@@ -645,45 +628,6 @@
     })
   }
 
- 
-    function orderstatusupdateTable(table_id, status){
-      //alert();
-      // var id = $("#ord_table_id").val();
-      // var status = $("#ord_status").val();
-      $.ajax({
-            url:'<?php echo base_url() ?>order/orderstatusupdateTable',
-            method:'POST',
-            data:{status:status, table_id:table_id},
-            dataType: 'json',
-            success:function(resp){
-              if(resp.status == 1){
-                location.reload();
-              }else{
-
-              }
-            }
-      })
-    }
-
-
-    function tableEmpty(table_id){
-      //alert();
-      // var id = $("#ord_table_id").val();
-      // var status = $("#ord_status").val();
-      $.ajax({
-            url:'<?php echo base_url() ?>order/tableEmpty',
-            method:'POST',
-            data:{table_id:table_id},
-            dataType: 'json',
-            success:function(resp){
-              if(resp.status == 1){
-                location.reload();
-              }else{
-
-              }
-            }
-      })
-    }
     function bill_preview(id){
       UpdateBill(false);
       // billdiscountupdate(id);

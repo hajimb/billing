@@ -287,7 +287,7 @@ if (!function_exists('getTableData')){
         $ci=& get_instance();
         $ci->load->database();
         $data = array();
-        $ci->db->select('*');
+        $ci->db->select('*,now() as last_checked_data');
         $ci->db->from('tables');
         $ci->db->where('is_deleted',0);
         if($restaurant_id > 0 ) $ci->db->where('restaurant_id',$restaurant_id);
@@ -315,6 +315,8 @@ if (!function_exists('getTableData')){
                     $res['bill_id']     = 0;
                 }
             }else{
+                $res['table_tot']   = '';
+                $res['table_stime'] = 0;
                 $res['bill_id']     = 0;
             }
             $data[] = $res;
@@ -522,22 +524,62 @@ if (!function_exists('GetBillHead')) {
         return $result;
     }
 }
-
 if (!function_exists('GetBillItems')) {
     function GetBillItems($bill_id = 0){
         $result = array();
         $ci = &get_instance();
         $ci->load->database();
         // SELECT ki.*, im.item_name FROM kot_item ki left join kot_head kh on kh.id = ki.kot_id left join items im on ki.item_id = im.item_id WHERE kh.bill_id = 1
-        $ci->db->select('ki.*, im.item_name');
+        $ci->db->select('ki.*, sum(ki.qty) as total_qty,sum(ki.price) as total_price, im.item_name');
         $ci->db->from('kot_item ki');
         $ci->db->join('kot_head kh','kh.id = ki.kot_id', 'left');
         $ci->db->join('items im','ki.item_id = im.item_id', 'left');
         $ci->db->where('kh.bill_id',$bill_id);
+        $ci->db->group_by('im.item_id');
         $query  = $ci->db->get();
         $rows   = $query->num_rows();
         if($rows > 0){
             $result = $query->result_array();
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('GetKOTItems')) {
+    function GetKOTItems($restaurant_id = 0){
+        $result = array();
+        $ci = &get_instance();
+        $ci->load->database();
+        /*
+        $query = $this->db->query("SELECT h.*, t.tablename  FROM kot_head h, tables t  where t.table_id = h.table_id and h.status = 'OrderTaken' AND t.restaurant_id = ".$restaurant_id);
+        $result = $query->result_array();
+        //print_r($result);
+        $data = array();
+        foreach($result as $res){
+            $query1 = $this->db->query("SELECT   i.*, n.item_name  FROM kot_item i, items n where n.item_id = i.item_id and i.kot_id = '".$res['Id']."'");
+            $result1 = $query1->result_array();
+            $res['ord'] = $result1;
+            $data[] = $res;
+        }
+        */
+        // SELECT ki.*, im.item_name FROM kot_item ki left join kot_head kh on kh.id = ki.kot_id left join items im on ki.item_id = im.item_id WHERE kh.bill_id = 1
+        $ci->db->select('kh.Id, kh.bill_id, kh.kot, kh.status,t.table_id, t.tablename');
+        $ci->db->from('kot_head kh');
+        $ci->db->join('tables t','t.table_id = kh.table_id', 'left');
+        if($restaurant_id > 0){
+            $ci->db->where('t.restaurant_id', $restaurant_id);
+        }
+        $status = array('OrderTaken','OrderReady','InCooking');
+        $ci->db->where_in('kh.status', $status);
+        $query  = $ci->db->get();
+        $result = $query->result_array();
+        foreach($result as $key => $row){
+            $ci->db->select('ki.*, i.item_name');
+            $ci->db->from('kot_item ki');
+            $ci->db->join('items i','i.item_id = ki.item_id', 'left');
+            $ci->db->where('ki.kot_id',$row['Id']);
+            $query  = $ci->db->get();
+            $result[$key]['items'] = $query->result_array();
         }
         return $result;
     }

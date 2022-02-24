@@ -137,7 +137,7 @@ function getitems(id) {
         contentType: false,
         success: function(data) {
             console.log(data);
-            console.log(data.items[0].cat_id)
+            // console.log(data.items[0].cat_id)
             var item = data.items;
 
             $.each(item, function(k, v) {

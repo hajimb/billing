@@ -12,7 +12,8 @@ class Tableorder extends CI_Controller {
 
 	public function index() {
         $this->data['title'] = 'Table Order'; 
-        $this->data['table']    = getTableData($this->restaurant_id,0);
+        $this->data['restaurant_id'] = $this->restaurant_id; 
+        // $this->data['table']    = getTableData($this->restaurant_id,0);
         $this->data['session']  = $this->session->userdata('user_session');
         $this->data["pagename"]  = "tableorder-list";
         $this->data['page_title'] = "Table Order";

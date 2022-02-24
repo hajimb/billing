@@ -325,35 +325,34 @@ function ConvertToFloat(str){
    return rtn;
 }
 
-// Add Discount
-$("#add_discount").click(function(){
-    if($("#discount_select").val() != 0){
-        console.log('discount_select:'+$("#discount_select").val());
-      var id = $("#discount_select").val();
-      $.ajax({
-          url:base_url+'discount/getdiscount',
-          method:'POST',
-          data:{id:id},
-          dataType: 'json',
-          success:function(resp){
-              console.log('Discount returned :'+resp);
-              $("#discount_id").val(resp.discount_id);
-              $("#dis_per_val").val(resp.discount);
-              $("#dis_fix_val").val(0);
-              calculate(false);
-            }
-        })
-    }else if($("#dis_per").val() != ''){
-        $("#dis_fix_val").val(0);
-        $("#dis_per_val").val($("#dis_per").val());
-        calculate(false);
-    }else if($("#dis_fix").val() != ''){
-        $("#dis_per_val").val(0);
-        $("#dis_fix_val").val($("#dis_fix").val());
-        calculate(false);
-    }
-    // $("#collapseTwo").removeClass('show');
-  })
+    // Add Discount
+    $("#add_discount").click(function(){
+        if($("#discount_select").val() != 0){
+            console.log('discount_select:'+$("#discount_select").val());
+            var id = $("#discount_select").val();
+            $.ajax({
+            url:base_url+'discount/getdiscount',
+            method:'POST',
+            data:{id:id},
+            dataType: 'json',
+            success:function(resp){
+                console.log('Discount returned :'+resp);
+                $("#discount_id").val(resp.discount_id);
+                $("#dis_per_val").val(resp.discount);
+                $("#dis_fix_val").val(0);
+                calculate(false);
+                }
+            });
+        }else if($("#dis_per").val() != ''){
+            $("#dis_fix_val").val(0);
+            $("#dis_per_val").val($("#dis_per").val());
+            calculate(false);
+        }else if($("#dis_fix").val() != ''){
+            $("#dis_per_val").val(0);
+            $("#dis_fix_val").val($("#dis_fix").val());
+            calculate(false);
+        }
+    });
 
     $(document).on("click", "#RaiseBill", function(event) {
         event.preventDefault();
@@ -416,3 +415,63 @@ $("#add_discount").click(function(){
     })
     return false;
 });
+
+function toTimestamp(strDate) {  
+    const dt = moment(strDate).unix();  
+    return dt;  
+}  
+
+function tableEmpty(table_id){
+    //alert();
+    // var id = $("#ord_table_id").val();
+    // var status = $("#ord_status").val();
+    $.ajax({
+          url:base_url+'order/tableEmpty',
+          method:'POST',
+          data:{table_id:table_id},
+          dataType: 'json',
+          success:function(resp){
+            if(resp.status == 1){
+                gettabledetails();
+            }else{
+
+            }
+          }
+    })
+  }
+
+function orderstatusupdateTable(table_id, status){
+    //alert();
+    // var id = $("#ord_table_id").val();
+    // var status = $("#ord_status").val();
+    $.ajax({
+          url:base_url+'order/orderstatusupdateTable',
+          method:'POST',
+          data:{status:status, table_id:table_id},
+          dataType: 'json',
+          success:function(resp){
+            if(resp.status == 1){
+                gettabledetails();
+            }else{
+
+            }
+          }
+    })
+  }
+
+  function orderstatusupdate(bill_id, table_id, kot_id, status){
+    $.ajax({
+          url:base_url+'order/orderstatusupdatenew',
+          method:'POST',
+          data:{id:bill_id, status:status, kot_id:kot_id, table_id:table_id},
+          dataType: 'json',
+          success:function(resp){
+            if(resp.status == 1){
+                getkotdetails();
+                //location.reload();
+            }else{
+
+            }
+          }
+    })
+  }

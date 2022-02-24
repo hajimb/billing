@@ -24,7 +24,14 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-   
+   <?php
+  // echo "<pre>Order : ";
+  // print_r($order);
+  // echo "<hr> Order New : ";
+  // print_r($order_new);
+
+
+   ?>
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">

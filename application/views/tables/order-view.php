@@ -5,7 +5,7 @@
 // print_r($order); 
 ?>
 <?php $i = 0; ?>
-<?php  print_r($order);?>
+<?php  //print_r($order);?>
 <div class="content-wrapper">
     <section class="content m-0">
         <div class="container-fluid m-0">

@@ -73,7 +73,7 @@ class Ordermodel extends CI_Model
         $this->db->update($this->bill_head,$updateData);
         
         if($data['status']!='') {
-            $query = $this->db->query("UPDATE tables set ord_status = '".$data['status']."' where table_id = '".$data['table_id']."'");
+            $query = $this->db->query("UPDATE tables set ord_status = '".$data['status']."',modified_date = '".date('Y-m-d H:i:s')."' where table_id = '".$data['table_id']."'");
             $query = $this->db->query("UPDATE kot_head set status = '".$data['status']."' where bill_id = '".$data['ord_id']."' AND status != 'KitchenReject'");
             $this->orderstatuslog($data['ord_id'],$data['status']);
         }
@@ -122,27 +122,30 @@ class Ordermodel extends CI_Model
                 $bill_data['grand_total']       = $data['grand_total'];
                 $bill_data["status"]            = "OrderTaken";
                 $bill_data["invoice_no"]        = $invoice_no;
-                $bill_data["created_date"]      = date('Y-m-d H:i:s');
-                $bill_data["modified_date"]     = date('Y-m-d H:i:s');
-                $bill_data["created_by"]        = $user_session['user_id'];
-                $bill_data["modify_by"]         = $user_session['user_id'];
                 $bill_data["bill_type"]         = $data['order_type'];
-                
+                $bill_data["modified_date"]     = date('Y-m-d H:i:s');
+                $bill_data["modify_by"]         = $user_session['user_id'];
                 $kot_head_data["restaurant_id"]     = $user_session["restaurant_id"];
                 $kot_head_data["table_id"]          = $data["table_id"];
                 $kot_head_data["status"]            = "OrderTaken";
+                
+                $table_data["ord_status"]           = "OrderTaken";
+                $table_data["modified_date"]        = date('Y-m-d H:i:s');
+                $table_data["modify_by"]         = $user_session['user_id'];
                 // $bill_data["mobile"] = $data['mobile'];
                 // $bill_data["name"] = $data['name'];
                 
                 // $query11 = $this->db->query("SELECT * FROM bill_head where table_id = '".$data["table_id"]."' and status != 'BillPaid' order by Id DESC limit 1");
                 // $result11 = $query11->row_array();
-
+                
                 if($bill_id != ''){
                     $bill_i["bill_id"]      = $bill_id;
                     $kot_head_data["bill_id"]   = $bill_id;
                     $this->db->where('id',$bill_id);
                     $bill                   = $this->db->update($this->bill_head,$bill_data);
                 }else{
+                    $bill_data["created_date"]      = date('Y-m-d H:i:s');
+                    $bill_data["created_by"]        = $user_session['user_id'];
                     $bill                   = $this->db->insert($this->bill_head,$bill_data);
                     $bill_id                = $this->db->insert_id();
                     UpdateLastBillNo($user_session["restaurant_id"], $invoice_no);
@@ -169,7 +172,12 @@ class Ordermodel extends CI_Model
                     $bill_item["amount"] = $data["amount"][$i];
                     $this->db->insert($this->kot_item,$bill_item);
                 }
-                $query = $this->db->query("UPDATE  tables set ord_status = 'OrderTaken' where table_id = '".$this->getTableidofbill($bill_id)."'");
+
+                $this->db->where('table_id' , $this->getTableidofbill($bill_id));
+                $this->db->update('tables',$table_data);
+    
+                // $query = $this->db->query("UPDATE  tables set ord_status = 'OrderTaken' where table_id = '".$this->getTableidofbill($bill_id)."'");
+                
                 $result['status']   = true;
                 $result['data']     = $KOTId;
                 $result['msg']     = 'Order Saved Successfully';
@@ -489,6 +497,7 @@ class Ordermodel extends CI_Model
         $this->db->select("*");
         $this->db->from('tax');
         $this->db->where("is_default",1);
+        $this->db->where("is_deleted",0);
         $this->db->where("restaurant_id",$restaurant_id);
         $this->db->limit(1);
         $query      = $this->db->get();
