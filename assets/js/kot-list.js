@@ -62,7 +62,7 @@ $(document).on("click", ".vieworder", function(e) {
             }else if(kot_detail['status'] == "InCooking"){ 
                 table_status_val = "bg-danger"; 
             }else if(kot_detail['status'] == "OrderReady"){ 
-                table_status_val = "bg-sucess"; 
+                table_status_val = "bg-success"; 
             }
 
             var span_OrderTaken = 'none';

@@ -1,5 +1,6 @@
 var controller = "tableorder";
 var myInterval ;
+var tables = [];
 function secondsTimeSpanToHMS(s,id) {
     var h = Math.floor(s / 3600); //Get whole hours
     s -= h * 3600;
@@ -8,6 +9,21 @@ function secondsTimeSpanToHMS(s,id) {
     $("#seconds_"+id).html((s < 10 ? '0' + s : s));
     $("#minutes_"+id).html((m < 10 ? '0' + m : m));
     $("#hours_"+id).html((h < 10 ? '0' + h : h));
+  }
+
+function ShowTimer() {
+    tables.forEach(table => {
+        id = table['id'];
+        s = ++table['sec'];
+        console.log(`id : ${id} -- sec : ${s}`);
+        var h = Math.floor(s / 3600); //Get whole hours
+        s -= h * 3600;
+        var m = Math.floor(s / 60); //Get remaining minutes
+        s -= m * 60;
+        $("#seconds_"+id).html((s < 10 ? '0' + s : s));
+        $("#minutes_"+id).html((m < 10 ? '0' + m : m));
+        $("#hours_"+id).html((h < 10 ? '0' + h : h));
+    });
   }
   
 $(function () {
@@ -65,6 +81,7 @@ $(function () {
         return false;
     }
     function LoadTables(table_data){
+        tables = [];
         var box = '';
         $("#tabledata").html('');
         table_data.forEach(table_s => {
@@ -137,16 +154,21 @@ $(function () {
                             </div>
                         </div>`;
         $("#tabledata").append(box);
+        clearInterval(myInterval);
         if(table_s['table_stime'] > 0){
             console.log(table_s['table_id']);
             console.log(table_s['table_stime']);
             var sec = table_s['table_stime'];
-            secondsTimeSpanToHMS(++sec,table_s['table_id']);
-            clearInterval(myInterval);
-            myInterval = setInterval( function(){
-                secondsTimeSpanToHMS(++sec,table_s['table_id']);
-            }, 1000);
+            tables.push({'id': table_s['table_id'],'sec' : ++sec});
+            // secondsTimeSpanToHMS(++sec,table_s['table_id']);
         }
-        });
+    });
+    ShowTimer();
+    myInterval = setInterval( function(){
+        ShowTimer();
+        console.log('in set interval');
+        // secondsTimeSpanToHMS(++sec,table_s['table_id']);
+    }, 1000);
+    console.log('tables:'+JSON.stringify(tables));
     }
     
